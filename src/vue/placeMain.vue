@@ -36,7 +36,7 @@
               query: { placeType: 'childBookstore' },
             }"
           >
-            <img src="../image/places/googlebird.png" alt="childBookstore" />
+            <img src="../image/places/ChildBookstore.png" alt="childBookstore" />
           </router-link>
           <router-link
             :to="{
@@ -44,7 +44,7 @@
               query: { placeType: 'publicKidsCafe' },
             }"
           >
-            <img src="../image/places/googlebird.png" alt="publicKidsCafe" />
+            <img src="../image/places/PublicKidsCafe.png" alt="publicKidsCafe" />
           </router-link>
         </div>
       </div>
@@ -58,12 +58,12 @@
           <router-link
             :to="{ path: '/placeSearch', query: { placeType: 'forest' } }"
           >
-            <img src="../image/places/googlebird.png" alt="forest" />
+            <img src="../image/places/ForestHouse.png" alt="forest" />
           </router-link>
           <router-link
             :to="{ path: '/placeSearch', query: { placeType: 'camping' } }"
           >
-            <img src="../image/places/googlebird.png" alt="camping" />
+            <img src="../image/places/Camping.png" alt="camping" />
           </router-link>
         </div>
       </div>

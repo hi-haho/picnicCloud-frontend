@@ -16,7 +16,7 @@
   </div>
   <nav class="bottom-nav">
       <ul>
-        <li><router-link to="" >테마 추천</router-link></li>
+        <li><router-link to="/place">테마 추천</router-link></li>
         <li><router-link to="/market">중고거래</router-link></li>
         <li><router-link to="/map">지도</router-link></li>
         <li><router-link to="/calendar">행사일정</router-link></li>

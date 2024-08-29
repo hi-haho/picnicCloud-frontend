@@ -3,6 +3,7 @@
      <TopBar />
     </header>
     <main>
+      <div v-if="$route.path === '/'">
   <div id="mainBanner">
     메인배너 자리에요
   </div>
@@ -32,6 +33,8 @@
       </div>
     </article>
   </section>
+</div>
+  <router-view></router-view>
 </main>
   <footer id="footerBox">
     <FooterBox />
