@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import axios from "axios";
 import "../css/placeSearch.css";
 
 export default {
@@ -67,13 +67,14 @@ export default {
         return;
       }
 
-      //키워드가 있으면 쿼리스트링에 추가
+      // 기본 쿼리 URL 구성
       let query = `http://localhost/places?placeType=${placeType}`;
+      //키워드가 있으면 쿼리스트링에 추가
       if (keyword) {
         query += `&keyword=${keyword}`;
       }
 
-      // pCategory에 따른 데이터 요청
+      // placeType에 따른 데이터 요청
       axios
         .get(query)
         .then((res) => {
@@ -89,8 +90,14 @@ export default {
       this.axiosData(this.keyword);
 
       // 현재 URL을 가져와서 검색어를 반영해 URL을 갱신
+      //사용자가 검색어를 삭제하거나 입력하지 않은 경우, keyword 파라미터를 URL에서 제거
       const urlParams = new URLSearchParams(window.location.search);
-      urlParams.set("keyword", this.keyword);
+      if (this.keyword) {
+        urlParams.set("keyword", this.keyword);
+      } else {
+        urlParams.delete("keyword");
+      }
+
       const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
