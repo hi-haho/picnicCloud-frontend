@@ -1,7 +1,12 @@
 <template>
     <header>
     <div id="upper-nav">
-  <div id="logo"><router-link to="/">Picnic_Cloud</router-link></div>
+  <div id="logo">
+    <router-link to="/">
+      <!--<img src="../image/logo_ver1.png">-->
+      <img src="../image/logo_ver2.png">
+    </router-link>
+  </div>
   <nav>
     <ul>
       <li v-if="!isLoggedIn"><router-link to="/login">
