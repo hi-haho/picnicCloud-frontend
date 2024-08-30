@@ -1,7 +1,7 @@
 <template>
     <div id="mainPage">
       <div id="mainBanner">
-        <img src="../image/Event Banner.png" alt="이벤트 배너">
+        <img src="../image/EventBanner.png" alt="이벤트 배너">
       </div>
       <section id="contentArea">
         <article id="body1">
@@ -11,7 +11,7 @@
               <img src="../image/places/Camping.png" alt="캠핑장 추천">
             </div>
             <div class="image" aria-label="활동 이미지 2">
-              <img src="../image/places/PublicKidscafe.png" alt="공공형 키즈 카페 추천">
+              <img src="../image/places/PublicKidsCafe.png" alt="공공형 키즈 카페 추천">
             </div>
           </div>
         </article>
@@ -26,10 +26,14 @@
         <article id="body3">
           <h3>올 가을에는 마음을 살찌워 보아요.</h3> 
           <div class="recommend">
+          <div class="wrap">
             <div class="book" aria-label="추천 도서 1"></div>
             <div class="book" aria-label="추천 도서 2"></div>
+          </div>
+          <div class="wrap">
             <div class="book" aria-label="추천 도서 3"></div>
             <div class="book" aria-label="추천 도서 4"></div>
+          </div>
           </div>
         </article>
       </section>

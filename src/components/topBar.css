@@ -14,6 +14,8 @@ header {
   height: 150px;
   width: 100%;
   box-sizing: border-box;
+  position: relative;
+  top: -10px;
 }
 
 /* 상단 네비게이션 */
