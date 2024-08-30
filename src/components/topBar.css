@@ -31,6 +31,8 @@ header {
   text-align: left;
   font-size: 1.5rem;
   font-weight: bold;
+  position: relative;
+  top: -25px;
 }
 
 nav ul {

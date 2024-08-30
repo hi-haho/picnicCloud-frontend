@@ -58,7 +58,12 @@ h3 {
   flex: 1;
   min-width: 200px;
   height: 298px;
-  border: 1px solid black;
+}
+
+.image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
 /* 캘린더 영역 */

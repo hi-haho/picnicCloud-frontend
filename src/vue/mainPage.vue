@@ -11,7 +11,7 @@
               <img src="../image/places/Camping.png" alt="캠핑장 추천">
             </div>
             <div class="image" aria-label="활동 이미지 2">
-              <img src="../image/places/PublicKidsCafe.png" alt="공공형 키즈 카페 추천">
+              <img src="../image/places/PublicKidscafe.png" alt="공공형 키즈 카페 추천">
             </div>
           </div>
         </article>
