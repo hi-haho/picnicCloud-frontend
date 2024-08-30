@@ -1,6 +1,6 @@
 /* 전체 컨테이너 */
 #app {
-    max-width: 800px; /* 최대 너비를 800px로 설정하여 내용이 너무 넓어지지 않도록 제한 */
+    
     margin: 0 auto; /* 페이지 중앙에 배치하기 위해 자동 여백 설정 */
     padding: 20px; /* 컨테이너 내부에 20px의 여백 추가 */
     font-family: Arial, sans-serif; /* 기본 폰트를 Arial로 설정 */
