@@ -4,7 +4,8 @@
   <div id="logo">
     <router-link to="/">
       <!--<img src="../image/logo_ver1.png">-->
-      <img src="../image/logo_ver2.png">
+     <!-- <img src="../image/logo_ver2.png">-->
+      picnic cloud
     </router-link>
   </div>
   <nav>

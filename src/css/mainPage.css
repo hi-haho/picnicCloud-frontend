@@ -1,8 +1,10 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 /* 기본 스타일 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Pretendard Variable", Pretendard;
 }
 
 html, body {
@@ -107,7 +109,7 @@ h3 {
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
 }
 
@@ -115,7 +117,7 @@ h3 {
   display: flex;
   flex-direction: row; /* 기본적으로 가로로 나열 */
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
   width: 100%;
 }
 
@@ -194,8 +196,8 @@ h3 {
   }
 }
 
-/* 모바일 화면 (max-width 480px) */
-@media (max-width: 480px) {
+/* 모바일 화면 (max-width 500px) */
+@media (max-width: 500px) {
   #topBar,
   #contentArea,
   #footerBox {
@@ -226,10 +228,26 @@ h3 {
       flex-direction: column;
   }
 
-  .calendar, .calendarinfo, .thismonth {
+  .calendar {
+    flex-direction: row; /* 1200px 이하에서도 가로 배치 유지 */
+    flex-wrap: wrap; /* 필요한 경우 줄바꿈을 허용 */
+    justify-content: space-between; /* 요소들 사이에 균등한 간격을 적용 */
+  }
+
+  .thismonth, .calendarinfo {
     width: 100%;
-    flex-direction: column;
-}
+    height: 300px; 
+  }
+
+  thismonth {
+    flex: 100%; /* 화면 크기가 작을 때 이 요소가 전체 너비를 차지하도록 함 */
+  }
+
+  .calendarinfo {
+    flex: 48%; /* 나머지 두 요소가 48%씩 차지하도록 설정 */
+    height: 300px; /* 기존 높이 유지 */
+  }
+
 
 .recommend {
   flex-direction: column;   /* 480px 이하에서는 세로로 나열 */
