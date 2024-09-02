@@ -143,3 +143,5 @@ export default {
   }
 };
 </script>
+
+<style src="../css/fleaCreate.css"></style>

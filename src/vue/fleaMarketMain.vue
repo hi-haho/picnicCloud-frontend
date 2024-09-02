@@ -14,7 +14,7 @@
     </section>
     <!-- 글쓰기 버튼 -->
     <div>
-      <button @click="create">글쓰기</button>
+      <button> <router-link to="/fleaMarketCreate">글쓰기</router-link></button>
     </div>
     <!-- 게시판 -->
     <div>
@@ -160,3 +160,5 @@ export default {
   }
 };
 </script>
+
+<style src="../css/fleamarket.css"></style>
