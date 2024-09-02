@@ -6,6 +6,7 @@
       <!--<img src="../image/logo_ver1.png">-->
       <!-- <img src="../image/logo_ver2.png">-->
        picnic_cloud
+
     </router-link>
   </div>
   <nav>

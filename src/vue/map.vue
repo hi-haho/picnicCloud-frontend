@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="mapdesign">
     <div class="search-container">
       <!-- Sidebar -->
       <div class="sidebar">
@@ -364,4 +364,4 @@ export default {
 };
 </script>
 
-<style src="../css/mapStyle.css"></style>
+<style src="../css/mapStyle.css" scoped></style>

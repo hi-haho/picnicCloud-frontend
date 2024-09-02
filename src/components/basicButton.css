@@ -1,9 +1,12 @@
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+
 button {
     margin: 10px 24px;
     background-color: #87ceeb;
     border: 1px solid #87ceeb;
     color: white;
     cursor: pointer;
+    font-family: "Pretendard Variable", Pretendard;
   }
   
   button:hover,  
