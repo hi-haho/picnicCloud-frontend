@@ -4,7 +4,8 @@
   <div id="logo">
     <router-link to="/">
       <!--<img src="../image/logo_ver1.png">-->
-      <img src="../image/logo_ver2.png">
+      <!-- <img src="../image/logo_ver2.png">-->
+       picnic_cloud
     </router-link>
   </div>
   <nav>
@@ -22,7 +23,7 @@
   <nav class="bottom-nav">
       <ul>
         <li><router-link to="/place">테마 추천</router-link></li>
-        <li><router-link to="/market">중고거래</router-link></li>
+        <li><router-link to="/fleaMarketMain">중고거래</router-link></li>
         <li><router-link to="/map">지도</router-link></li>
         <li><router-link to="/calendar">행사일정</router-link></li>
         <li><router-link to="/book">이달의 책</router-link></li>
