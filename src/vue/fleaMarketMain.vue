@@ -21,7 +21,8 @@
       <div v-if="content.length > 0">
         <div class="post-container">
           <div v-for="(item, index) in content" :key="index" class="onedata">
-            <form class="oneItem" @click="goToDetail(item.no)">
+            <!-- <form class="oneItem" @click="goToDetail(item.no)"> -->
+              <router-link :to="{ name: 'FleaMarketDetail', params: { no: item.no } }" class="oneItem">
               <input type="hidden" :value="item.filePath" />
               <span>
                 <!-- 첫 번째 이미지 파일만 표시 -->
@@ -35,7 +36,8 @@
                 <p><b>{{ item.price }}</b></p>
                 {{ item.category }}
               </span>
-            </form>
+              </router-link>
+            <!-- </form> -->
           </div>
         </div>
       </div>

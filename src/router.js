@@ -21,7 +21,7 @@ const routes = [
   { path: '/fleaMarketCreate',component: fleaMarketCreate},
   { path: '/login',component: login},
   { path: '/signUp',component: signUp},
-  { path: '/fleaMarketDetail/:no',component: fleaMarketDetail},
+  { path: '/fleaMarketDetail/:no', name: 'FleaMarketDetail',component: fleaMarketDetail},
   { path: '/myPage',component: myPage},
 ];
 

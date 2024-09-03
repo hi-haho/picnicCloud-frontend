@@ -3,7 +3,7 @@
     <div v-if="items">
       <!-- 이미지 및 아이템 정보 -->
       <div class="item-container">
-        <img :src="getFirstFilePath(items.mfilePath)" alt="first Image">
+        <img :src="getFirstFilePath(items.filePath)" alt="first Image">
         <div class="item-info">
           <span class="item-title">{{ items.title }}</span>
           <span class="item-price">{{ items.price }}</span>
@@ -16,13 +16,11 @@
 
       <!-- 상단 버튼 (목록보기, 수정, 삭제) -->
       <div>
-        <!-- 작성자만 보이도록 -->
         <button @click="fleaUpdate">수정</button>
         <button @click="fleaDelete">삭제</button>
-        <!-- -------------- -->
         <span>{{ items.favoriteCnt }}</span>
-        <button @click="toggleFavorite(items)">
-          <img :src="items.favorite ? './images/icon/liked-icon.png' : './images/icon/unliked-icon.png'" alt="Favorite">
+        <button @click="toggleFavorite">
+          <img :src="items.favorite ? './image/icon/liked-icon.png' : './image/icon/unliked-icon.png'" alt="Favorite">
         </button>
         <button @click="report(items.no)">신고</button>
         <button @click="list">목록보기</button>
@@ -43,98 +41,95 @@
 
 <script>
 import apiClient from '@/api/api.js';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
 export default {
   name: 'fleaMarketDetail',
-  props: {
-    no: {
-      type: String,
-      required: true
-    }
-  },
-  data() {
-    return {
-      items: null, // 초기 값은 null로 설정
-    };
-  },
-  mounted() {
-    this.detailOne();
-  },
-  methods: {
-    async detailOne() {
-//       const url = new URLSearchParams(window.location.search);
-//       this.no = url.get('no');
-// console.log("URL Parameter no:", this.no);
-      if (this.no) {
+  setup() {
+    const route = useRoute();
+    const no = route.params.no; // URL 파라미터로부터 'no'를 가져옴
+    const items = ref(null);
+    const userId = 'user1'; // 여기서 userId를 적절히 정의하거나 로그인 정보에서 가져와야 합니다.
+
+    const detailOne = async () => {
+      if (no) {
         try {
-          const response = await apiClient.get(`/fleaMarket/${this.no}`);
-          this.items = response.data;
+          const response = await apiClient.get(`/fleaMarket/${no}`);
+          items.value = response.data;
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
         }
       } else {
         console.log("URL에 번호 없음");
       }
-    },
-    getFirstFilePath(mfilePath) {
-      return Array.isArray(mfilePath) ? mfilePath[0] : mfilePath;
-    },
-    fleaUpdate() {
-      window.location.href = `fleamarketUpdate.html?no=${this.no}`;
-    },
-    async fleaDelete() {
+    };
+
+    const getFirstFilePath = (filePath) => {
+      return Array.isArray(filePath) ? filePath[0] : filePath;
+    };
+
+    const fleaUpdate = () => {
+      window.location.href = `fleaMarketUpdate.html?no=${no}`;
+    };
+
+    const fleaDelete = async () => {
       const res = confirm('다시 되돌릴 수 없습니다. 삭제하시겠습니까?');
       if (!res) {
         console.log('취소하였습니다.');
       } else {
         try {
-          await apiClient.delete(`/fleaMarket/${this.no}`);
+          await apiClient.delete(`/fleaMarket/${no}`);
           alert('삭제되었습니다.');
-          window.location.href = '/fleamarket.html';
+          window.location.href = '/fleaMarketMain';
         } catch (err) {
           alert('삭제가 실패했습니다.');
-          window.location.href = '/fleamarket.html';
+          window.location.href = '/fleaMarketMain';
         }
       }
-    },
-    list() {
-      window.location.href = 'fleamarket.html';
-    },
-    toggleFavorite() {
-       apiClient.patch(`/fleaMarket/favorite/${this.no}`)
-				.then(response => {
-					// 서버 응답을 처리하여 UI 업데이트
-					this.items.favorite = !this.items.favorite;
-					this.items.favoriteCnt = response.data.favoriteCount;
-				})
-				.catch(err => {
-					console.log("toggleFavorite Axios error: ", err);
-				});
-        
-    },
-    report(no) {
-    try {
-        // 신고를 서버로 전송
-        apiClient.post('/fleaMarket/report', { no });
+    };
+
+    const list = () => {
+      window.location.href = '/fleaMarketMain';
+    };
+
+    const toggleFavorite = async () => {
+  try {
+    // Assuming `userId` is defined elsewhere in your code
+    const response = await apiClient.patch('/fleaMarket/favorite', {
+      userId: userId,
+      fleaMarketNo: no
+    });
+    items.value.favorite = !items.value.favorite;
+    items.value.favoriteCnt = response.data.favoriteCount;
+  } catch (err) {
+    console.log("toggleFavorite Axios error: ", err);
+  }
+};
+
+    const report = async (no) => {
+      try {
+        await apiClient.post('/fleaMarket/report', { no });
         alert('신고가 완료되었습니다.');
       } catch (err) {
         console.log("report Axios error: ", err);
         alert('신고에 실패했습니다.');
       }
-    },
-    setup() {
-    const route = useRoute();
-    const params = route.params;
-    
-    // 예: /fleaMarketMain/2에서 2를 추출
-    const no = params.no ? Number(params.no) : null;
-    
-    return {
-      no,
-      params
     };
-  }
+
+    onMounted(() => {
+      detailOne();
+    });
+
+    return {
+      items,
+      getFirstFilePath,
+      fleaUpdate,
+      fleaDelete,
+      list,
+      toggleFavorite,
+      report
+    };
   }
 };
 </script>
