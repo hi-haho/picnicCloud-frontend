@@ -14,8 +14,8 @@
       <li v-if="!isLoggedIn"><router-link to="/login">
         login
       </router-link></li>
-      <li v-if="isLoggedIn">
-        <router-link to="/mypage">MyPage</router-link>
+      <li v-if="isLoggedIn">  
+        <router-link to="/myPage">MyPage</router-link>
         <span @click="goToChat" class="notification-icon">🔔</span>
       </li>
     </ul>
@@ -26,7 +26,7 @@
         <li><router-link to="/place">테마 추천</router-link></li>
         <li><router-link to="/fleaMarketMain">중고거래</router-link></li>
         <li><router-link to="/map">지도</router-link></li>
-        <li><router-link to="/book">이달의 책</router-link></li>
+        <li><router-link to="/book">도서</router-link></li>
       </ul>
     </nav>
   </header>
