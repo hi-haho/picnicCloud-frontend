@@ -31,7 +31,7 @@
       <!-- 하단 상세 정보 -->
       <div class="item-description">
         <h3>상품 상세 정보</h3>
-        <p>{{ items.mcont }}</p>
+        <p>{{ items.contents }}</p>
       </div>
     </div>
 
@@ -43,6 +43,7 @@
 
 <script>
 import apiClient from '@/api/api.js';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'fleaMarketDetail',
@@ -67,7 +68,7 @@ export default {
 // console.log("URL Parameter no:", this.no);
       if (this.no) {
         try {
-           const response = await apiClient.get(`/fleaMarket/${this.no}`);
+          const response = await apiClient.get(`/fleaMarket/${this.no}`);
           this.items = response.data;
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
@@ -121,7 +122,19 @@ export default {
         console.log("report Axios error: ", err);
         alert('신고에 실패했습니다.');
       }
-    }
+    },
+    setup() {
+    const route = useRoute();
+    const params = route.params;
+    
+    // 예: /fleaMarketMain/2에서 2를 추출
+    const no = params.no ? Number(params.no) : null;
+    
+    return {
+      no,
+      params
+    };
+  }
   }
 };
 </script>

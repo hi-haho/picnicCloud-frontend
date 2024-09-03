@@ -8,6 +8,7 @@ import fleaMarketReport from './vue/fleaMarketReport.vue';
 import fleaMarketCreate from './vue/fleaMarketCreate.vue';
 import login from './vue/login.vue';
 import signUp from './vue/signUp.vue';
+import fleaMarketDetail from './vue/fleaMarketDetail.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -19,6 +20,7 @@ const routes = [
   { path: '/fleaMarketCreate',component: fleaMarketCreate},
   { path: '/login',component: login},
   { path: '/signUp',component: signUp},
+  { path: '/fleaMarketDetail/:no',component: fleaMarketDetail},
 ];
 
 const router = createRouter({

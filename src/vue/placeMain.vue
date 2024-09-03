@@ -28,20 +28,20 @@
           <p>더위와 비를 피하기 위한 최고의 장소들!</p>
         </div>
         <div class="images">
-          <!-- 테마별 이미지 클릭하면, 해당 테마의 장소목록으로 넘어감. 기본이미지는 googlebird로 해뒀어요-->
+          <!-- 테마별 이미지 클릭하면, 해당 테마의 장소목록으로 넘어감-->
           <div class="image">
-            <router-link :to="{path: '/placeSearch',query: { placeType: 'childBookstore' },}">
-              <img src="../image/places/ChildBookstore.png" alt="childBookstore" />
+            <router-link :to="{path: '/placeSearch', query: { placeType: '아동서점' }}">
+              <img src="../image/places/ChildBookstore.png" alt="아동서점" />
             </router-link>
           </div>
           <div class="image">
             <router-link
               :to="{
                 path: '/placeSearch',
-                query: { placeType: 'publicKidsCafe' },
+                query: { placeType: '공공형 키즈카페' }
               }"
             >
-              <img src="../image/places/PublicKidsCafe.png" alt="publicKidsCafe" />
+              <img src="../image/places/PublicKidsCafe.png" alt="공공형 키즈카페" />
           </router-link>
           </div>
         </div>
@@ -55,16 +55,16 @@
         <div class="images">
           <div class="image">
           <router-link
-            :to="{ path: '/placeSearch', query: { placeType: 'forest' } }"
+            :to="{ path: '/placeSearch', query: { placeType: '자연휴양림' } }"
           >
-            <img src="../image/places/ForestHouse.png" alt="forest" />
+            <img src="../image/places/ForestHouse.png" alt="자연휴양림" />
           </router-link>
         </div>
         <div class="image">
           <router-link
-            :to="{ path: '/placeSearch', query: { placeType: 'camping' } }"
+            :to="{ path: '/placeSearch', query: { placeType: '캠핑' } }"
           >
-            <img src="../image/places/Camping.png" alt="camping" />
+            <img src="../image/places/Camping.png" alt="캠핑" />
           </router-link>
         </div>
         </div>

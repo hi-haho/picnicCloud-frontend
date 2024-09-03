@@ -14,7 +14,7 @@
     </section>
     <!-- 글쓰기 버튼 -->
     <div>
-      <button> <router-link to="/fleaMarketCreate">글쓰기</router-link></button>
+      <button @click="create">글쓰기</button>
     </div>
     <!-- 게시판 -->
     <div>
@@ -44,7 +44,7 @@
       </div>
 
       <!-- Pagination Controls -->
-      <div v-if="page.totalPages > 1" class="pagination">
+      <div v-if="page && page.totalPages > 1" class="pagination">
         <button @click="changePage(page.number - 1)" :disabled="page.number === 0">Previous</button>
         <button v-for="pageNum in paginationPages" :key="pageNum" @click="changePage(pageNum)" :class="{ active: pageNum === page.number }">
           {{ pageNum + 1 }}
@@ -62,16 +62,16 @@ import { useRouter } from 'vue-router'; // useRouter를 임포트합니다
 export default {
   name: 'fleaMarketMain',
   setup() {
-    const router = useRouter(); // router 객체를 가져옵니다
     const content = ref([]);
     const categories = ref([]);
     const category = ref(0); // 선택된 카테고리
     const search = ref("");
+    const router = useRouter(); // router 객체를 가져옵니다
     const page = ref({
       size: 0,
       number: 0,
       totalElements: 0,
-      totalPages: 0
+      totalPages: 1
     });
     const pageNumber = ref(0); // 현재 페이지 번호
     const size = ref(9); // 페이지당 아이템 수
@@ -102,7 +102,7 @@ export default {
     };
 
     const changePage = (newPageNumber) => {
-      pageNumber.value = newPageNumber;
+      newPageNumber.value = newPageNumber;
       fetchData(); // 메서드 재실행
     };
 
@@ -111,7 +111,7 @@ export default {
     };
 
     const goToDetail = (no) => {
-      router.push({ name: 'FleaMarketDetail', query: { no } }); // router 객체를 사용하여 페이지 이동
+      router.push({ name: 'FleaMarketDetail', query: { no } });
     };
 
     const create = () => {
@@ -122,7 +122,7 @@ export default {
       pageNumber.value = 0; // 검색 시 첫 페이지로 초기화
       fetchData();
     };
-
+    
     const paginationPages = computed(() => {
       const range = 2; // 현재 페이지를 기준으로 보여줄 페이지 번호 범위
       const start = Math.max(0, page.value.number - range);
@@ -160,5 +160,3 @@ export default {
   }
 };
 </script>
-
-<style src="../css/fleamarket.css"></style>

@@ -79,7 +79,7 @@ export default {
       const no = urlParams.get("no"); //객체에서 매개변수 값 추출 //3
 
       axios
-        .get(`http://localhost/places/${no}`)
+        .get(`http://localhost:8080/places/${no}`)
         .then((res) => {
           this.place = res.data;
         })
@@ -89,7 +89,7 @@ export default {
     },
     getImageUrl(imagePath) {
       //서버의 url과 이미지 경로를 조합하여  전체 URL을 만듦.
-      return `http://localhost${imagePath}`;
+      return `http://localhost:8080/${imagePath}`;
     },
   },
   mounted() {

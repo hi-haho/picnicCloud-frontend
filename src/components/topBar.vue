@@ -26,7 +26,6 @@
         <li><router-link to="/place">테마 추천</router-link></li>
         <li><router-link to="/fleaMarketMain">중고거래</router-link></li>
         <li><router-link to="/map">지도</router-link></li>
-        <li><router-link to="/calendar">행사일정</router-link></li>
         <li><router-link to="/book">이달의 책</router-link></li>
       </ul>
     </nav>
