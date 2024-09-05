@@ -12,6 +12,7 @@
       />
       <button @click="searchFunc">검색</button>
     </div>
+
     <div v-if="places.length > 0">
       <p>검색결과 : {{ places.length }}개</p>
       <div v-for="(p, index) in places" :key="index" class="place-item">
@@ -58,12 +59,12 @@ export default {
     };
   },
   methods: {
-    axiosData(keyword = "", page = 0) {
+    axiosData(keyword = "", page = 0, size = 10) {
       const hash = window.location.hash;
       const urlParams = new URLSearchParams(hash.substring(hash.indexOf("?")));
       const placeType = urlParams.get("placeType");
 
-      let query = `http://localhost:8080/places?placeType=${placeType}&page=${page}`;
+      let query = `http://localhost:8080/places?placeType=${placeType}&page=${page}&size=${size}`;
       if (keyword) {
         query += `&keyword=${keyword}`;
       }
