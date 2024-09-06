@@ -21,31 +21,29 @@
     </div>
     <br /><br />
     <!--이미지 클릭시 카데고리값 쿼리문자열로 전달. 페이지 전환. -->
-    <div class="image-container">
       <!--실내 테마-->
       <div class="image-group">
         <div class="caption">
           <h3>실내 테마</h3>
           <p>더위와 비를 피하기 위한 최고의 장소들!</p>
         </div>
-        <div class="image-items">
-          <!-- 테마별 이미지 클릭하면, 해당 테마의 장소목록으로 넘어감. 기본이미지는 googlebird로 해뒀어요-->
-          <router-link
-            :to="{
-              path: '/placeSearch',
-              query: { placeType: 'childBookstore' },
-            }"
-          >
-            <img src="../image/places/ChildBookstore.png" alt="childBookstore" />
+        <div class="images">
+          <!-- 테마별 이미지 클릭하면, 해당 테마의 장소목록으로 넘어감-->
+          <div class="image">
+            <router-link :to="{path: '/placeSearch', query: { placeType: '아동서점' }}">
+              <img src="../image/places/ChildBookstore.png" alt="아동서점" />
+            </router-link>
+          </div>
+          <div class="image">
+            <router-link
+              :to="{
+                path: '/placeSearch',
+                query: { placeType: '공공형 키즈카페' }
+              }"
+            >
+              <img src="../image/places/PublicKidsCafe.png" alt="공공형 키즈카페" />
           </router-link>
-          <router-link
-            :to="{
-              path: '/placeSearch',
-              query: { placeType: 'publicKidsCafe' },
-            }"
-          >
-            <img src="../image/places/PublicKidsCafe.png" alt="publicKidsCafe" />
-          </router-link>
+          </div>
         </div>
       </div>
       <!-- 실외 테마 -->
@@ -54,26 +52,28 @@
           <h3>실외 테마</h3>
           <p>무더운 여름 이색놀이를 즐겨봐요!</p>
         </div>
-        <div class="image-items">
+        <div class="images">
+          <div class="image">
           <router-link
-            :to="{ path: '/placeSearch', query: { placeType: 'forest' } }"
+            :to="{ path: '/placeSearch', query: { placeType: '자연휴양림' } }"
           >
-            <img src="../image/places/ForestHouse.png" alt="forest" />
-          </router-link>
-          <router-link
-            :to="{ path: '/placeSearch', query: { placeType: 'camping' } }"
-          >
-            <img src="../image/places/Camping.png" alt="camping" />
+            <img src="../image/places/ForestHouse.png" alt="자연휴양림" />
           </router-link>
         </div>
+        <div class="image">
+          <router-link
+            :to="{ path: '/placeSearch', query: { placeType: '캠핑' } }"
+          >
+            <img src="../image/places/Camping.png" alt="캠핑" />
+          </router-link>
+        </div>
+        </div>
       </div>
-    </div>
+    
   </div>
 </template>
 
 <script>
-import "../css/placeMain.css";
-
 export default {
   name: "PlaceMain",
   data() {
@@ -90,13 +90,13 @@ export default {
       const month = date.getMonth() + 1; // 월은 0부터 시작하므로 +1
       const day = date.getDate();
       const days = [
-        "일요일",
-        "월요일",
-        "화요일",
-        "수요일",
-        "목요일",
-        "금요일",
-        "토요일",
+        "(일)",
+        "(월)",
+        "(화)",
+        "(수)",
+        "(목)",
+        "(금)",
+        "(토)",
       ];
       const dayOfWeek = days[date.getDay()];
 
@@ -131,7 +131,7 @@ export default {
             const timeDiff = Math.abs(new Date(entry.dt_txt) - new Date()); // 현재 시간과의 차이 계산
 
             //낮 12시의 정보만 아이콘과 설명에 저장
-            if (entry.dt_txt.endsWith("12:00:00")) {
+            if (entry.dt_txt.endsWith("00:00:00")) {
               days[entryDate].description = entry.weather[0].description;
               days[
                 entryDate
@@ -173,3 +173,5 @@ export default {
   },
 };
 </script>
+
+<style src="../css/placeMain.css"></style>

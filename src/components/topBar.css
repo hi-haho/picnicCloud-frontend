@@ -23,7 +23,7 @@ header {
   height: 60%;
   justify-content: space-between;
   align-items: center;
-  background-color: #87ceeb;
+  border-bottom: 1px solid #87ceeb;
 }
 
 #logo {
@@ -31,7 +31,11 @@ header {
   text-align: left;
   font-size: 1.5rem;
   font-weight: bold;
+  position: relative;
+  top: -25px;
 }
+
+#logo img
 
 nav ul {
   list-style-type: none;
@@ -79,6 +83,7 @@ nav ul li {
   color: #87ceeb;
   font-weight: bold;
 }
+
 
 /* 반응형 디자인 */
 
