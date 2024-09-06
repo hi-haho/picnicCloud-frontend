@@ -91,6 +91,17 @@ html, body {
   color: #ccc;
 }
 
+.gender-options {
+  display: flex;
+  gap: 40px; /* 간격을 더 크게 설정 */
+}
+
+.gender-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* 라디오 버튼과 텍스트 사이 간격 */
+}
+
 /* 반응형 디자인 */
 
 /* 태블릿 및 중간 화면 (max-width 768px) */
