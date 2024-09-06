@@ -12,6 +12,7 @@ import fleaMarketDetail from './vue/fleaMarketDetail.vue';
 import myPage from './vue/myPage.vue';
 import myPosts from './vue/myPosts.vue';
 import myLikes from './vue/myLikes.vue';
+import bookMain from './vue/bookMain.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -27,7 +28,7 @@ const routes = [
   { path: '/myPage',component: myPage},
   { path: '/myPosts',component: myPosts},
   { path: '/myLikes',component: myLikes},
-  
+  { path: '/bookMain',component: bookMain},
 ];
 
 const router = createRouter({
