@@ -10,6 +10,8 @@ import login from './vue/login.vue';
 import signUp from './vue/signUp.vue';
 import fleaMarketDetail from './vue/fleaMarketDetail.vue';
 import myPage from './vue/myPage.vue';
+import myPosts from './vue/myPosts.vue';
+import myLikes from './vue/myLikes.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -23,6 +25,9 @@ const routes = [
   { path: '/signUp',component: signUp},
   { path: '/fleaMarketDetail/:no', name: 'FleaMarketDetail',component: fleaMarketDetail},
   { path: '/myPage',component: myPage},
+  { path: '/myPosts',component: myPosts},
+  { path: '/myLikes',component: myLikes},
+  
 ];
 
 const router = createRouter({

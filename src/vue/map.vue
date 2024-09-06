@@ -284,49 +284,59 @@ export default {
       this.markers = {}; // 마커 객체 초기화
     },
     displayInfoWindow(facility, marker) {
-      const homepageLink = facility.homepageUrl
-        ? `<p><strong>홈페이지:</strong> <a href="${facility.homepageUrl}" target="_blank" style="color:#007BFF; text-decoration:none;">${facility.homepageUrl}</a></p>`
-        : "";
-      const content = `
-        <div id="info-window-content" style="padding:10px;">
-          <h4>${facility.name}</h4>
-          <p><strong>주소:</strong> ${facility.address}</p>
-          <p><strong>전화번호:</strong> ${facility.telephone}</p>
-          <p><strong>운영 시간:</strong> ${facility.operationTime}</p>
-          ${homepageLink}
-          <p><strong>설명:</strong> ${facility.description}</p>
-        </div>
-      `;
+  const homepageLink = facility.homepageUrl
+    ? `<p><strong>홈페이지:</strong> <a href="${facility.homepageUrl}" target="_blank" style="color:#007BFF; text-decoration:none;">${facility.homepageUrl}</a></p>`
+    : "";
+  
+  const content = `
+    <div id="info-window-content" style="
+      padding:10px; 
+      max-width: 100%; 
+      width: 300px; 
+      word-wrap: break-word; 
+      white-space: normal; 
+      overflow-wrap: break-word; 
+      overflow: hidden; 
+      box-sizing: border-box;">
+      <h4 style="margin: 0 0 10px 0;">${facility.name}</h4>
+      <p><strong>주소:</strong> ${facility.address}</p>
+      <p><strong>전화번호:</strong> ${facility.telephone}</p>
+      <p><strong>운영 시간:</strong> ${facility.operationTime}</p>
+      ${homepageLink}
+      <p><strong>설명:</strong> ${facility.description}</p>
+    </div>
+  `;
 
-      this.infoWindow.setContent(content);
-      this.infoWindow.open(this.map, marker);
-      this.activeMarker = marker;
+  this.infoWindow.setContent(content);
+  this.infoWindow.open(this.map, marker);
+  this.activeMarker = marker;
 
-      const infoWindowElement = document.getElementById("info-window-content");
-      if (infoWindowElement) {
-        infoWindowElement.addEventListener("mouseover", () => {
-          if (this.infoWindowTimer) {
-            clearTimeout(this.infoWindowTimer);
-          }
-          this.isMouseOverInfoWindow = true;
-        });
-
-        infoWindowElement.addEventListener("mouseout", () => {
-          this.isMouseOverInfoWindow = false;
-          this.infoWindowTimer = setTimeout(() => {
-            this.infoWindow.close();
-          }, 200);
-        });
+  const infoWindowElement = document.getElementById("info-window-content");
+  if (infoWindowElement) {
+    infoWindowElement.addEventListener("mouseover", () => {
+      if (this.infoWindowTimer) {
+        clearTimeout(this.infoWindowTimer);
       }
+      this.isMouseOverInfoWindow = true;
+    });
 
-      window.kakao.maps.event.addListener(marker, "mouseout", () => {
-        this.infoWindowTimer = setTimeout(() => {
-          if (!this.isMouseOverInfoWindow) {
-            this.infoWindow.close();
-          }
-        }, 200);
-      });
-    },
+    infoWindowElement.addEventListener("mouseout", () => {
+      this.isMouseOverInfoWindow = false;
+      this.infoWindowTimer = setTimeout(() => {
+        this.infoWindow.close();
+      }, 200);
+    });
+  }
+
+  window.kakao.maps.event.addListener(marker, "mouseout", () => {
+    this.infoWindowTimer = setTimeout(() => {
+      if (!this.isMouseOverInfoWindow) {
+        this.infoWindow.close();
+      }
+    }, 200);
+  });
+},
+    
     moveToCurrentLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((position) => {
