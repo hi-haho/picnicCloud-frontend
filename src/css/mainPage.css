@@ -278,6 +278,25 @@ h3 {
     width: 150px;
     height: 150px;
     border-radius: 50%;
+    background-size: cover;  /* 이미지가 컨테이너에 맞게 조절 */
+  background-position: center; /* 이미지를 중앙에 위치 */
+  }
+
+
+  .book1 {
+    background-image: url('@/image/1.jpeg');
+  }
+  
+  .book2 {
+    background-image: url('@/image/2.jpeg');
+  }
+  
+  .book3 {
+    background-image: url('@/image/3.jpeg');
+  }
+  
+  .book4 {
+    background-image: url('@/image/4.jpeg');
   }
 
   h3 {

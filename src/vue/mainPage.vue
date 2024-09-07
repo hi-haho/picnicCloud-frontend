@@ -27,13 +27,14 @@
         <h3>올 가을에는 마음을 살찌워 보아요.</h3>
         <div class="recommend">
           <div class="wrap">
-            <div class="book" aria-label="추천 도서 1"></div>
-            <div class="book" aria-label="추천 도서 2"></div>
-          </div>
-          <div class="wrap">
-            <div class="book" aria-label="추천 도서 3"></div>
-            <div class="book" aria-label="추천 도서 4"></div>
-          </div>
+  <div class="book book1" aria-label="추천 도서 1"></div>
+  <div class="book book2" aria-label="추천 도서 2"></div>
+</div>
+<div class="wrap">
+  <div class="book book3" aria-label="추천 도서 3"></div>
+  <div class="book book4" aria-label="추천 도서 4"></div>
+</div>
+
         </div>
       </article>
     </section>
