@@ -41,8 +41,8 @@ export default {
           color: pastelColors[index % pastelColors.length]  // 색상을 순환하여 지정
         }));
 
-        // 필터링된 이벤트로 캘린더 업데이트
-        calendarOptions.value.events = filteredEvents;
+        // 필터링된 이벤트로 캘린더 업데이트, 최대 3개의 이벤트만 표시
+        calendarOptions.value.events = filteredEvents.slice(0, 3);  // 이 부분에서 최대 3개의 이벤트로 제한
       } catch (error) {
         console.error('이벤트를 가져오는 중 오류 발생:', error);
       }
