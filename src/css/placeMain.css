@@ -84,13 +84,15 @@
 }
 
 /* 모바일 화면 (max-width 500px) */
-@media (max-width: 500px) {
+@media (max-width: 970px) {
 #PlaceMain{
         width: 100%;
         padding: 0 1rem; 
     }
 
-   
+  .image-group {
+      margin-bottom: 20px; /* 각 테마 그룹 간의 간격을 주기 위해 20px의 마진 추가 */
+  }   
 
 .images {
   flex-direction: column !important;/* 세로로 배치 */

@@ -3,7 +3,7 @@
     <div id="upper-nav">
       <div id="logo">
         <router-link to="/">
-          picnic_cloud
+          <img src="../image/logo.svg" alt="picniCloud">
         </router-link>
       </div>
       <nav>
@@ -11,8 +11,8 @@
           <li v-if="!isLoggedIn"><router-link to="/login">login</router-link></li>
           <li v-if="isLoggedIn">
             <router-link to="/myPage">MyPage</router-link>
-            <span @click="goToChat" class="notification-icon">🔔</span>
             <a @click="logout" href="#">logout</a> <!-- 로그아웃 링크 -->
+            <span @click="goToChat" class="notification-icon">🔔</span>
           </li>
         </ul>
       </nav>

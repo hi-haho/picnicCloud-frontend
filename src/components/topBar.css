@@ -1,6 +1,7 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
 /* 기본 스타일 설정 */
 body {
+  max-width: 1200px;
   margin: 0 auto; 
   width: 100%;
   box-sizing: border-box;
@@ -8,6 +9,7 @@ body {
 
 /* TopBar 기본 스타일 */
 header {
+  padding: 1.6rem; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -19,6 +21,7 @@ header {
   top: -10px;
   font-family: "Pretendard Variable", Pretendard;
   margin-top: 10px;
+  
 }
 
 /* 상단 네비게이션 */
@@ -28,14 +31,19 @@ header {
   height: 60%;
   justify-content: space-between;
   align-items: center;
-  background-color: #FFF9F9;
+  max-width: 1200px;
 }
 
 #logo {
   flex: 75%;
   text-align: left;
   font-size: 1.5rem;
-  font-weight: bold;
+  position: relative;
+  top: -20px;
+}
+#logo img {
+  width: 40%;
+  height: auto; /* 비율에 맞게 높이를 자동 조정 */
 }
 
 nav ul {
@@ -62,7 +70,6 @@ nav ul li {
 .bottom-nav {
   width: 100%;
   height: 40%;
-  background-color: #FFF9F9;
   box-sizing: border-box;
   border-top: 1px solid #87CEEB ;
 }
@@ -76,9 +83,9 @@ nav ul li {
 }
 
 .bottom-nav ul li {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-right: 100px;
-  font-size: 1rem;
+  font-size: 1.3rem;
 }
 
 .bottom-nav .router-link-active {
@@ -106,28 +113,38 @@ a {
 }
 
 /* 모바일 화면 (max-width 500px) */
-@media (max-width: 500px) {
+@media (max-width: 970px) {
   body, header {
     max-width: 100%;
   }
 
   #upper-nav {
-    flex-direction: column;
+    flex-direction: row; /* 가로 배치 유지 */
     height: auto;
-    align-items: flex-start;
+    align-items: center;
+    justify-content: space-between; /* 좌우로 공간 배분 */
+    width: 100%; /* 상단 네비게이션이 전체 너비를 차지하도록 설정 */
   }
 
   #logo {
-    margin-bottom: 10px;
+    flex: 1 1 auto; /* 로고에 가변적인 공간 할당 */
+    margin-bottom: 0; /* 여백 제거 */
     font-size: 1.2rem;
+    text-align: left;
+  }
+
+  #logo img {
+    width: 60%; /* 로고 이미지 크기를 줄여서 공간 확보 */
   }
 
   nav ul {
-    justify-content: center;
+    flex: 0 1 auto; /* 네비게이션이 남은 공간을 차지하지 않도록 설정 */
+    display: flex;
+    justify-content: flex-end; /* 로그인 링크가 오른쪽에 위치하도록 설정 */
   }
 
-  .bottom-nav ul li {
-    margin-right: 20px;
-    font-size: 0.8rem;
+  nav ul li {
+    margin-right: 10px; /* 링크 간의 간격 조정 */
+    font-size: 1rem; /* 글자 크기 조정 */
   }
 }

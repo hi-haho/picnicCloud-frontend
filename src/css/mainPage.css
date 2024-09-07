@@ -5,13 +5,21 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Pretendard Variable", Pretendard;
+  
 }
 
-html, body {
+html {
   height: 100%;
-  font-family: Arial, sans-serif;
   color: #333;
   background-color: #f8f8f8;
+  background-image: url('@/image/bacground 4.svg');
+  background-size: cover;
+  background-position: center;
+}
+
+body{
+  height: 100%;
+  background: none;
 }
 
 /* 공통 컨테이너 설정 */
@@ -22,14 +30,17 @@ html, body {
   max-width: 1200px; 
   margin: 0 auto; 
   width: 100%;
+  background: none;
+  
 }
 
 /* 메인 배너 */
 #mainBanner {
   height: auto;
-  padding: 0; 
-  background-color: grey;
+  padding: 0 4.7rem; /* body1과 동일한 padding 값 */
   width: 100%;
+  box-sizing: border-box; /* padding이 width에 영향을 미치지 않도록 설정 */
+  margin-top: 20px;
 }
 
 #mainBanner img {
@@ -45,6 +56,7 @@ html, body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 }
 
 h3 {
@@ -143,12 +155,17 @@ h3 {
   #contentArea,
   #footerBox {
       max-width: 100%;
+      background-color: #f8f8f8;
+    background-image: url('@/image/bacground 4.svg');
+    background-size: cover;
+    background-position: center;
   }
 
   #mainBanner {
     height: auto; /* 높이를 유지 */
     width: 100%; /* width를 100%로 유지하여 화면에 꽉 차게 함 */
     padding: 0; /* padding을 제거하여 여백 없이 꽉 차게 함 */
+    background-color: #f8f8f8;
   }
 
   .images {
@@ -196,13 +213,17 @@ h3 {
   }
 }
 
-/* 모바일 화면 (max-width 500px) */
-@media (max-width: 500px) {
+/* 모바일 화면  */
+@media (max-width: 970px) {
   #topBar,
   #contentArea,
   #footerBox {
       max-width: 100%;
       padding: 0 1rem; 
+      background-color: #f8f8f8;
+    background-image: url('@/image/bacground 4.svg');
+    background-size: cover;
+    background-position: center;
   }
 
     #mainBanner {
@@ -211,9 +232,6 @@ h3 {
       padding: 0 1rem;
     }
 
-  #mainBanner {
-      height: 200px; 
-  }
 
   .images {
     flex-direction: column; /* 세로로 배치 */
