@@ -13,7 +13,7 @@
       <button @click="searchbtn">검색</button>
     </section>
     <!-- 글쓰기 버튼 -->
-    <div>
+    <div v-if="isLoggedIn">
       <button @click="create">글쓰기</button>
     </div>
     <!-- 게시판 -->
@@ -59,7 +59,8 @@
 
 <script>
 import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router'; // useRouter를 임포트합니다
+import { useRouter } from 'vue-router';
+import apiClient from '@/api/api';
 
 export default {
   name: 'fleaMarketMain',
@@ -78,12 +79,19 @@ export default {
     const pageNumber = ref(0); // 현재 페이지 번호
     const size = ref(9); // 페이지당 아이템 수
 
+     // 로그인 상태 저장할 변수
+    const isLoggedIn = ref(false);
+
+    // JWT 토큰이 있는지 확인하여 로그인 상태 설정
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem('token');
+      isLoggedIn.value = !!token;  // 토큰이 있으면 로그인 상태 true
+    };
+
     const fetchCategories = async () => {
       try {
-        const response = await fetch("http://localhost:8080/categories");
-        if (!response.ok) throw new Error("Failed to fetch categories");
-        const data = await response.json();
-        categories.value = data;
+        const response = await apiClient.get('/categories');
+        categories.value = response.data;
       } catch (err) {
         console.error("Category Fetch error: ", err);
       }
@@ -91,13 +99,15 @@ export default {
 
     const fetchData = async () => {
       try {
-        const categoryParam = category.value === 0 ? "" : category.value;
-        const url = `http://localhost:8080/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(search.value)}`;
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Ajax error: " + response.statusText);
-        const data = await response.json();
-        content.value = data.content;
-        page.value = data.page;
+        const categoryParam = category.value === 0 ? 0 : category.value;
+        const url = `/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(search.value)}`;
+        
+        const response = await apiClient.get(url,{headers: {
+        
+      }});
+        
+        content.value = response.data.content;
+        page.value = response.data.page;
       } catch (err) {
         console.error("fleaMain Fetch error: ", err);
       }
@@ -113,11 +123,11 @@ export default {
     };
 
     const goToDetail = (no) => {
-      router.push({ name: 'FleaMarketDetail', query: { no } });
+      router.push({ name: 'FleaMarketDetail', params: { no } });
     };
 
     const create = () => {
-      window.location.href = `/fleamarketCreate.html`;
+      router.push('/fleaMarketCreate');
     };
 
     const searchbtn = () => {
@@ -133,11 +143,11 @@ export default {
       for (let i = start; i <= end; i++) {
         pages.push(i);
       }
-      console.log("Pagination Pages:", pages);
       return pages;
     });
 
     onMounted(() => {
+      checkLoginStatus();
       fetchCategories();
       fetchData();
     });
@@ -157,6 +167,7 @@ export default {
       goToDetail,
       create,
       searchbtn,
+      isLoggedIn,
       paginationPages
     };
   }

@@ -54,7 +54,7 @@ export default {
     });
 
     const goToChat = () => {
-      router.push('/chat');
+      router.push('/chatList');
     };
 
     // 로그인 함수: 로그인 후 isLoggedIn을 즉시 true로 설정
