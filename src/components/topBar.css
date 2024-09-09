@@ -21,7 +21,6 @@ header {
   top: -10px;
   font-family: "Pretendard Variable", Pretendard;
   margin-top: 10px;
-  font-weight: ;
 }
 
 /* 상단 네비게이션 */
@@ -46,6 +45,13 @@ header {
   height: auto; /* 비율에 맞게 높이를 자동 조정 */
 }
 
+.nav-item > * {
+  margin-right: 15px; /* 필요한 만큼의 여백을 설정하세요 */
+}
+
+.nav-item > *:last-child {
+  margin-right: 0; /* 마지막 요소에는 여백을 없앱니다 */
+}
 nav ul {
   list-style-type: none;
   display: flex;

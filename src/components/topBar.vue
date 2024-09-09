@@ -9,9 +9,11 @@
       <nav>
         <ul>
           <li v-if="!isLoggedIn"><router-link to="/login">login</router-link></li>
-          <li v-if="isLoggedIn">
+          <li v-if="isLoggedIn"  class="nav-item">
             <router-link to="/myPage">MyPage</router-link>
+            
             <a @click="logout" href="#">logout</a> <!-- 로그아웃 링크 -->
+
             <span @click="goToChat" class="notification-icon">🔔</span>
           </li>
         </ul>

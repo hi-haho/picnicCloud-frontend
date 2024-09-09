@@ -17,8 +17,15 @@ export default {
     const calendarOptions = ref({
       plugins: [dayGridPlugin],
       initialView: 'dayGridMonth',
+      showNonCurrentDates: false, // 현재 달에 속하지 않은 날짜 숨기기
+      fixedWeekCount: false, // 주 수를 유동적으로 표시
+      height: 'auto', // 높이를 유동적으로 조정
+      contentHeight: 'auto', // 내용 높이를 자동으로
       events: [],  // 초기에는 빈 배열
       datesSet: handleDatesSet,  // 달이 바뀔 때 이벤트 핸들링
+      headerToolbar: {
+        right: 'today prev,next' // 오른쪽에 이전/다음 버튼 배치
+      },
     });
 
     // 연한 파스텔톤 색상 리스트
@@ -27,6 +34,7 @@ export default {
     // 특정 월의 이벤트만 가져오는 함수
     const fetchEventsForMonth = async (start, end) => {
       try {
+        // 서버에서 이벤트 데이터를 가져옴
         const response = await axios.get('http://localhost:8080/api/edu-events');
         const data = response.data;
 
@@ -42,9 +50,18 @@ export default {
         }));
 
         // 필터링된 이벤트로 캘린더 업데이트, 최대 3개의 이벤트만 표시
-        calendarOptions.value.events = filteredEvents.slice(0, 3);  // 이 부분에서 최대 3개의 이벤트로 제한
+        calendarOptions.value.events = filteredEvents.slice(0, 3);
       } catch (error) {
         console.error('이벤트를 가져오는 중 오류 발생:', error);
+
+        // 에러 처리 강화: 응답 데이터 확인
+        if (error.response) {
+          console.error('서버 응답 에러:', error.response.data);
+        } else if (error.request) {
+          console.error('서버로부터 응답이 없습니다:', error.request);
+        } else {
+          console.error('요청 중 에러:', error.message);
+        }
       }
     };
 
