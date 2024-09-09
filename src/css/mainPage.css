@@ -105,14 +105,15 @@ h3 {
 }
 
 .thismonth {
-  flex: 75%;
-  border: 1px solid black;
-  height: 417px;
+  width: 100%; /* 부모 요소의 너비에 맞추기 */
+  height: auto; /* 높이를 자동으로 설정 */
+  overflow: hidden; /* 넘치는 콘텐츠를 숨김 */
+  margin: 0 auto; /* 가운데 정렬 */
 }
 
 .calendarinfo {
   flex: 25%;
-  height: 417px;
+  height: auto;
   border: 1px solid red;
 }
 
@@ -136,14 +137,31 @@ h3 {
 .book {
   flex: 1;
   width: 150px;
-  height: 150px;
+  height: 170px;
   border-radius: 50%;
-  background-color: aqua;
   transition: transform 0.3s ease;
+  background-size: cover;  /* 이미지가 컨테이너에 맞게 조절 */
+  background-position: top; /* 이미지를 중앙에 위치 */
 }
 
 .book:hover {
   transform: scale(1.2);
+}
+
+.book1 {
+  background-image: url('@/image/1.jpeg');
+}
+
+.book2 {
+  background-image: url('@/image/2.jpeg');
+}
+
+.book3 {
+  background-image: url('@/image/3.jpeg');
+}
+
+.book4 {
+  background-image: url('@/image/4.jpeg');
 }
 
 /* 반응형 디자인 */
@@ -279,6 +297,8 @@ h3 {
     height: 150px;
     border-radius: 50%;
   }
+
+
 
   h3 {
       font-size: 1rem; 
