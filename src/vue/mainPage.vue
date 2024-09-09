@@ -25,8 +25,30 @@
           <div class="thismonth" aria-label="이번 달 일정">
             <fullCalendar />
           </div>
-          <div class="calendarinfo" aria-label="상세 내용 1">{{ selectedEvent }}</div>
-          <div class="calendarinfo" aria-label="상세 내용 2">상세 내용 들어갈 자리</div>
+          <div class="calendarinfo" aria-label="상세 내용 1">
+            <p><strong>뮤지컬 보컬 스테이션</strong></p>
+            <br>
+            <img src="../image/edueventPic/eduevent4.jpg" alt="뮤지컬 보컬 스테이션">
+            <br><br>
+            <p><strong>기간 : </strong> 2024.09.23(월) ~ 2024.11.25(월) </p>
+            <p><strong>시간 : </strong> 11:30 ~ 13:00 (90 분) </p>
+            <p><strong>요일 : </strong> 매주 월요일 </p>
+            <p><strong>장소 : </strong> 서클홀</p>
+            <p><strong>수강료 : </strong> 350,000원</p>
+            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000060&menuNo=200560&searchYear=2024&listType=1&pageIndex=1"><p>[더보기]</p></a>
+          </div>
+          <div class="calendarinfo" aria-label="상세 내용 2">           
+            <p><strong>히든보이스</strong></p>
+            <br>
+            <img src="../image/edueventPic/eduevent5.jpg" alt="히든보이스">
+            <br><br>
+            <p><strong>기간 : </strong> 2024.09.24(화) ~ 2024.12.10(화)</p>
+            <p><strong>시간 : </strong> 12:05 ~ 13:00 (55 분)</p>
+            <p><strong>요일 : </strong> 매주 화요일</p>
+            <p><strong>장소 : </strong> 서클홀</p>
+            <p><strong>수강료 : </strong> 300,000원</p>
+            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000054&menuNo=200560&searchYear=2024&listType=1&pageIndex=1"><p>[더보기]</p></a>
+          </div>
         </div>
       </article>
       <article id="body3">

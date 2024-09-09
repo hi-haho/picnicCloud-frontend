@@ -1,12 +1,13 @@
 /* 검색 바 스타일 */
 .search-bar {
-    display: flex; /* 요소들을 수평으로 나란히 정렬 */
-    align-items: center; /* 세로 정렬을 중앙으로 맞춤 */
+    display: flex;
+    align-items: center; /* 요소들을 수직 중앙 정렬 */
+    justify-content: flex-start; /* 요소들을 수평으로 왼쪽 정렬 */
     gap: 8px; /* 레이블, 입력 필드, 버튼 간의 간격 설정 */
-    margin-bottom: 20px; /* 검색 섹션 아래에 20px의 여백 추가 */
-    background-color: #f4f4f4; /* 검색 바의 배경색을 밝은 회색으로 설정 */
-    padding: 10px; /* 검색 바 내부에 10px의 여백 추가 */
-    border-radius: 5px; /* 검색 바의 모서리를 둥글게 처리 */
+    margin-bottom: 20px;
+    background-color: #f4f4f4;
+    padding: 10px;
+    border-radius: 5px;
 }
 
 .search-bar label {
@@ -34,6 +35,8 @@
     cursor: pointer; /* 버튼에 마우스를 올릴 때 커서를 포인터로 변경 */
     font-size: 14px; /* 버튼 텍스트의 크기를 14px로 설정 */
     transition: background-color 0.3s ease; /* 배경색 변화에 0.3초의 전환 효과 추가 */
+    position: relative;
+    top: -5px;
 }
 
 .search-bar button:hover {
@@ -85,3 +88,26 @@
 .place-info p:first-of-type {
     margin-top: 8px; /* 첫 번째 텍스트의 위쪽에 추가적인 8px의 여백 설정 */
 }
+
+.pagination {
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+    justify-content: center; /* 가로 가운데 정렬 */
+  }
+  
+  .pagination a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+    margin: 0 10px; /* 좌우 간격 추가 */
+    font-weight: bold;
+  }
+  
+  .pagination a.disabled {
+    color: #ccc;
+    pointer-events: none; /* 클릭 방지 */
+  }
+  
+  .pagination span {
+    margin: 0 10px; /* 좌우 간격 추가 */
+  }
