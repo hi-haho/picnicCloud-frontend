@@ -22,13 +22,14 @@
         <button type="submit" class="login-button">로그인</button>
       </form>
       <div class="links">
-          <router-link to="/signUp">회원가입</router-link>
+        <router-link to="/signUp">회원가입</router-link>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import apiClient from '@/api/api'; // apiClient를 가져옵니다.
 
 export default {
@@ -40,29 +41,26 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['login']),
     async handleSubmit() {
       try {
-        // 로그인 요청 데이터 구성
         const loginData = {
           id: this.username,
           pw: this.password,
         };
 
-        // 백엔드로 POST 요청
-        const response = await apiClient.post('/auth/login', loginData); // apiClient 사용
+        const response = await apiClient.post('/auth/login', loginData);
 
-        // 로그인 성공 시 토큰 저장 (예: 로컬 스토리지)
         if (response.status === 200) {
           const token = response.data;
-          localStorage.setItem('token', token); // JWT 토큰 저장
+          localStorage.setItem('token', token);
+          this.login(); // Vuex action 호출
           alert('로그인 성공');
-          // 로그인 후 리다이렉트 (예: 메인 페이지로)
           this.$router.push('/');
         }
       } catch (error) {
-        // 에러 처리
         if (error.response && error.response.status === 403) {
-          alert(error.response.data); // 비활성화된 계정 메시지
+          alert(error.response.data);
         } else {
           alert('로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.');
         }
