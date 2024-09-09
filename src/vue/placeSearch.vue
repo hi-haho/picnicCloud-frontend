@@ -17,7 +17,8 @@
       <p>검색결과 : {{ places.length }}개</p>
       <div v-for="(p, index) in places" :key="index" class="place-item">
         <div class="place-image">
-          <img :src="getImageUrl(p.image)" alt="placeImage" />
+          <!-- 각 정보마다 반복적으로 5장의 이미지 사용 -->
+          <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
         </div>
         <div class="place-info">
           <h3>
@@ -34,12 +35,21 @@
     <div v-else>
       <p>결과가 없어요</p>
     </div>
-
     <!-- 페이징 버튼 추가 -->
     <div v-if="totalPages > 1" class="pagination">
-      <button @click="changePage(currentPage - 1)" :disabled="currentPage === 0">이전</button>
+      <a
+        href="javascript:void(0)"
+        @click="changePage(currentPage - 1)"
+        :class="{ disabled: currentPage === 0 }"
+        >&lt;</a
+      >
       <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
-      <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages - 1">다음</button>
+      <a
+        href="javascript:void(0)"
+        @click="changePage(currentPage + 1)"
+        :class="{ disabled: currentPage === totalPages - 1 }"
+        >&gt;</a
+      >
     </div>
   </div>
 </template>
@@ -54,8 +64,8 @@ export default {
     return {
       places: [],
       keyword: "",
-      currentPage: 0,  // 현재 페이지 번호
-      totalPages: 1,   // 총 페이지 수
+      currentPage: 0, // 현재 페이지 번호
+      totalPages: 1, // 총 페이지 수
     };
   },
   methods: {
@@ -73,8 +83,8 @@ export default {
         .get(query)
         .then((res) => {
           this.places = res.data.content;
-          this.totalPages = res.data.totalPages;
-          this.currentPage = res.data.number;
+          this.totalPages = res.data.page.totalPages; // 응답에서 페이지 정보 추출
+          this.currentPage = res.data.page.number; // 현재 페이지 정보 추출
         })
         .catch((err) => {
           console.error("장소출력 오류: ", err);
@@ -88,7 +98,7 @@ export default {
     },
 
     searchFunc() {
-      this.currentPage = 0;  // 검색 시 첫 페이지로 초기화
+      this.currentPage = 0; // 검색 시 첫 페이지로 초기화
       this.axiosData(this.keyword, this.currentPage);
 
       const hash = window.location.hash;
@@ -107,8 +117,10 @@ export default {
       window.history.pushState({ path: newUrl }, "", newUrl);
     },
 
-    getImageUrl(imagePath) {
-      return `http://localhost:8080${imagePath}`;
+    getImageUrl(placeType, index) {
+      // 5장의 이미지를 반복적으로 사용
+      const imageIndex = (index % 5) + 1; // 1부터 5까지 순환
+      return require(`../image/placePic/${placeType}_${imageIndex}.jpg`);
     },
   },
   mounted() {

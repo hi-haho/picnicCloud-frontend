@@ -1,5 +1,8 @@
 <template>
   <div id="PlaceMain">
+    <div v-if="loading">
+      <p>날씨 정보를 받아오는 중 🏃‍♀️</p>
+    </div>
     <div v-if="fiveDayWeather.length" class="weather-container">
       <!-- 하루치의 날씨씩 반복 렌더링 -->
       <div
@@ -19,6 +22,13 @@
         <!-- 하루 최저, 최고온도 -->
       </div>
     </div>
+    <!-- 날씨 데이터가 없을 때 메시지 표시 -->
+
+    <div v-else>
+
+<p>날씨 데이터를 불러오지 못했습니다.</p>
+
+</div>
     <br /><br />
     <!--이미지 클릭시 카데고리값 쿼리문자열로 전달. 페이지 전환. -->
       <!--실내 테마-->
@@ -80,6 +90,7 @@ export default {
     return {
       //초기화
       fiveDayWeather: [], // 5일간의 날씨 정보를 저장할 배열
+      loading: true, // 로딩 상태를 위한 변수 추가
     };
   },
   methods: {
@@ -162,9 +173,11 @@ export default {
                 min: Math.min(...day.temps),
               };
             });
+            this.loading = false; // 데이터 로드 완료 후 로딩 상태 false로 변경
         })
         .catch((err) => {
           console.log("날씨 api 오류:", err);
+          this.loading = false; // 오류 발생 시에도 로딩 상태 false로 변경
         });
     },
   },
