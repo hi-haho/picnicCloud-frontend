@@ -40,15 +40,16 @@
           id="confirmPassword"
         /><br /><br />
         <button @click="changePassword">변경</button>
-        <button @click="showPasswordChangeModal = false">취소</button>
+        <button @click="closePasswordChangeModal">취소</button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import apiClient from "@/api/api";
-import "@/css/myPage.css"; // 분리된 CSS 파일 불러오기
+import "@/css/myPage.css";
 
 export default {
   data() {
@@ -59,97 +60,90 @@ export default {
         address: "",
         childAge: "",
       },
-      showPasswordChangeModal: false, // 비밀번호 변경 모달 표시 여부
+      showPasswordChangeModal: false,
       currentPassword: "",
       newPassword: "",
       confirmPassword: "",
     };
   },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
   methods: {
-    fetchUserInfo() {
-      const userNo = 2; // 임시로 userNo를 2로 설정. 이 부분에 jwt 토큰을 이용해서 Vuex에 저장했던 no값을 넣어줘야 하는 코드 추가 필요!
+    ...mapActions(["logout"]),
 
-      apiClient
-        .get(`/mypage/myinfo`, {
-          params: {
-            no: userNo,
-          },
-        })
-        .then((response) => {
-          this.user = response.data; // 가져온 사용자 정보를 `user`에 저장
-        })
-        .catch((error) => {
-          console.error("Error fetching user info:", error);
-        });
-    },
-    updateUserInfo() {
-      const userNo = 2; // 임시로 userNo를 2로 설정
+    async updateUserInfo() {
+      try {
+        const userDetailDto = {
+          email: this.user.email,
+          address: this.user.address,
+          childAge: this.user.childAge,
+        };
 
-      apiClient
-        .put(
-          `/mypage/updateinfo`,
-          {
-            userDto: {
-              name: this.user.name, // 이름을 업데이트할 경우
-            },
-            userDetailDto: {
-              email: this.user.email,
-              address: this.user.address,
-              childAge: this.user.childAge,
-            },
-          },
-          {
-            params: { no: userNo }, // 사용자 ID 전달
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          alert("사용자 정보가 성공적으로 수정되었습니다.");
-        })
-        .catch((error) => {
-          alert("사용자 정보 수정 중 오류가 발생했습니다.");
-          console.error(error);
+        const userDto = {}; // 필요한 경우 userDto를 추가로 설정합니다.
+
+        const response = await apiClient.put("/mypage/updateinfo", {
+          userDto,
+          userDetailDto,
         });
-    },
-    changePassword() {
-      if (this.newPassword !== this.confirmPassword) {
-        alert("새 비밀번호가 일치하지 않습니다.");
-        return;
+
+        if (response.status === 200) {
+          alert("정보가 성공적으로 수정되었습니다.");
+        } else {
+          alert("정보 수정에 실패했습니다.");
+        }
+      } catch (error) {
+        console.error("정보 수정 오류:", error);
+        alert("정보 수정에 실패했습니다.");
       }
-
-      const userNo = 5; // 임시로 userNo를 5로 설정
-
-      apiClient
-        .post(
-          "/mypage/change-password",
-          {
-            currentPassword: this.currentPassword,
-            newPassword: this.newPassword,
-          },
-          {
-            params: { no: userNo }, // 사용자 ID를 명시적으로 전달
-          }
-        )
-        .then((response) => {
-          console.log(response);
-          alert("비밀번호가 성공적으로 변경되었습니다.");
-          this.showPasswordChangeModal = false;
-        })
-        .catch((error) => {
-          alert("비밀번호 변경 중 오류가 발생했습니다.");
-          console.error(error);
-        });
     },
+
     openPasswordChangeModal() {
-      // 모달을 열 때 입력 필드를 초기화
+      this.showPasswordChangeModal = true;
+    },
+    closePasswordChangeModal() {
+      this.showPasswordChangeModal = false;
+      // 입력 필드 값 초기화
       this.currentPassword = "";
       this.newPassword = "";
       this.confirmPassword = "";
-      this.showPasswordChangeModal = true; // 모달을 열기
+    },
+
+    async changePassword() {
+      try {
+        const response = await apiClient.post("/mypage/change-password", {
+          currentPassword: this.currentPassword,
+          newPassword: this.newPassword,
+          confirmPassword: this.confirmPassword,
+        });
+
+        if (response.status === 200) {
+          alert("비밀번호가 성공적으로 변경되었습니다.");
+          this.closePasswordChangeModal(); // 모달 닫기 및 필드 초기화
+        } else {
+          alert("비밀번호 변경에 실패했습니다.");
+        }
+      } catch (error) {
+        // 서버에서 반환한 메시지를 alert로 표시
+        const errorMessage =
+          error.response?.data || "비밀번호 변경에 실패했습니다.";
+        alert(errorMessage);
+      }
     },
   },
+  async created() {
+    try {
+      const response = await apiClient.get("/mypage/myinfo");
+      this.user = response.data; // 서버에서 가져온 사용자 정보를 Vue 컴포넌트의 데이터로 설정합니다.
+    } catch (error) {
+      console.error("유저 정보 가져오기 오류:", error);
+      alert("유저 정보를 가져오는 데 실패했습니다.");
+    }
+  },
   mounted() {
-    this.fetchUserInfo(); // 페이지 로드 시 사용자 정보 가져오기
+    
   },
 };
 </script>
+
+<style src="../css/myPage.css"></style>

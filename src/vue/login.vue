@@ -30,7 +30,6 @@
 
 <script>
 import { mapActions } from 'vuex';
-import apiClient from '@/api/api'; // apiClient를 가져옵니다.
 
 export default {
   name: "LogIn",
@@ -49,22 +48,13 @@ export default {
           pw: this.password,
         };
 
-        const response = await apiClient.post('/auth/login', loginData);
+        await this.login(loginData); // Vuex 액션 호출
 
-        if (response.status === 200) {
-          const token = response.data;
-          localStorage.setItem('token', token);
-          this.login(); // Vuex action 호출
-          alert('로그인 성공');
-          this.$router.push('/');
-        }
+        // 로그인 후 페이지 리다이렉트
+        this.$router.push('/');
       } catch (error) {
-        if (error.response && error.response.status === 403) {
-          alert(error.response.data);
-        } else {
-          alert('로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.');
-        }
-        console.error(error);
+        console.error('로그인 실패:', error);
+        alert('로그인 실패: 아이디 또는 비밀번호가 잘못되었습니다.');
       }
     },
   },

@@ -1,28 +1,39 @@
 import { createStore } from 'vuex';
+import apiClient from '@/api/api'; // apiClient를 가져옵니다.
 
 const store = createStore({
   state() {
     return {
-      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true', // 초기 상태를 로컬 스토리지에서 불러옴
+      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+      token: localStorage.getItem('token') || '',
     };
   },
   mutations: {
-    setLoggedIn(state, status) {
+    setLoggedIn(state, { status, token }) {
       state.isLoggedIn = status;
-      localStorage.setItem('isLoggedIn', status); // 상태를 로컬 스토리지에 저장
+      state.token = token || '';
+      localStorage.setItem('isLoggedIn', status);
+      localStorage.setItem('token', token || '');
     },
   },
   actions: {
-    login({ commit }) {
-      commit('setLoggedIn', true); // 로그인 상태를 true로 설정하고 로컬 스토리지에 저장
+    async login({ commit }, loginData) {
+      try {
+        const response = await apiClient.post('/auth/login', loginData);
+        const token = response.data.token; // 서버 응답이 { token: "your-token" }인 경우
+        commit('setLoggedIn', { status: true, token }); // 상태와 토큰을 저장합니다
+      } catch (error) {
+        console.error('로그인 오류:', error);
+      }
     },
     logout({ commit }) {
-      commit('setLoggedIn', false); // 로그아웃 상태를 false로 설정하고 로컬 스토리지에서 삭제
-      localStorage.removeItem('token'); // 로그인 시 저장된 토큰도 삭제
+      commit('setLoggedIn', { status: false, token: '' });
+      localStorage.removeItem('token');
     },
+    
   },
   getters: {
-    isLoggedIn: (state) => state.isLoggedIn, // 로그인 상태를 반환
+    isLoggedIn: (state) => state.isLoggedIn,
   },
 });
 
