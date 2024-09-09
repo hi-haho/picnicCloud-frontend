@@ -88,10 +88,10 @@ export default {
         try {
           // WebSocket으로 메시지 전송
           this.stompClient.send(`/app/chat.send/${this.chatRoomId}`, {}, JSON.stringify(message));
-          console.log("메시지 전송:", message);
+          console.log("메시지 전송 === :", message);
 
           // HTTP 요청으로 서버에 메시지 저장 (WebSocket 메시지 수신 후 화면에 출력되므로 push 생략)
-          apiClient.post(`/message/send`, message,
+          await apiClient.post(`/message/send`, message,
             {
               headers: {
                 'Authorization': `Bearer ${token}`, // JWT 토큰을 헤더에 추가
@@ -106,8 +106,9 @@ export default {
     },
 
     // 메시지 가져오기
-    async fetchMessages() {
+    async axiosMessages() {
         const token = localStorage.getItem('token');
+        console.log("*** : " + token);
         if (!token) {
             console.error("토큰이 없습니다.");
             return;
@@ -162,7 +163,7 @@ export default {
   // 컴포넌트가 마운트되면 WebSocket 연결 및 메시지, 게시판 정보 가져오기
   mounted() {
     this.connect();
-    this.fetchMessages();
+    this.axiosMessages();
   },
 };
 </script>
