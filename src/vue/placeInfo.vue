@@ -4,11 +4,16 @@
       <h1>{{ place.name }}</h1>
       <div class="content">
         <div class="place-image">
-          <img :src="getImageUrl(place.image)" alt="placeImage" />
+           <!-- 이미지가 있을 때는 해당 이미지 사용, 없으면 placeType에 따라 기본 이미지 사용 -->
+          <img :src="getImageUrl(place.image)" alt="placeImage" v-if="place.image" />
+          <img v-else :src="getDefaultImageUrl(place.placeType)" alt="defaultImage" />
+          <!--<img v-else src="../image/placePic/아동서점_1.jpg" alt="defaultImage" />-->
+          <!-- <img v-else :src="require(`@/assets/${getDefaultImageFileName(place.placeType)}`)" alt="defaultImage" /> -->
         </div>
         <div class="place-details">
-          <p>{{ place.address }}</p>
-          <p>📞{{ place.tel }}</p>
+          <p>{{place.placeType}}</p>
+          <p>{{ place.address ? `주소 : ${place.address}` : '주소 정보가 없습니다'}}</p>
+          <p>📞{{ place.tel ? `전화번호: ${place.tel}` : '전화번호 정보가 없습니다' }}</p>
           <p>⭐{{ place.point.toFixed(1) }}</p>
           <p>🖤🤍{{ place.like }} {{ place.likeCnt }}</p>
           <!-- 좋아요 토글처리 -->
@@ -40,9 +45,10 @@
           class="tab-pane"
           :class="{ active: activeTab === 'tab1' }"
         >
-          <p>{{ place.description }}</p>
-          <p>{{ place.entranceFee }}</p>
-          <p>{{ place.operationTime }}</p>
+        
+          <p>{{ place.description ? `장소 설명 : ${place.description}` : '장소 정보가 없습니다'}}</p>
+          <p>{{ place.entranceFee ? `입장료 : ${place.entranceFee}` : '입장료가 따로 없습니다'}}</p>
+          <p>{{ place.operationTime ? `운영시간 : ${place.operationTime}` : '운영시간 정보가 없습니다'}}</p>
         </div>
         <div
           id="tab2"
@@ -75,21 +81,40 @@ export default {
   methods: {
     showInfo() {
       //현재 페이지의 URL에서 쿼리스트링 부분을 가져옴(동적 데이터로딩)
-      const urlParams = new URLSearchParams(window.location.search); //파싱할수있는객체생성. //?pNo=3
-      const no = urlParams.get("no"); //객체에서 매개변수 값 추출 //3
+      // Vue Router를 사용할 경우, this.$route.query를 통해 쿼리 파라미터를 직접 읽을 수 있습니다.
+      const no = this.$route.query.placeNo; // 쿼리 파라미터에서 placeNo 추출
+      console.log("Extracted no: ", no); // no가 올바르게 추출되었는지 확인
 
+      // placeNo가 존재하는 경우에만 API 요청을 보냅니다.
+      if (no) {
       axios
         .get(`http://localhost:8080/places/${no}`)
         .then((res) => {
+          console.log("Server response:", res.data); // 서버 응답 확인
           this.place = res.data;
         })
         .catch((err) => {
           console.log("장소 정보: ", err);
         });
+      } else {
+        console.log("No place number provided in the URL."); // placeNo가 없는 경우의 처리
+      }
     },
     getImageUrl(imagePath) {
       //서버의 url과 이미지 경로를 조합하여  전체 URL을 만듦.
-      return `http://localhost:8080/${imagePath}`;
+      return imagePath ? `http://localhost:8080/${imagePath}` : '';
+    },
+    getDefaultImageUrl(placeType) {
+      // 장소 유형에 따라 다른 기본 이미지 URL 설정
+      const defaultImageUrls = {
+        restaurant: 'http://localhost:8080/images/default-restaurant.jpg',
+        cafe: 'http://localhost:8080/images/default-cafe.jpg',
+        tourist: 'http://localhost:8080/images/default-tourist.jpg',
+        // 추가 기본 이미지 유형 설정
+      };
+      
+      // placeType에 따른 기본 이미지 URL 반환
+      return defaultImageUrls[placeType] || 'http://localhost:8080/images/default.jpg';
     },
   },
   mounted() {

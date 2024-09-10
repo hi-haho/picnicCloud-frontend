@@ -16,6 +16,7 @@ import myLikes from './vue/myLikes.vue';
 import bookMain from './vue/bookMain.vue';
 import chatRoom from './vue/chatRoom.vue';
 import chatList from './vue/chatList.vue';
+import placeInfo from './vue/placeInfo.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -45,7 +46,8 @@ const routes = [
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId)
     })
-  }
+  },
+  { path: '/placeInfo', component: placeInfo, meta: { requiresAuth: true } },
 ];
 
 const router = createRouter({
