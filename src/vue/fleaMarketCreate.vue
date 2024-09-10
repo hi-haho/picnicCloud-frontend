@@ -53,11 +53,13 @@
 
 <script>
 import { onMounted, ref } from 'vue';
+import apiClient from '@/api/api';
+import jwt_decode from 'jwt-decode'; // Import jwt_decode
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'FleaMarketCreate',
   setup() {
-    const userid = ref('user1');
     const title = ref('');
     const price = ref('');
     const contents = ref('');
@@ -65,18 +67,37 @@ export default {
     const category = ref(0);
     const mfilePath = ref(null);
     const errors = ref({});
+    const userid = ref('');
+    const router = useRouter();
 
-    const fetchCategories = async () => {
+    // Function to get user ID from the JWT token
+    const getUserIdFromToken = () => {
+      const token = localStorage.getItem('token');
+      console.log("*********"+token);
+      if (!token) return null;
       try {
-        const response = await fetch('http://localhost:8080/categories');
-        if (!response.ok) throw new Error('Failed to fetch categories');
-        const data = await response.json();
-        categories.value = data.map(cat => ({
-          no: Number(cat.no),  // Ensure no is a number
+        const decodedToken = jwt_decode(token);
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp < currentTime) {
+          localStorage.removeItem('token');
+          return null;
+        }
+        return decodedToken.sub;
+      } catch (error) {
+        console.error('Error decoding token:', error);
+        return null;
+      }
+    };
+
+    const Axioscategories = async () => {
+      try {
+        const response = await apiClient.get('/categories');
+        categories.value = response.data.map(cat => ({
+          no: Number(cat.no),
           categoryName: cat.categoryName
         }));
       } catch (err) {
-        console.error('Category Fetch error: ', err);
+        console.error('Category Axios error: ', err);
       }
     };
 
@@ -91,32 +112,36 @@ export default {
     };
 
     const fleamarketInput = async () => {
+      const token = localStorage.getItem('token');
+      // console.log("*********"+token);
       if (!validateForm()) return;
 
       const formData = new FormData();
       const dto = {
-        userid: userid.value,
         title: title.value,
         price: price.value,
         contents: contents.value,
         category: category.value,
+        userId: userid.value
       };
 
       formData.append('dto', JSON.stringify(dto));
 
       if (mfilePath.value) {
-        formData.append('mfile', mfilePath.value);
+        formData.append('file', mfilePath.value);
       }
 
       try {
-        const response = await fetch('http://localhost:8080/fleaMarket', {
-          method: 'POST',
-          body: formData,
+        const response = await apiClient.post('/fleaMarket', formData, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          },
         });
-        const result = await response.text();
-        console.log(result);
+
+        console.log(response.data);
         alert('성공');
-        window.location.href = 'fleamarket.html';
+        router.push('/fleaMarketMain');
       } catch (err) {
         console.error('Error:', err);
       }
@@ -127,11 +152,12 @@ export default {
     };
 
     const back = () => {
-      window.location.href = 'fleamarket.html';
+      router.push('/fleaMarketMain');
     };
 
     onMounted(() => {
-      fetchCategories();
+      userid.value = getUserIdFromToken();
+      Axioscategories();
     });
 
     return {
@@ -145,6 +171,7 @@ export default {
       fleamarketInput,
       handleFileUpload,
       back,
+      userid,
     };
   },
 };

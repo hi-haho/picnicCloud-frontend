@@ -110,6 +110,11 @@ export default {
     },
 
     async changePassword() {
+      if (this.newPassword !== this.confirmPassword) {
+        alert("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
+        return;
+      }
+
       try {
         const response = await apiClient.post("/mypage/change-password", {
           currentPassword: this.currentPassword,
@@ -124,7 +129,6 @@ export default {
           alert("비밀번호 변경에 실패했습니다.");
         }
       } catch (error) {
-        // 서버에서 반환한 메시지를 alert로 표시
         const errorMessage =
           error.response?.data || "비밀번호 변경에 실패했습니다.";
         alert(errorMessage);
@@ -140,9 +144,7 @@ export default {
       alert("유저 정보를 가져오는 데 실패했습니다.");
     }
   },
-  mounted() {
-    
-  },
+  mounted() {},
 };
 </script>
 
