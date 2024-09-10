@@ -63,17 +63,17 @@ export default {
   data() {
     return {
       images: [
-        { src: "1.jpeg", alt: "이미지 1", title: "책 제목 1" },
-        { src: "2.jpeg", alt: "이미지 2", title: "책 제목 2" },
-        { src: "3.jpeg", alt: "이미지 1", title: "책 제목 3" },
-        { src: "4.jpeg", alt: "이미지 2", title: "책 제목 4" },
-        { src: "5.jpeg", alt: "이미지 1", title: "책 제목 5" },
-        { src: "6.jpeg", alt: "이미지 2", title: "책 제목 6" },
-        { src: "7.jpeg", alt: "이미지 1", title: "책 제목 7" },
-        { src: "8.jpeg", alt: "이미지 2", title: "책 제목 8" },
+        { src: '@/image/books/6.jpg', alt: "이미지 1", title: "책 제목 1" },
+        { src: '@/image/books/7.jpg', alt: "이미지 2", title: "책 제목 2" },
+        { src: '@/image/books/8.jpg', alt: "이미지 3", title: "책 제목 3" },
+        { src: '@/image/books/9.jpg', alt: "이미지 4", title: "책 제목 4" },
+        { src:'@/image/books/10.jpg', alt: "이미지 5", title: "책 제목 5" },
+        { src: '@/image/books/11.jpg', alt: "이미지 6", title: "책 제목 6" },
+        { src: '@/image/books/12.jpg', alt: "이미지 7", title: "책 제목 7" },
+        { src: '@/image/books/13.jpg', alt: "이미지 8", title: "책 제목 8" },
       ],
       books: [
-        { src: "9.jpeg", alt: "이미지 1", title: "책 제목 1", author: "작가1" },
+        { src: '@/image/books/14.jpg', alt: "이미지 1", title: "책 제목 1", author: "작가1" },
         {
           src: "10.jpeg",
           alt: "이미지 2",
@@ -94,7 +94,7 @@ export default {
         },
       ],
       smallImages: [
-        { src: "13.jpeg", alt: "작은 이미지 1", title: "추천 책 1" },
+        { src: '@/image/books/1.jpg', alt: "작은 이미지 1", title: "추천 책 1" },
         { src: "14.jpeg", alt: "작은 이미지 2", title: "추천 책 2" },
         { src: "15.jpeg", alt: "작은 이미지 3", title: "추천 책 3" },
       ],

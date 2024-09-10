@@ -8,10 +8,10 @@
       </div>
       <nav>
         <ul>
-          <li v-if="!isLoggedIn"><router-link to="/login">login</router-link></li>
+          <li v-if="!isLoggedIn"><router-link to="/login">로그인</router-link></li>
           <li v-if="isLoggedIn" class="nav-item">
-            <router-link to="/myPage">MyPage</router-link>
-            <a @click="logout" href="#">logout</a> <!-- 로그아웃 링크 -->
+            <router-link to="/myPage">마이페이지</router-link>
+            <a @click="logout" href="#">로그아웃</a> <!-- 로그아웃 링크 -->
             <span @click="goToChat" class="notification-icon">🔔</span>
           </li>
         </ul>
@@ -19,14 +19,35 @@
     </div>
     <nav class="bottom-nav">
       <ul>
-        <li><router-link to="/place">테마 추천</router-link></li>
-        <li><router-link to="/fleaMarketMain">중고거래</router-link></li>
-        <li><router-link to="/map">지도</router-link></li>
-        <li><router-link to="/bookMain">도서</router-link></li>
+        <li>
+          <router-link to="/place">
+            <img src="../image/navIcon/iconPlace.png" alt="테마별 장소"><br>
+            <span class="nav-text">테마별 장소</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/fleaMarketMain">
+            <img src="../image/navIcon/iconMarket.png" alt="피클마켓"><br>
+            <span class="nav-text">피클마켓</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/map">
+            <img src="../image/navIcon/iconMap.png" alt="키즈존"><br>
+            <span class="nav-text">키즈존</span>
+          </router-link>
+        </li>
+        <li>
+          <router-link to="/bookMain">
+            <img src="../image/navIcon/iconBook.png" alt="어린이도서"><br>
+            <span class="nav-text">어린이도서</span>
+          </router-link>
+        </li>
       </ul>
     </nav>
   </header>
 </template>
+
 
 <script>
 import { computed } from 'vue';
