@@ -110,8 +110,7 @@ export default {
 
       try {
           const response = await apiClient.post('/chat/create', {
-              fleaMarketNo: no,
-              buyerId: userId
+              fleaMarketNo: no
           }, {
               headers: {
                   'Authorization': `Bearer ${token}`,
@@ -120,18 +119,18 @@ export default {
           });
 
           const chatRoomId = response.data.no;
-          const sellerIdFromResponse = response.data.userId;
+          const sellerIdFromResponse = response.data.sellerId;
           if (chatRoomId) {
-            router.push({
-                name: 'chatRoom',
-                params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse }
-            });
+              router.push({
+                  name: 'chatRoom',
+                  params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse }
+              });
           } else {
               console.error('채팅방 ID를 가져오지 못했습니다.');
           }
-        } catch (error) {
-            console.error('채팅방 생성 실패:', error);
-        }
+      } catch (error) {
+          console.error('채팅방 생성 실패:', error);
+      }
     };
 
     const fleaUpdate = () => {

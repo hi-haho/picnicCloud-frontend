@@ -41,7 +41,7 @@ const routes = [
       receiverId: route.params.receiverId
     })
   },
-  { path: '/chatRoom/:chatRoomId', name: 'chatRoom', component: chatRoom, 
+  { path: '/listToChatRoom/:chatRoomId', name: 'listToChatRoom', component: chatRoom, 
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId)
     })

@@ -24,6 +24,7 @@ const chatRooms = ref([]);
 
 const getChatRoomList = async () => {
   const token = localStorage.getItem('token');
+  console.log("------"+token);
   if (!token) {
     console.error('토큰이 없습니다.');
     return;
@@ -57,7 +58,7 @@ const getChatRoomList = async () => {
 
 const enterChatRoom = (chatRoomNo) => {
   // 채팅방으로 이동
-  router.push(`/chatRoom/${chatRoomNo}`);
+  router.push(`/listToChatRoom/${chatRoomNo}`);
 };
 
 const formatLastMessageTime = (lastMessageTime) => {
