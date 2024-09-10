@@ -94,11 +94,12 @@
     display: flex;
     align-items: center; /* 수직 가운데 정렬 */
     justify-content: center; /* 가로 가운데 정렬 */
+    margin-bottom: 20px;
   }
   
   .pagination a {
     text-decoration: none;
-    color: #007bff;
+    color: #87ceeb;
     cursor: pointer;
     margin: 0 10px; /* 좌우 간격 추가 */
     font-weight: bold;

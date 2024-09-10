@@ -15,9 +15,22 @@
             <p>가격: {{ post.price }}원</p>
           </li>
         </ul>
-        <!-- 페이지네이션 -->
-        <button @click="fetchUserPosts(currentPage - 1)" :disabled="currentPage === 0">이전</button>
-        <button @click="fetchUserPosts(currentPage + 1)" :disabled="currentPage >= totalPages - 1">다음</button>
+        <!-- 페이징 버튼 추가 -->
+    <div v-if="totalPages > 1" class="pagination">
+      <a
+        href="javascript:void(0)"
+        @click="changePage(currentPage - 1)"
+        :class="{ disabled: currentPage === 0 }"
+        >&lt;</a
+      >
+      <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+      <a
+        href="javascript:void(0)"
+        @click="changePage(currentPage + 1)"
+        :class="{ disabled: currentPage === totalPages - 1 }"
+        >&gt;</a
+      >
+    </div>
       </div>
       <div v-else>
         <p>게시글이 없습니다.</p>
