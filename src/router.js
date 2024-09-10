@@ -6,6 +6,7 @@ import placeSearch from './vue/placeSearch.vue';
 import fleaMarketMain from './vue/fleaMarketMain.vue';
 import fleaMarketDetail from './vue/fleaMarketDetail.vue';
 import fleaMarketCreate from './vue/fleaMarketCreate.vue';
+import fleaMarketUpdate from './vue/fleaMarketUpdate.vue';
 import fleaMarketReport from './vue/fleaMarketReport.vue';
 import login from './vue/login.vue';
 import signUp from './vue/signUp.vue';
@@ -24,6 +25,7 @@ const routes = [
   { path: '/fleaMarketMain',component: fleaMarketMain},
   { path: '/fleaMarketReport', component: fleaMarketReport, meta: { requiresAuth: true } },
   { path: '/fleaMarketCreate', component: fleaMarketCreate, meta: { requiresAuth: true } },
+  { path: '/fleaMarketUpdate/:no', component: fleaMarketUpdate, meta: { requiresAuth: true } },
   { path: '/fleaMarketDetail/:no', name: 'FleaMarketDetail', component: fleaMarketDetail },
   { path: '/login', component: login },
   { path: '/signUp', component: signUp },
