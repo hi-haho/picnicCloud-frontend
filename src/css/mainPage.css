@@ -40,7 +40,6 @@ body{
   padding: 0 4.7rem; /* body1과 동일한 padding 값 */
   width: 100%;
   box-sizing: border-box; /* padding이 width에 영향을 미치지 않도록 설정 */
-  margin-top: 20px;
 }
 
 #mainBanner img {
@@ -70,7 +69,6 @@ h3 {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1.5rem;
   width: 100%;
 }
 
@@ -159,19 +157,19 @@ h3 {
 }
 
 .book1 {
-  background-image: url('@/image/1.jpeg');
+  background-image: url('@/image/books/5.jpg');
 }
 
 .book2 {
-  background-image: url('@/image/2.jpeg');
+  background-image: url('@/image/books/2.jpg');
 }
 
 .book3 {
-  background-image: url('@/image/3.jpeg');
+  background-image: url('@/image/books/3.jpg');
 }
 
 .book4 {
-  background-image: url('@/image/4.jpeg');
+  background-image: url('@/image/books/4.jpg');
 }
 
 /* 반응형 디자인 */

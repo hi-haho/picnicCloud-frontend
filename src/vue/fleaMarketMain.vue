@@ -21,6 +21,7 @@
       <div v-if="content.length > 0">
         <div class="post-container">
           <div v-for="(item, index) in content" :key="index" class="onedata">
+            <!-- <form class="oneItem" @click="goToDetail(item.no)"> -->
               <router-link :to="{ name: 'FleaMarketDetail', params: { no: item.no } }" class="oneItem">
               <input type="hidden" :value="item.filePath" />
               <span>
@@ -68,7 +69,7 @@ export default {
     const categories = ref([]);
     const category = ref(0); // 선택된 카테고리
     const search = ref("");
-    const router = useRouter();
+    const router = useRouter(); // router 객체를 가져옵니다
     const page = ref({
       size: 0,
       number: 0,
@@ -87,7 +88,7 @@ export default {
       isLoggedIn.value = !!token;  // 토큰이 있으면 로그인 상태 true
     };
 
-    const AxiosCategories = async () => {
+    const fetchCategories = async () => {
       try {
         const response = await apiClient.get('/categories');
         categories.value = response.data;
@@ -100,8 +101,10 @@ export default {
       try {
         const categoryParam = category.value === 0 ? 0 : category.value;
         const url = `/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(search.value)}`;
-
-        const response = await apiClient.get(url);
+        
+        const response = await apiClient.get(url,{headers: {
+        
+      }});
         
         content.value = response.data.content;
         page.value = response.data.page;
@@ -111,7 +114,7 @@ export default {
     };
 
     const changePage = (newPageNumber) => {
-      pageNumber.value = newPageNumber;
+      newPageNumber.value = newPageNumber;
       fetchData(); // 메서드 재실행
     };
 
@@ -145,7 +148,7 @@ export default {
 
     onMounted(() => {
       checkLoginStatus();
-      AxiosCategories();
+      fetchCategories();
       fetchData();
     });
 
@@ -157,7 +160,7 @@ export default {
       page,
       pageNumber,
       size,
-      AxiosCategories,
+      fetchCategories,
       fetchData,
       changePage,
       getFirstFilePath,
