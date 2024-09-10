@@ -8,7 +8,7 @@
     </div>
 
     <!-- 채팅 내역 표시 -->
-    <div class="chat-container">
+    <div class="chat-container" ref="chatContainer">
       <ul class="message-list">
         <li v-for="message in messages" :key="message.no">
           <strong>{{ message.senderId }}:</strong> {{ message.messageContents }}
@@ -35,7 +35,7 @@ import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
 import apiClient from "@/api/api.js";
 import jwt_decode from "jwt-decode";
-import '../css/chatRoom.css';
+import "../css/chatRoom.css";
 
 export default {
   props: {
@@ -74,12 +74,15 @@ export default {
       this.stompClient.connect(
         { Authorization: `Bearer ${token}` },
         () => {
+          console.log("WebSocket 연결 성공");
           this.stompClient.subscribe(
             `/topic/chatRoom/${this.chatRoomId}`,
             (message) => {
+              console.log("새 메시지 수신:", message.body); // 메시지 수신 확인
               const parsedMessage = JSON.parse(message.body);
               if (!this.messages.some((m) => m.no === parsedMessage.no)) {
                 this.messages.push(parsedMessage);
+                this.scrollToBottom(); // 새로운 메시지 받을 때 스크롤 아래로 이동
               }
             }
           );
@@ -88,6 +91,15 @@ export default {
           console.error("WebSocket 연결 실패:", error);
         }
       );
+    },
+
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const chatContainer = this.$refs.chatContainer;
+        if (chatContainer) {
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+      });
     },
 
     async axiosMessages() {
@@ -111,7 +123,7 @@ export default {
         }
 
         this.messages = response.data.messages;
-        console.log("메시지 목록 불러오기 성공:", this.messages);
+        this.scrollToBottom(); // 메시지 목록 로드 후 스크롤을 아래로 이동
       } catch (error) {
         console.error("메시지 불러오기 실패:", error);
       }
@@ -133,14 +145,14 @@ export default {
       };
 
       try {
-        // WebSocket을 통해 메시지 전송
+        // WebSocket을 통해 메시지 전송 (화면에 직접 추가하지 않음)
         this.stompClient.send(
           `/app/chat.send/${this.chatRoomId}`,
           {},
           JSON.stringify(message)
         );
 
-        // 서버에 메시지 저장
+        // 서버에 메시지 저장 (메시지 저장 요청)
         await apiClient.post(`/message/send`, message, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -148,13 +160,13 @@ export default {
           },
         });
 
-        // 화면에 메시지 추가
-        this.messages.push(message);
+        // 입력 필드 초기화
         this.newMessage = "";
       } catch (error) {
         console.error("메시지 전송 실패:", error);
       }
     },
+
     formatDate(dateString) {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
@@ -186,6 +198,7 @@ export default {
   mounted() {
     this.connect();
     this.axiosMessages();
+    this.scrollToBottom();
   },
 };
 </script>
