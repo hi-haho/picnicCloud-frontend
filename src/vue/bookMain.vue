@@ -63,40 +63,40 @@ export default {
   data() {
     return {
       images: [
-        { src: '@/image/books/6.jpg', alt: "이미지 1", title: "책 제목 1" },
-        { src: '@/image/books/7.jpg', alt: "이미지 2", title: "책 제목 2" },
-        { src: '@/image/books/8.jpg', alt: "이미지 3", title: "책 제목 3" },
-        { src: '@/image/books/9.jpg', alt: "이미지 4", title: "책 제목 4" },
-        { src:'@/image/books/10.jpg', alt: "이미지 5", title: "책 제목 5" },
-        { src: '@/image/books/11.jpg', alt: "이미지 6", title: "책 제목 6" },
-        { src: '@/image/books/12.jpg', alt: "이미지 7", title: "책 제목 7" },
-        { src: '@/image/books/13.jpg', alt: "이미지 8", title: "책 제목 8" },
+        { src: "1.jpg", alt: "이미지 1", title: "책 제목 1" },
+        { src: "16.jpg", alt: "이미지 2", title: "책 제목 2" },
+        { src: "3.jpg", alt: "이미지 1", title: "책 제목 3" },
+        { src: "4.jpg", alt: "이미지 2", title: "책 제목 4" },
+        { src: "5.jpg", alt: "이미지 1", title: "책 제목 5" },
+        { src: "6.jpg", alt: "이미지 2", title: "책 제목 6" },
+        { src: "7.jpg", alt: "이미지 1", title: "책 제목 7" },
+        { src: "8.jpg", alt: "이미지 2", title: "책 제목 8" },
       ],
       books: [
-        { src: '@/image/books/14.jpg', alt: "이미지 1", title: "책 제목 1", author: "작가1" },
+        { src: "9.jpg", alt: "이미지 1", title: "책 제목 1", author: "작가1" },
         {
-          src: "10.jpeg",
+          src: "10.jpg",
           alt: "이미지 2",
           title: "책 제목 2",
           author: "작가2",
         },
         {
-          src: "11.jpeg",
+          src: "11.jpg",
           alt: "이미지 3",
           title: "책 제목 3",
           author: "작가3",
         },
         {
-          src: "12.jpeg",
+          src: "12.jpg",
           alt: "이미지 4",
           title: "책 제목 4",
           author: "작가4",
         },
       ],
       smallImages: [
-        { src: '@/image/books/1.jpg', alt: "작은 이미지 1", title: "추천 책 1" },
-        { src: "14.jpeg", alt: "작은 이미지 2", title: "추천 책 2" },
-        { src: "15.jpeg", alt: "작은 이미지 3", title: "추천 책 3" },
+        { src: "13.jpg", alt: "작은 이미지 1", title: "추천 책 1" },
+        { src: "14.jpg", alt: "작은 이미지 2", title: "추천 책 2" },
+        { src: "15.jpg", alt: "작은 이미지 3", title: "추천 책 3" },
       ],
       currentIndex: [0, 0], // 첫 번째 및 두 번째 슬라이더의 인덱스 유지
       autoSlideInterval: null, // 자동 슬라이드를 위한 인터벌 변수
@@ -112,36 +112,36 @@ export default {
   methods: {
     // 오른쪽으로 스크롤
     scrollRight(sliderIndex) {
-      this.$nextTick(() => {
-        const imageListRef = this.$refs[`imageList${sliderIndex + 1}`];
-        if (!imageListRef) return;
+  this.$nextTick(() => {
+    const imageListRef = this.$refs[`imageList${sliderIndex + 1}`];
+    if (!imageListRef) {
+      console.error('imageListRef가 존재하지 않습니다.');
+      return;
+    }
 
-        const imageWidth =
-          sliderIndex === 1
-            ? imageListRef.children[0].offsetWidth
-            : imageListRef.offsetWidth / 5;
-        const items = this.imagesOrBooks(sliderIndex);
+    const imageWidth = imageListRef.children[0]?.offsetWidth || imageListRef.offsetWidth / 5;
+    const items = this.imagesOrBooks(sliderIndex);
 
-        if (
-          this.currentIndex[sliderIndex] <
-            items.length - (sliderIndex === 1 ? 1 : 5) &&
-          imageWidth
-        ) {
-          this.currentIndex[sliderIndex] += 1;
-          imageListRef.scrollBy({
-            left: imageWidth,
-            behavior: "smooth",
-          });
-        } else {
-          // 끝까지 갔다면 다시 처음으로 돌아가기
-          this.currentIndex[sliderIndex] = 0;
-          imageListRef.scrollTo({
-            left: 0,
-            behavior: "smooth",
-          });
-        }
+    if (
+      this.currentIndex[sliderIndex] <
+        items.length - (sliderIndex === 1 ? 1 : 5) &&
+      imageWidth
+    ) {
+      this.currentIndex[sliderIndex] += 1;
+      imageListRef.scrollBy({
+        left: imageWidth,
+        behavior: "smooth",
       });
-    },
+    } else {
+      // 끝까지 갔다면 다시 처음으로 돌아가기
+      this.currentIndex[sliderIndex] = 0;
+      imageListRef.scrollTo({
+        left: 0,
+        behavior: "smooth",
+      });
+    }
+  });
+},
     // 자동 슬라이드 시작
     startAutoSlide() {
       this.autoSlideInterval = setInterval(() => {
