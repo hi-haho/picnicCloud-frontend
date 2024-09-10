@@ -1,0 +1,51 @@
+#chatRoom {
+    display: flex;
+    flex-direction: column;
+    height: 580px; /* 전체 화면 높이에 맞춤 */
+    max-width: 550px; /* 원하는 채팅창 가로 크기 */
+    margin: 0 auto; /* 화면 중앙 정렬 */
+  }
+  
+  .chat-container {
+    flex: 1;
+    height: 400px; /* 채팅창의 고정 높이 */
+    overflow-y: auto; /* 스크롤 추가 */
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .message-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .message-list li {
+    margin-bottom: 10px;
+  }
+  
+  .input-container {
+    display: flex;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+  }
+  
+  input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  button {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
