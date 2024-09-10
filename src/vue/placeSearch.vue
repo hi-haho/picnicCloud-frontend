@@ -13,24 +13,44 @@
       <button @click="searchFunc">검색</button>
     </div>
 
-    <div v-if="places.length > 0">
-      <p>검색결과 : {{ places.length }}개</p>
+    <div v-if="totalResults > 0">
+      <p>총 {{totalResults}}개의 장소 </p>
       <div v-for="(p, index) in places" :key="index" class="place-item">
+      <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
+      <div class="place-image">
+        <!-- 각 정보마다 반복적으로 5장의 이미지 사용 -->
+        <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
+      </div>
+      <div class="place-info">
+        <h3>{{ p.name }}</h3>
+        <p>{{ p.no }}</p>
+        <p>{{ p.address }}</p>
+        <p>📞{{ p.tel }}</p>
+        <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
+      </div>
+      </router-link>
+    </div>
+
+      <!--
+      <div v-for="(p, index) in places" :key="index" class="place-item">
+        <router-link to="/placeInfo">
         <div class="place-image">
-          <!-- 각 정보마다 반복적으로 5장의 이미지 사용 -->
+          
           <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
         </div>
         <div class="place-info">
           <h3>
-            <router-link :to="{ path: '/placeInfo', query: { no: p.no } }">
+            <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
               {{ p.name }}
             </router-link>
           </h3>
+          <p>{{p.no}}</p>
           <p>{{ p.address }}</p>
           <p>📞{{ p.tel }}</p>
           <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
         </div>
-      </div>
+      </router-link>
+      </div> -->
     </div>
     <div v-else>
       <p>결과가 없어요</p>
@@ -66,6 +86,7 @@ export default {
       keyword: "",
       currentPage: 0, // 현재 페이지 번호
       totalPages: 1, // 총 페이지 수
+      totalResults: 0 // 전체 검색 결과 수
     };
   },
   methods: {
@@ -85,6 +106,7 @@ export default {
           this.places = res.data.content;
           this.totalPages = res.data.page.totalPages; // 응답에서 페이지 정보 추출
           this.currentPage = res.data.page.number; // 현재 페이지 정보 추출
+          this.totalResults = res.data.page.totalElements; // 총 결과 수 업데이트
         })
         .catch((err) => {
           console.error("장소출력 오류: ", err);
