@@ -31,7 +31,10 @@
                   formatLastMessageTime(chatRoom.lastMessageTime)
                 }}</small>
                 <!-- 나가기 버튼 -->
-                <button class="close-button" @click.stop="leaveChatRoom(chatRoom.chatRoomNo)">
+                <button
+                  class="close-button"
+                  @click.stop="leaveChatRoom(chatRoom.chatRoomNo)"
+                >
                   &times;
                 </button>
               </div>
@@ -169,26 +172,25 @@ export default {
     };
 
     const leaveChatRoom = async (chatRoomNo) => {
-  const confirmLeave = confirm("정말로 채팅방을 나가시겠습니까?");
-  if (confirmLeave) {
-    try {
-      const token = localStorage.getItem("token");
-      await apiClient.delete(`/api/leave/${chatRoomNo}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      // 나간 후 목록에서 해당 채팅방을 제거
-      chatRooms.value = chatRooms.value.filter(
-        (room) => room.chatRoomNo !== chatRoomNo
-      );
-      console.log(`채팅방 ${chatRoomNo} 나가기 성공`);
-    } catch (error) {
-      console.error("채팅방 나가기에 실패했습니다.", error);
-    }
-  }
-};
-
+      const confirmLeave = confirm("정말로 채팅방을 나가시겠습니까?");
+      if (confirmLeave) {
+        try {
+          const token = localStorage.getItem("token");
+          await apiClient.delete(`/api/leave/${chatRoomNo}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          // 나간 후 목록에서 해당 채팅방을 제거
+          chatRooms.value = chatRooms.value.filter(
+            (room) => room.chatRoomNo !== chatRoomNo
+          );
+          console.log(`채팅방 ${chatRoomNo} 나가기 성공`);
+        } catch (error) {
+          console.error("채팅방 나가기에 실패했습니다.", error);
+        }
+      }
+    };
 
     onMounted(() => {
       const token = localStorage.getItem("token");
@@ -258,5 +260,4 @@ export default {
 .close-button:hover {
   color: #ff0000;
 }
-
 </style>

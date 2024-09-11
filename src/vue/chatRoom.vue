@@ -104,7 +104,7 @@ export default {
 
       const token = localStorage.getItem("token");
       const decodedToken = jwt_decode(token);
-      const currentUserId = decodedToken.sub;  // 현재 로그인한 사용자 ID
+      const currentUserId = decodedToken.sub; // 현재 로그인한 사용자 ID
 
       this.stompClient.connect(
         { Authorization: `Bearer ${token}` },
