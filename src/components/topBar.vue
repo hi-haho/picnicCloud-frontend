@@ -25,7 +25,7 @@
                 class="chat-room-item"
                 @click="enterChatRoom(chatRoom.chatRoomNo)"
               >
-                <span>{{ chatRoom.senderId }}: {{ chatRoom.lastMessage }}</span>
+                <span>{{ chatRoom.senderId }} {{ chatRoom.lastMessage }}</span>
                 <br />
                 <small>{{
                   formatLastMessageTime(chatRoom.lastMessageTime)
