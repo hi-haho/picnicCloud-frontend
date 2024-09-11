@@ -28,8 +28,9 @@
           <option v-for="cat in categories" :key="cat.no" :value="cat.no">
             {{ cat.categoryName }}
           </option>
-          <option value="0">전체</option>
+          <option value="1">전체</option>
         </select>
+
         <span v-if="errors.category" class="error">{{ errors.category }}</span>
         <br />
       </span>
@@ -65,7 +66,7 @@ export default {
     const price = ref('');
     const contents = ref('');
     const categories = ref([]);
-    const category = ref(0);
+    const category = ref(1);
     const mfilePath = ref(null);
     const errors = ref({});
     const userid = ref('');

@@ -1,75 +1,67 @@
 <template>
-  <div id="detailPage">
-    <div v-if="items">
-      <!-- 상단: 이미지와 제목/가격 섹션 -->
-      <div class="upper-section">
-        <div class="image-container">
-          <!-- 이미지가 있을 경우에만 보여줌 -->
-          <img
-            v-if="items.files && items.files.length > 0"
-            :src="getImagePath(items.files[0])"
-            alt="상품 이미지"
-          />
-          <!-- 이미지가 없을 경우 대체 텍스트 -->
-          <div v-else class="no-image-placeholder">이미지가 없습니다</div>
-        </div>
-
-        <div class="info-container">
-          <h2>{{ items.title }}</h2>
-          <h3 v-if="items.price !== null">₩{{ items.price.toLocaleString() }}</h3>
-          <h3 v-else>가격 정보 없음</h3>
-
-          <!-- 좋아요 버튼 및 좋아요 수 -->
-          <div class="like-section">
-            <button @click="toggleFavorite">
-              <span>{{ items.favorite ? '❤️' : '🩶' }}</span>
-            </button>
-          </div>
-
-          <!-- 채팅 -->
-          <div v-if="!isAuthor">
-            <button @click="createChatRoom">채팅방</button>
-          </div>
-
-          <!-- 상품 카테고리 및 등록일 또는 수정일 -->
-          <p>카테고리: {{ items.categoryName }}</p>
-          <p>{{ getDisplayDate() }}</p>
-        </div>
+  <div id="detailPage" v-if="items">
+    <!-- 상단: 이미지와 제목/가격 섹션 -->
+    <div class="upper-section">
+      <div class="image-container">
+        <img
+          v-if="items && items.files && items.files.length > 0"
+          :src="getImagePath(items.files[0])"
+          alt="이미지 설명"
+          class="thumbnail"
+        />
+        <div v-else class="no-image-placeholder">이미지가 없습니다</div>
       </div>
 
-      <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
-      <div class="item-buttons">
-        <span v-if="showEditButtons">
-          <button @click="fleaUpdate">수정</button>
-          <button @click="fleaDelete">삭제</button>
-        </span>
-        <button v-if="!isAuthor" @click="report(items.no)">신고</button>
-        <button @click="list">목록보기</button>
-      </div>
+      <div class="info-container">
+        <h2>{{ items.title }}</h2>
+        <h3 v-if="items.price !== null">₩{{ items.price.toLocaleString() }}</h3>
+        <h3 v-else>가격 정보 없음</h3>
 
-      <!-- 하단: 상품 설명 및 채팅방 생성 버튼 -->
-      <div class="lower-section">
-        <h4>상품 상세 정보</h4>
-        <p>{{ items.contents }}</p>
-        
+        <!-- 좋아요 버튼 및 좋아요 수 -->
+        <div class="like-section">
+          <button @click="toggleFavorite">
+            <span>{{ items.favorite ? '❤️' : '🩶' }}</span>
+          </button>
+        </div>
+
+        <!-- 채팅 -->
+        <div v-if="!isAuthor">
+          <button @click="createChatRoom">채팅방</button>
+        </div>
+
+        <!-- 상품 카테고리 및 등록일 또는 수정일 -->
+        <p>카테고리: {{ items.categoryName }}</p>
+        <p>{{ getDisplayDate() }}</p>
       </div>
     </div>
 
-    <div v-else>
-      <h2>Loading...</h2>
+    <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
+    <div class="item-buttons">
+      <span v-if="showEditButtons">
+        <button @click="fleaUpdate">수정</button>
+        <button @click="fleaDelete">삭제</button>
+      </span>
+      <button v-if="!isAuthor" @click="report(items.no)">신고</button>
+      <button @click="list">목록보기</button>
+    </div>
+
+    <!-- 하단: 상품 설명 및 채팅방 생성 버튼 -->
+    <div class="lower-section">
+      <h4>상품 상세 정보</h4>
+      <p>{{ items.contents }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import jwt_decode from "jwt-decode";
-import apiClient from "@/api/api.js";
-import { ref, onMounted, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import apiClient from '@/api/api.js';
+import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
 import "@/css/fleaDetail.css";
 
 export default {
-  name: "fleaMarketDetail",
+  name: 'fleaMarketDetail',
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -77,21 +69,6 @@ export default {
     const items = ref(null);
     const isLoggedIn = ref(false);
     const isAuthor = ref(false);
-
-    const getUserIdFromToken = () => {
-      const token = localStorage.getItem("token"); // JWT 토큰을 가져옴
-      if (!token) return null;
-      const decodedToken = jwt_decode(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      if (decodedToken.exp < currentTime) {
-        // 토큰이 만료되었을 경우
-        localStorage.removeItem("token");
-        return null;
-      }
-
-      return decodedToken.sub;
-    };
 
     const checkLoginStatus = () => {
       const token = localStorage.getItem("token");
@@ -105,6 +82,10 @@ export default {
           items.value = response.data;
           const userId = getUserIdFromToken();
           isAuthor.value = userId === response.data.userId;
+
+          // 로컬 스토리지에서 좋아요 상태를 확인하고 업데이트
+          const likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+          items.value.favorite = likedItems.includes(no);
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
         }
@@ -114,9 +95,8 @@ export default {
     };
 
     const getImagePath = (file) => {
-      return `http://localhost:8080${file}`;
+       return file ? `http://localhost:8080${file}` : '';
     };
-
 
     // 날짜 형식 변환 함수
     const formatDate = (dateString) => {
@@ -149,6 +129,17 @@ export default {
         });
         items.value.favorite = !items.value.favorite;
         items.value.favoriteCnt = response.data.favoriteCount;
+
+        // 로컬 스토리지에서 좋아요 상태 업데이트
+        let likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+        if (items.value.favorite) {
+          if (!likedItems.includes(no)) {
+            likedItems.push(no);
+          }
+        } else {
+          likedItems = likedItems.filter(itemNo => itemNo !== no);
+        }
+        localStorage.setItem('likedItems', JSON.stringify(likedItems));
       } catch (err) {
         console.log("toggleFavorite Axios error: ", err);
       }
@@ -219,9 +210,14 @@ export default {
     };
 
     const report = async (no) => {
+      const userId = getUserIdFromToken();
+      if (!userId) {
+        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        router.push("/login"); // 로그인 페이지로 이동
+        return;
+      }
       try {
-        await apiClient.post("/fleaMarket/report", { no });
-        alert("신고가 완료되었습니다.");
+        router.push(`/fleaMarketReport/${no}`);
       } catch (err) {
         console.log("report Axios error: ", err);
         alert("신고에 실패했습니다.");

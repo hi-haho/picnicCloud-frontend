@@ -24,7 +24,7 @@ const routes = [
   { path: '/map',component: map},
   { path: '/placeSearch',component: placeSearch},
   { path: '/fleaMarketMain',component: fleaMarketMain},
-  { path: '/fleaMarketReport', component: fleaMarketReport, meta: { requiresAuth: true } },
+  { path: '/fleaMarketReport/:no', component: fleaMarketReport, meta: { requiresAuth: true } },
   { path: '/fleaMarketCreate', component: fleaMarketCreate, meta: { requiresAuth: true } },
   { path: '/fleaMarketUpdate/:no', component: fleaMarketUpdate, meta: { requiresAuth: true } },
   { path: '/fleaMarketDetail/:no', name: 'FleaMarketDetail', component: fleaMarketDetail },

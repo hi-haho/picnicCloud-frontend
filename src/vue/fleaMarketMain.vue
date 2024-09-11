@@ -16,9 +16,10 @@
           v-model="search"
           placeholder="상품명 혹은 설명"
           class="search-input"
+          @keyup.enter="searchAndFilter"
         />
 
-        <button @click="searchbtn">
+        <button @click="searchAndFilter">
           검색
         </button>
       </div>
@@ -94,11 +95,11 @@
   </div>
 </template>
 
-
 <script>
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/api/api';
+import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
 import '@/css/fleamarket.css';
 
 export default {
@@ -139,7 +140,8 @@ export default {
         console.error('fleaMain Fetch error:', err);
       }
     };
-    //카테고리
+
+    // 카테고리 가져오기
     const Axioscategories = async () => {
       try {
         const response = await apiClient.get('/categories');
@@ -169,6 +171,12 @@ export default {
     };
 
     const create = () => {
+      const userId = getUserIdFromToken();
+      if (!userId) {
+        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        router.push('/login'); // 로그인 페이지로 이동
+        return;
+      }
       router.push('/fleaMarketCreate');
     };
 
