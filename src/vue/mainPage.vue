@@ -20,7 +20,7 @@
         </div>
       </article>
       <article id="body2">
-        <h3>이달의 전시, 공연 일정</h3>
+        <h3>세종문화회관 이달의 전시 • 공연</h3>
         <div class="calendar">
           <div class="thismonth" aria-label="이번 달 일정">
             <fullCalendar />

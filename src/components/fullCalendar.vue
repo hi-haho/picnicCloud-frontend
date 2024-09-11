@@ -26,7 +26,7 @@ export default {
       events: [],
       datesSet: handleDatesSet,
       headerToolbar: {
-        right: 'today prev,next'
+        right: 'prev today next'
       },
     });
     const pastelColors = ['#B9E3F3', '#87CEEB', '#2193C0'];
@@ -70,3 +70,46 @@ function handleDatesSet(info) {
   }
 }
 </script>
+
+
+<style>
+/* 오늘 버튼 스타일 */
+.fc-today-button {
+  background-color: white !important; /* 배경색 */
+  color: rgb(19, 1, 1) !important;              /* 텍스트 색상 */
+  border: none !important;              /* 테두리 제거 */
+  border-radius: 5px !important;        /* 둥근 모서리 */
+  padding: 5px 10px !important;         /* 여백 */
+}
+
+.fc-today-button:hover {
+  background-color:  white !important; 
+  scale: 1.1;
+}
+
+/* 이전 버튼 스타일 */
+.fc-prev-button {
+  background-color:  white !important; /* 배경색 */
+  color:rgb(19, 1, 1) !important;              /* 텍스트 색상 */
+  border: none !important;              /* 테두리 제거 */
+
+}
+
+.fc-prev-button:hover {
+  background-color:  white !important; 
+  scale: 1.1;
+}
+
+/* 다음 버튼 스타일 */
+.fc-next-button {
+  background-color:  white !important; /* 배경색 */
+  color:rgb(19, 1, 1) !important;              /* 텍스트 색상 */
+  border: none !important;              /* 테두리 제거 */
+}
+
+.fc-next-button:hover {
+  background-color:  white !important; 
+  scale: 1.1;
+}
+
+</style>
