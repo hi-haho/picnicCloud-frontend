@@ -92,10 +92,12 @@ nav a {
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
+    color: #000;
 }
 
 #current-location-button:hover {
     background-color: #f0f0f0;
+    
 }
 
 
