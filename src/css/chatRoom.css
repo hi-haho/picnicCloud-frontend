@@ -1,8 +1,8 @@
 #chatRoom {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  max-width: 600px;
+  height: 610px;
+  max-width: 550px;
   margin: 0 auto;
 }
 

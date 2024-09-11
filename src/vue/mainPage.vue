@@ -20,7 +20,7 @@
         </div>
       </article>
       <article id="body2">
-        <h3>이달의 전시, 공연 일정</h3>
+        <h3>세종문화회관 이달의 전시 • 공연</h3>
         <div class="calendar">
           <div class="thismonth" aria-label="이번 달 일정">
             <fullCalendar />
@@ -35,7 +35,7 @@
             <p><strong>요일 : </strong> 매주 월요일 </p>
             <p><strong>장소 : </strong> 서클홀</p>
             <p><strong>수강료 : </strong> 350,000원</p>
-            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000060&menuNo=200560&searchYear=2024&listType=1&pageIndex=1"><p>[더보기]</p></a>
+            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000060&menuNo=200560&searchYear=2024&listType=1&pageIndex=1" target="_blank"><p>[더보기]</p></a>
           </div>
           <div class="calendarinfo" aria-label="상세 내용 2">           
             <p><strong>히든보이스</strong></p>
@@ -47,7 +47,7 @@
             <p><strong>요일 : </strong> 매주 화요일</p>
             <p><strong>장소 : </strong> 서클홀</p>
             <p><strong>수강료 : </strong> 300,000원</p>
-            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000054&menuNo=200560&searchYear=2024&listType=1&pageIndex=1"><p>[더보기]</p></a>
+            <a href="https://www.sejongpac.or.kr/portal/academy/academyProgram/view.do?courseCd=CS102103242190000054&menuNo=200560&searchYear=2024&listType=1&pageIndex=1" target="_blank"><p>[더보기]</p></a>
           </div>
         </div>
       </article>
