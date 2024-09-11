@@ -11,7 +11,7 @@
       <span>
         <sup>*</sup>
         <label for="price">가격 :</label>
-        <input type="text" v-model="price" name="price" id="price" />
+        <input type="number" v-model="price" placeholder="가격을 입력하세요" />
         <span v-if="errors.price" class="error">{{ errors.price }}</span>
         <br />
       </span>

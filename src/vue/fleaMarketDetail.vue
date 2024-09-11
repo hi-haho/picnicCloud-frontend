@@ -95,7 +95,7 @@ export default {
     };
 
     const getImagePath = (file) => {
-       return file ? `http://localhost:8080${file}` : '';
+      return file ? `http://localhost:8080${file}` : '';
     };
 
     // 날짜 형식 변환 함수
@@ -127,6 +127,8 @@ export default {
           userId: userId,
           fleaMarketNo: no,
         });
+
+        // 좋아요 상태 및 카운트 업데이트
         items.value.favorite = !items.value.favorite;
         items.value.favoriteCnt = response.data.favoriteCount;
 
@@ -140,6 +142,7 @@ export default {
           likedItems = likedItems.filter(itemNo => itemNo !== no);
         }
         localStorage.setItem('likedItems', JSON.stringify(likedItems));
+
       } catch (err) {
         console.log("toggleFavorite Axios error: ", err);
       }
