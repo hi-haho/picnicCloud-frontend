@@ -1,10 +1,17 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
-/* 기본 스타일 설정 */
+
+@font-face {
+  font-family: 'Katuri';
+  src: url('https://gcore.jsdelivr.net/gh/projectnoonnu/noonfonts_13@1.0/Katuri.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   max-width: 1200px;
   margin: 0 auto; 
   width: 100%;
   box-sizing: border-box;
+
 }
 
 /* TopBar 기본 스타일 */
@@ -19,8 +26,8 @@ header {
   box-sizing: border-box;
   position: relative;
   top: -10px;
-  font-family: "Pretendard Variable", Pretendard;
-  margin-top: 10px;
+  margin-top: 10px; 
+  font-family: "Katuri", sans-serif;
 }
 
 /* 상단 네비게이션 */
@@ -122,7 +129,6 @@ nav ul li {
 
 .bottom-nav .router-link-active {
   color: #87ceeb;
-  font-weight: bold;
 }
 
 router-link,  /* 밑줄 제거 */
@@ -134,59 +140,53 @@ a {
 
 /* 노트북과 중간 화면 (max-width 1200px) */
 @media (max-width: 1200px) {
-  body, header {
-    max-width: 100%; /* 최대 너비를 100%로 조정 */
+  .bottom-nav {
+    justify-content: space-between; /* 아이템 간격을 균일하게 */
+    height: 0; /* 처음에는 접혀있음 */
+    padding: 0 20px;
   }
 
-  .bottom-nav ul li {
-    margin-right: 50px;
-    font-size: 0.9rem;
+  .bottom-nav ul {
+    justify-content: space-between; /* 아이템 간격을 균일하게 */
+    padding: 0 10px; /* 좌우 패딩 추가 */
   }
 
-  .bottom-nav ul li img {
-    width: 60px;  /* 중간 화면에서 아이콘 크기 줄이기 */
-    height: 60px;
+  .bottom-nav li img {
+    width: 48px;
+    height: 0; /* 처음에 아이콘을 숨김 */
+  }
+
+  .bottom-nav:hover li img {
+    height: 48px; /* bottom-nav에 마우스를 올리면 아이콘이 펼쳐짐 */
+  }
+
+  .bottom-nav li .nav-text {
+    display: block; /* 텍스트는 그대로 표시 */
+    font-size: 16px; /* 텍스트 크기 조금 줄임 */
   }
 }
 
 /* 모바일 화면 (max-width 500px) */
 @media (max-width: 970px) {
-  body, header {
-    max-width: 100%;
-  }
-
-  #upper-nav {
-    flex-direction: row; /* 가로 배치 유지 */
+  .bottom-nav {
+    justify-content: space-around;
+    padding: 5px 0; /* 패딩을 줄여서 작은 화면에 맞춤 */
     height: auto;
-    align-items: center;
-    justify-content: space-between; /* 좌우로 공간 배분 */
-    width: 100%; /* 상단 네비게이션이 전체 너비를 차지하도록 설정 */
   }
 
-  #logo {
-    flex: 1 1 auto; /* 로고에 가변적인 공간 할당 */
-    margin-bottom: 0; /* 여백 제거 */
-    font-size: 1.2rem;
-    text-align: left;
+  .bottom-nav li img {
+    width: 48px; /* 아이콘 크기 줄이기 */
+    height: 0; /* 아이콘을 접음 */
+    transition: height 0.5s ease, box-shadow 0.3s ease;
   }
 
-  #logo img {
-    width: 60%; /* 로고 이미지 크기를 줄여서 공간 확보 */
+  .bottom-nav:hover li img {
+    height: 48px; /* 마우스를 올리면 아이콘이 펼쳐짐 */
   }
 
-  nav ul {
-    flex: 0 1 auto; /* 네비게이션이 남은 공간을 차지하지 않도록 설정 */
-    display: flex;
-    justify-content: flex-end; /* 로그인 링크가 오른쪽에 위치하도록 설정 */
-  }
-
-  nav ul li {
-    margin-right: 10px; /* 링크 간의 간격 조정 */
-    font-size: 1rem; /* 글자 크기 조정 */
-  }
-
-  .bottom-nav ul li img {
-    width: 48px;  /* 모바일 화면에서 아이콘 크기 줄이기 */
-    height: 48px;
+  .bottom-nav li .nav-text {
+    display: block; /* 텍스트는 계속 표시됨 */
+    font-size: 14px; /* 텍스트 크기 줄이기 */
+    margin-top: 5px; /* 텍스트와 아이콘 간의 간격을 조금 더 줄임 */
   }
 }

@@ -1,9 +1,9 @@
 <template>
   <div id="myPageMain">
     <div id="buttonArea">
-      <router-link to="/myPage">내 정보</router-link>
-      <router-link to="/myPosts">내 게시글</router-link>
-      <router-link to="/myLikes">내 찜</router-link>
+      <router-link to="/myPage" exact-active-class="active-link">내 정보</router-link>
+      <router-link to="/myPosts" exact-active-class="active-link">내 게시글</router-link>
+      <router-link to="/myLikes" exact-active-class="active-link">내 찜</router-link>
     </div>
     <div id="contentsArea">
       <h3>내 정보</h3>

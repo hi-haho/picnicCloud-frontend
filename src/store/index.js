@@ -29,6 +29,7 @@ const store = createStore({
     logout({ commit }) {
       commit('setLoggedIn', { status: false, token: '' });
       localStorage.removeItem('token');
+      localStorage.removeItem('isLoggedIn'); // 로그인 상태도 초기화
     },
     
   },

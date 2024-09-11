@@ -50,7 +50,7 @@
 
 
 <script>
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { useStore } from 'vuex'; // Vuex store 사용
 import { useRouter } from 'vue-router';
 import './topBar.css';
@@ -73,6 +73,14 @@ export default {
       alert('로그아웃 되었습니다.');
       router.push('/'); // 로그아웃 후 메인 페이지로 이동
     };
+
+    // 컴포넌트가 마운트될 때 로컬 스토리지에서 토큰을 확인하고 Vuex 상태를 설정
+    onMounted(() => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        store.dispatch('logout'); // 토큰이 없으면 로그아웃 처리
+      }
+    });
 
     return {
       isLoggedIn,

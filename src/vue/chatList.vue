@@ -57,30 +57,27 @@ const getChatRoomList = async () => {
 
 const enterChatRoom = (chatRoomNo) => {
   // 채팅방으로 이동
-  router.push(`/chatRoom/${chatRoomNo}`);
+  router.push(`/listToChatRoom/${chatRoomNo}`);
 };
 
 const formatLastMessageTime = (lastMessageTime) => {
   const now = new Date();
   const messageTime = new Date(lastMessageTime);
-  const diffInMinutes = Math.floor((now - messageTime) / (1000 * 60));
+
+  // 메시지 시간과 현재 시간의 차이 계산
+  const diffInSeconds = Math.floor((now - messageTime) / 1000);
+  const diffInMinutes = Math.floor(diffInSeconds / 60);
   const diffInHours = Math.floor(diffInMinutes / 60);
 
-  if (diffInMinutes < 60) {
-    return diffInMinutes > 0
-      ? `${diffInMinutes}분 전`
-      : '방금 전';
+  if (diffInSeconds < 60) {
+    return `${diffInSeconds}초 전`;
+  } else if (diffInMinutes < 60) {
+    return `${diffInMinutes}분 전`;
   } else if (diffInHours < 24) {
     return `${diffInHours}시간 전`;
   } else {
-    return messageTime.toLocaleDateString('ko-KR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    }) + ' ' + messageTime.toLocaleTimeString('ko-KR', {
-      hour: '2-digit',
-      minute: '2-digit'
-    });
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' };
+    return messageTime.toLocaleDateString('ko-KR', options);
   }
 };
 

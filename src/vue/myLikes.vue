@@ -6,35 +6,40 @@
       <router-link to="/myLikes">내 찜</router-link>
     </div>
 
-    <div id="contentsArea">
-      <h3>내 찜 목록</h3>
-      <div id="tabs">
+    <div id="tabs">
         <button @click="activeTab = 'places'">장소</button>
         <button @click="activeTab = 'markets'">중고거래</button>
       </div>
 
-      <div v-if="activeTab === 'places'">
-        <h4>찜한 장소</h4>
-        <ul v-if="likedPlaces.length > 0">
-          <li v-for="place in likedPlaces" :key="place.id">
-            {{ place.name }} - {{ place.address }}
-          </li>
-        </ul>
-        <p v-else>찜한 장소가 없습니다.</p>
-      </div>
+    <div id="contentsArea">
+      <div class="body">
+        <h3>내 찜 목록</h3>
+        <div v-if="activeTab === 'places'">
+          <h4>찜한 장소</h4>
+          <ul v-if="likedPlaces.length > 0">
+            <li v-for="place in likedPlaces" :key="place.id">
+              {{ place.name }} - {{ place.address }}
+            </li>
+          </ul>
+          <p v-else>찜한 장소가 없습니다.</p>
+        </div>
 
-      <div v-if="activeTab === 'markets'">
-        <h4>찜한 중고거래</h4>
-        <ul v-if="likedMarkets.length > 0">
-          <li v-for="market in likedMarkets" :key="market.id">
-            {{ market.title }} - {{ market.price }}원
-          </li>
-        </ul>
-        <p v-else>찜한 중고거래가 없습니다.</p>
+        <div v-if="activeTab === 'markets'">
+          <h4>찜한 중고거래</h4>
+          <ul v-if="likedMarkets.length > 0">
+            <li v-for="market in likedMarkets" :key="market.id">
+              {{ market.title }} - {{ market.price }}원
+            </li>
+          </ul>
+          <p v-else>찜한 중고거래가 없습니다.</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+
+
 
 <script>
 import { mapGetters } from "vuex";
@@ -84,6 +89,3 @@ export default {
 };
 </script>
 
-<style scoped>
-/* 여기에 스타일 추가 */
-</style>

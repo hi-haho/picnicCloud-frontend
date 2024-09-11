@@ -2,7 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';  // App.vue를 루트 컴포넌트로 사용
 import router from './router';  // router.js에서 라우터 임포트
 import store from './store/index.js';
-
+import '../src/image/fonts/fonts.css';
 
 const app = createApp(App);
 

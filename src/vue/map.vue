@@ -3,6 +3,7 @@
     <div class="search-container">
       <!-- Sidebar -->
       <div class="sidebar">
+        <div class="search-container">
         <input
           type="text"
           v-model="searchQuery"
@@ -10,14 +11,15 @@
           @keyup.enter="searchPlaces"
         />
         <button @click="searchPlaces">검색</button>
-        <div>
+      </div>
+        <div class="category">
           <h3>분류</h3>
           <button @click="filterByCategory('전시/공연')">전시/공연</button>
           <button @click="filterByCategory('문화관광/명소')">
             문화관광/명소
           </button>
         </div>
-        <div>
+        <div class="facility">
           <h3>시설</h3>
           <button @click="toggleFacilityFilter('kidsZone')">키즈존</button>
           <button @click="toggleFacilityFilter('freeParking')">
