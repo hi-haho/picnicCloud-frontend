@@ -4,8 +4,8 @@ import apiClient from '@/api/api'; // apiClient를 가져옵니다.
 const store = createStore({
   state() {
     return {
-      isLoggedIn: false,  // 초기 상태는 false로 두고 로컬 스토리지를 동기화
-      token: '',
+      isLoggedIn: localStorage.getItem('isLoggedIn') === 'true',
+      token: localStorage.getItem('token') || '',
     };
   },
   mutations: {
@@ -14,14 +14,6 @@ const store = createStore({
       state.token = token || '';
       localStorage.setItem('isLoggedIn', status);
       localStorage.setItem('token', token || '');
-    },
-    initializeStore(state) {
-      const token = localStorage.getItem('token');
-      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-      if (token && isLoggedIn) {
-        state.token = token;
-        state.isLoggedIn = isLoggedIn;
-      }
     },
   },
   actions: {
@@ -39,6 +31,7 @@ const store = createStore({
       localStorage.removeItem('token');
       localStorage.removeItem('isLoggedIn'); // 로그인 상태도 초기화
     },
+    
   },
   getters: {
     isLoggedIn: (state) => state.isLoggedIn,

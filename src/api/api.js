@@ -26,9 +26,9 @@ apiClient.interceptors.response.use(
   response => response,
   error => {
     if (error.response && error.response.status === 401) {
-      // 토큰이 만료되었으면 로그아웃 처리
+      // 토큰이 만료되면 로그아웃 처리
       store.dispatch('logout');
-      // 로그아웃 상태로만 남겨두고, 로그인 페이지로 강제로 보내지 않음
+      // 로그아웃 처리 후 사용자가 로그인 페이지로 이동하지 않음, 그냥 로그아웃 상태로 둠
     }
     return Promise.reject(error);
   }
