@@ -106,29 +106,29 @@ export default {
     async sendMessage() {
       if (this.newMessage.trim() === "") return;
 
-  const token = localStorage.getItem('token');
-  const decodedToken = jwt_decode(token);
-  const senderId = decodedToken.sub; // JWT에서 senderId 추출
-  
-  const message = {
-    messageContents: this.newMessage,
-    senderId: senderId,
-    receiverId: this.receiverId,
-    chatRoomNo: this.chatRoomId,
-  };
+      const token = localStorage.getItem('token');
+      const decodedToken = jwt_decode(token);
+      const senderId = decodedToken.sub; // JWT에서 senderId 추출
+      
+      const message = {
+        messageContents: this.newMessage,
+        senderId: senderId,
+        receiverId: this.receiverId,
+        chatRoomNo: this.chatRoomId,
+      };
 
-  try {
-    this.stompClient.send(`/app/chat.send/${this.chatRoomId}`, {}, JSON.stringify(message));
-    await apiClient.post(`/message/send`, message, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json'
+      try {
+        this.stompClient.send(`/app/chat.send/${this.chatRoomId}`, {}, JSON.stringify(message));
+        await apiClient.post(`/message/send`, message, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        this.newMessage = "";
+      } catch (error) {
+        console.error("메시지 저장 실패:", error);
       }
-    });
-    this.newMessage = "";
-  } catch (error) {
-    console.error("메시지 저장 실패:", error);
-  }
     },
 
     formatDate(dateString) {

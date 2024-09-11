@@ -56,6 +56,7 @@ import { onMounted, ref } from 'vue';
 import apiClient from '@/api/api';
 import jwt_decode from 'jwt-decode'; // Import jwt_decode
 import { useRouter } from 'vue-router';
+import '@/css/fleaCreate.css';
 
 export default {
   name: 'FleaMarketCreate',
@@ -73,7 +74,6 @@ export default {
     // Function to get user ID from the JWT token
     const getUserIdFromToken = () => {
       const token = localStorage.getItem('token');
-      console.log("*********"+token);
       if (!token) return null;
       try {
         const decodedToken = jwt_decode(token);
@@ -113,7 +113,6 @@ export default {
 
     const fleamarketInput = async () => {
       const token = localStorage.getItem('token');
-      // console.log("*********"+token);
       if (!validateForm()) return;
 
       const formData = new FormData();
@@ -177,4 +176,3 @@ export default {
 };
 </script>
 
-<style src="../css/fleaCreate.css"></style>
