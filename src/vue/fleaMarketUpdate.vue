@@ -88,7 +88,7 @@ export default {
       try {
         await apiClient.put(`/fleaMarket/${no.value}`, datas.value);
         if (confirm("수정하시겠습니까?")) {
-          router.push({ name: 'FleaMarketDetail', params: { no: no.value } });
+          // router.push({ name: 'FleaMarketDetail', params: { no: no.value } });
         }
       } catch (err) {
         alert("수정 실패: " + err);
