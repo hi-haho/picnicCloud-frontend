@@ -47,7 +47,7 @@ const routes = [
       chatRoomId: Number(route.params.chatRoomId)
     })
   },
-  { path: '/placeInfo', component: placeInfo, meta: { requiresAuth: true } },
+  { path: '/placeInfo', component: placeInfo },
 ];
 
 const router = createRouter({
