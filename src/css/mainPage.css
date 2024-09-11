@@ -1,12 +1,61 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css");
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Brush+Script&family=Nanum+Gothic:wght@400;700;800&display=swap');
+.nanum-gothic-regular {
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.nanum-gothic-bold {
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.nanum-gothic-extrabold {
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RixXladywatermelonR';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408-4@1.0/RixXladywatermelonR.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KyoboHand';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/KyoboHand.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'omyu_pretty';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-01@1.0/omyu_pretty.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+    font-family: 'NanumSquareRound';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRound.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
 /* 기본 스타일 */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Pretendard Variable", Pretendard;
-  
+
 }
+
+
 
 html {
   height: 100%;
@@ -20,6 +69,7 @@ html {
 body{
   height: 100%;
   background: none;
+  font-family: 'NanumSquareRound';
 }
 
 /* 공통 컨테이너 설정 */
@@ -154,22 +204,23 @@ h3 {
 
 .book:hover {
   transform: scale(1.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .book1 {
-  background-image: url('@/image/books/5.jpg');
+  background-image: url('@/image/5.jpg');
 }
 
 .book2 {
-  background-image: url('@/image/books/2.jpg');
+  background-image: url('@/image/2.jpg');
 }
 
 .book3 {
-  background-image: url('@/image/books/3.jpg');
+  background-image: url('@/image/3.jpg');
 }
 
 .book4 {
-  background-image: url('@/image/books/4.jpg');
+  background-image: url('@/image/4.jpg');
 }
 
 /* 반응형 디자인 */
@@ -191,6 +242,7 @@ h3 {
     height: auto; /* 높이를 유지 */
     width: 100%; /* width를 100%로 유지하여 화면에 꽉 차게 함 */
     padding: 0; /* padding을 제거하여 여백 없이 꽉 차게 함 */
+    padding-top: 10px;
     background-color: #f8f8f8;
   }
 
@@ -254,7 +306,7 @@ h3 {
     #mainBanner {
       height: auto;
       width: 100%; /* width를 100%로 설정하여 화면에 꽉 차게 함 */
-      padding: 0 1rem;
+      padding: 1rem 1rem;
     }
 
 
