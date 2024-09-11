@@ -56,6 +56,7 @@ import { onMounted, ref } from 'vue';
 import apiClient from '@/api/api';
 import jwt_decode from 'jwt-decode'; // Import jwt_decode
 import { useRouter } from 'vue-router';
+import '@/css/fleaCreate.css';
 
 export default {
   name: 'FleaMarketCreate',
@@ -175,4 +176,3 @@ export default {
 };
 </script>
 
-<style src="../css/fleaCreate.css"></style>
