@@ -17,6 +17,8 @@ import bookMain from './vue/bookMain.vue';
 import chatRoom from './vue/chatRoom.vue';
 import chatList from './vue/chatList.vue';
 import placeInfo from './vue/placeInfo.vue';
+import apiClient from './api/api';
+import store from './store/index';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -56,12 +58,24 @@ const router = createRouter({
 });
 
 // 전역 가드 (beforeEach)
-//fleaMarketCreate, myPage, myPosts, myLikes 같은 페이지는 로그인이 되어 있어야만 접근
 router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token'); // JWT 토큰 가져오기
-  if (to.matched.some(record => record.meta.requiresAuth) && !token) {
-    // 인증이 필요하고 토큰이 없으면 로그인 페이지로 이동
-    next('/login');
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!token) {
+      // 토큰이 없으면 로그인 페이지로 이동
+      next('/login');
+    } else {
+      // 토큰이 만료되었는지 확인하는 부분을 추가하고,
+      // 만료되었다면 로그아웃 및 로그인 페이지로 리다이렉트
+      apiClient.post('/auth/verifyToken', { token }) // 서버에서 토큰 검증
+        .then(() => {
+          next(); // 토큰이 유효하면 다음 페이지로 이동
+        })
+        .catch(() => {
+          store.dispatch('logout'); // 토큰이 만료되었으면 로그아웃
+          next('/login'); // 로그인 페이지로 이동
+        });
+    }
   } else {
     next(); // 그 외의 경우는 정상적으로 다음 라우트로 진행
   }

@@ -21,4 +21,17 @@ apiClient.interceptors.request.use(config => {
   return Promise.reject(error);
 });
 
+// 응답 인터셉터
+apiClient.interceptors.response.use(
+  response => response,
+  error => {
+    if (error.response && error.response.status === 401) {
+      // 토큰이 만료되었으면 로그아웃 처리
+      store.dispatch('logout');
+      // 로그아웃 상태로만 남겨두고, 로그인 페이지로 강제로 보내지 않음
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default apiClient;
