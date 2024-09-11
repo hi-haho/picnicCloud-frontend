@@ -139,6 +139,18 @@ export default {
         console.error('fleaMain Fetch error:', err);
       }
     };
+    //카테고리
+    const Axioscategories = async () => {
+      try {
+        const response = await apiClient.get('/categories');
+        categories.value = response.data.map(cat => ({
+          no: Number(cat.no),
+          categoryName: cat.categoryName
+        }));
+      } catch (err) {
+        console.error('Category Axios error: ', err);
+      }
+    };
 
     const changePage = (newPageNumber) => {
       if (newPageNumber >= 0 && newPageNumber < page.value.totalPages) {
@@ -173,6 +185,7 @@ export default {
 
     onMounted(() => {
       checkLoginStatus();
+      Axioscategories();
       searchAndFilter(); // 초기 화면 로드시에도 카테고리와 검색어 필터를 적용하여 게시글 불러오기
     });
 
@@ -189,6 +202,7 @@ export default {
       changePage,
       formatDate,
       create,
+      Axioscategories,
       paginationPages,
       isLoggedIn,
     };
