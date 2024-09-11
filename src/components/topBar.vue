@@ -8,14 +8,16 @@
       </div>
       <nav>
         <ul>
-          <li v-if="!isLoggedIn">
+          <li v-if="!isLoggedIn" >
             <router-link to="/login">로그인</router-link>
           </li>
           <li v-if="isLoggedIn" class="nav-item">
             <router-link to="/myPage">마이페이지</router-link>
+            <div class="logout-and-notification">
             <a @click="logout" href="#">로그아웃</a>
             <!-- 알림 아이콘 클릭 시 모달 창 열기 -->
             <span @click="toggleChatModal" class="notification-icon">🔔</span>
+            </div>
             <!-- 모달 창 (알림 아이콘 아래) -->
             <div v-if="isChatModalVisible" class="chat-modal">
               <h2>채팅 목록</h2>
@@ -214,50 +216,5 @@ export default {
 </script>
 
 <style scoped>
-/* 모달 창 스타일 */
-.chat-modal {
-  position: absolute;
-  top: 120px;
-  right: 10px;
-  background-color: white;
-  border-radius: 8px;
-  padding: 20px;
-  width: 300px;
-  max-height: 400px;
-  overflow-y: auto;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-}
 
-.notification-icon {
-  cursor: pointer;
-  font-size: 24px;
-  position: relative;
-}
-
-/* 채팅 목록 항목 스타일 */
-.chat-room-item {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-  border-bottom: 1px solid #ccc;
-  cursor: pointer; /* 목록 항목에 커서 변경 */
-}
-
-/* 작은 "X" 버튼 스타일 */
-.close-button {
-  position: absolute;
-  right: 5px;
-  top: 5px;
-  background: none;
-  border: none;
-  color: #ff5c5c;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  color: #ff0000;
-}
 </style>
