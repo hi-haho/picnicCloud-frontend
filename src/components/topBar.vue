@@ -3,16 +3,41 @@
     <div id="upper-nav">
       <div id="logo">
         <router-link to="/">
-          <img src="../image/logo.svg" alt="picniCloud">
+          <img src="../image/logo.svg" alt="picniCloud" />
         </router-link>
       </div>
       <nav>
         <ul>
-          <li v-if="!isLoggedIn"><router-link to="/login">로그인</router-link></li>
+          <li v-if="!isLoggedIn">
+            <router-link to="/login">로그인</router-link>
+          </li>
           <li v-if="isLoggedIn" class="nav-item">
             <router-link to="/myPage">마이페이지</router-link>
-            <a @click="logout" href="#">로그아웃</a> <!-- 로그아웃 링크 -->
-            <span @click="goToChat" class="notification-icon">🔔</span>
+            <a @click="logout" href="#">로그아웃</a>
+            <!-- 알림 아이콘 클릭 시 모달 창 열기 -->
+            <span @click="toggleChatModal" class="notification-icon">🔔</span>
+            <!-- 모달 창 (알림 아이콘 아래) -->
+            <div v-if="isChatModalVisible" class="chat-modal">
+              <h2>채팅 목록</h2>
+              <div
+                v-for="chatRoom in chatRooms"
+                :key="chatRoom.no"
+                class="chat-room-item"
+                @click="enterChatRoom(chatRoom.chatRoomNo)"
+              >
+                <span>{{ chatRoom.senderId }}: {{ chatRoom.lastMessage }}</span>
+                <br />
+                <small>{{
+                  formatLastMessageTime(chatRoom.lastMessageTime)
+                }}</small>
+                <!-- 나가기 버튼 -->
+                <button class="close-button" @click.stop="leaveChatRoom(chatRoom.chatRoomNo)">
+                  &times;
+                </button>
+              </div>
+              <div v-if="chatRooms.length === 0">채팅방이 없습니다</div>
+              <button @click="toggleChatModal">닫기</button>
+            </div>
           </li>
         </ul>
       </nav>
@@ -21,25 +46,25 @@
       <ul>
         <li>
           <router-link to="/place">
-            <img src="../image/navIcon/iconPlace.png" alt="테마별 장소"><br>
+            <img src="../image/navIcon/iconPlace.png" alt="테마별 장소" /><br />
             <span class="nav-text">테마별 장소</span>
           </router-link>
         </li>
         <li>
           <router-link to="/fleaMarketMain">
-            <img src="../image/navIcon/iconMarket.png" alt="피클마켓"><br>
+            <img src="../image/navIcon/iconMarket.png" alt="피클마켓" /><br />
             <span class="nav-text">피클마켓</span>
           </router-link>
         </li>
         <li>
           <router-link to="/map">
-            <img src="../image/navIcon/iconMap.png" alt="키즈존"><br>
+            <img src="../image/navIcon/iconMap.png" alt="키즈존" /><br />
             <span class="nav-text">키즈존</span>
           </router-link>
         </li>
         <li>
           <router-link to="/bookMain">
-            <img src="../image/navIcon/iconBook.png" alt="어린이도서"><br>
+            <img src="../image/navIcon/iconBook.png" alt="어린이도서" /><br />
             <span class="nav-text">어린이도서</span>
           </router-link>
         </li>
@@ -48,45 +73,190 @@
   </header>
 </template>
 
-
 <script>
-import { computed, onMounted } from 'vue';
-import { useStore } from 'vuex'; // Vuex store 사용
-import { useRouter } from 'vue-router';
-import './topBar.css';
+import { ref, computed, onMounted } from "vue";
+import { useStore } from "vuex";
+import { useRouter } from "vue-router";
+import apiClient from "@/api/api.js";
+import jwt_decode from "jwt-decode";
+import "./topBar.css";
 
 export default {
   setup() {
-    const store = useStore(); // Vuex 스토어 인스턴스
+    const store = useStore();
     const router = useRouter();
+    const chatRooms = ref([]);
+    const isChatModalVisible = ref(false);
 
-    // Vuex의 로그인 상태 가져오기
     const isLoggedIn = computed(() => store.getters.isLoggedIn);
 
-    const goToChat = () => {
-      router.push('/chatList');
+    const toggleChatModal = () => {
+      if (!isLoggedIn.value) {
+        alert("로그인이 필요합니다.");
+        router.push("/login"); // 로그인 페이지로 이동
+      } else {
+        isChatModalVisible.value = !isChatModalVisible.value;
+        if (isChatModalVisible.value) {
+          getChatRoomList(); // 모달이 열릴 때 채팅 목록을 가져옴
+        }
+      }
     };
 
-    // 로그아웃 함수: Vuex 상태와 로컬 스토리지 동기화
-    const logout = () => {
-      store.dispatch('logout'); // Vuex에서 로그아웃 처리
-      alert('로그아웃 되었습니다.');
-      router.push('/'); // 로그아웃 후 메인 페이지로 이동
-    };
-
-    // 컴포넌트가 마운트될 때 로컬 스토리지에서 토큰을 확인하고 Vuex 상태를 설정
-    onMounted(() => {
-      const token = localStorage.getItem('token');
+    const getChatRoomList = async () => {
+      const token = localStorage.getItem("token");
       if (!token) {
-        store.dispatch('logout'); // 토큰이 없으면 로그아웃 처리
+        console.error("토큰이 없습니다.");
+        return;
+      }
+
+      const decodedToken = jwt_decode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+
+      if (decodedToken.exp < currentTime) {
+        console.error("토큰이 만료되었습니다.");
+        localStorage.removeItem("token");
+        router.push("/login");
+        return;
+      }
+
+      try {
+        const response = await apiClient.get(`/api/chatList`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        chatRooms.value = response.data;
+        console.log("채팅 목록 조회 성공:", response.data);
+      } catch (error) {
+        console.error("채팅 목록 조회 실패", error);
+      }
+    };
+
+    const enterChatRoom = (chatRoomNo) => {
+      router.push(`/listToChatRoom/${chatRoomNo}`);
+      toggleChatModal();
+    };
+
+    const formatLastMessageTime = (lastMessageTime) => {
+      const now = new Date();
+      const messageTime = new Date(lastMessageTime);
+      const diffInSeconds = Math.floor((now - messageTime) / 1000);
+      const diffInMinutes = Math.floor(diffInSeconds / 60);
+      const diffInHours = Math.floor(diffInMinutes / 60);
+
+      if (diffInSeconds < 60) {
+        return `${diffInSeconds}초 전`;
+      } else if (diffInMinutes < 60) {
+        return `${diffInMinutes}분 전`;
+      } else if (diffInHours < 24) {
+        return `${diffInHours}시간 전`;
+      } else {
+        const options = {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        };
+        return messageTime.toLocaleDateString("ko-KR", options);
+      }
+    };
+
+    const logout = () => {
+      store.dispatch("logout");
+      alert("로그아웃 되었습니다.");
+      router.push("/");
+    };
+
+    const leaveChatRoom = async (chatRoomNo) => {
+  const confirmLeave = confirm("정말로 채팅방을 나가시겠습니까?");
+  if (confirmLeave) {
+    try {
+      const token = localStorage.getItem("token");
+      await apiClient.delete(`/api/leave/${chatRoomNo}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      // 나간 후 목록에서 해당 채팅방을 제거
+      chatRooms.value = chatRooms.value.filter(
+        (room) => room.chatRoomNo !== chatRoomNo
+      );
+      console.log(`채팅방 ${chatRoomNo} 나가기 성공`);
+    } catch (error) {
+      console.error("채팅방 나가기에 실패했습니다.", error);
+    }
+  }
+};
+
+
+    onMounted(() => {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        store.dispatch("logout");
       }
     });
 
     return {
       isLoggedIn,
-      goToChat,
-      logout
+      toggleChatModal,
+      logout,
+      chatRooms,
+      enterChatRoom,
+      formatLastMessageTime,
+      isChatModalVisible,
+      leaveChatRoom,
     };
-  }
+  },
 };
 </script>
+
+<style scoped>
+/* 모달 창 스타일 */
+.chat-modal {
+  position: absolute;
+  top: 120px;
+  right: 10px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.notification-icon {
+  cursor: pointer;
+  font-size: 24px;
+  position: relative;
+}
+
+/* 채팅 목록 항목 스타일 */
+.chat-room-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer; /* 목록 항목에 커서 변경 */
+}
+
+/* 작은 "X" 버튼 스타일 */
+.close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: none;
+  border: none;
+  color: #ff5c5c;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+</style>

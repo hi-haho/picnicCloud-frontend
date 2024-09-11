@@ -15,7 +15,7 @@ import myPosts from './vue/myPosts.vue';
 import myLikes from './vue/myLikes.vue';
 import bookMain from './vue/bookMain.vue';
 import chatRoom from './vue/chatRoom.vue';
-import chatList from './vue/chatList.vue';
+// import chatList from './vue/chatList.vue';
 import placeInfo from './vue/placeInfo.vue';
 
 const routes = [
@@ -34,7 +34,7 @@ const routes = [
   { path: '/myPosts', component: myPosts, meta: { requiresAuth: true } },
   { path: '/myLikes', component: myLikes, meta: { requiresAuth: true } },
   { path: '/bookMain', component: bookMain },
-  { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
+  // { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
   { path: '/chatRoom/:chatRoomId/:senderId/:receiverId', name: 'chatRoom', component:chatRoom, 
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId),
