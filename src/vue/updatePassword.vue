@@ -30,19 +30,24 @@ export default {
     async submitNewPassword() {
       // 비밀번호 확인
       if (this.newPassword !== this.confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다."); //
+        alert("비밀번호가 일치하지 않습니다.");
         return;
       }
 
       try {
         // 백엔드로 비밀번호 변경 요청 보내기
         const response = await apiClient.post(
-          '/update-password',
+          "/auth/update-password",
           {
             newPassword: this.newPassword, // request body로 비밀번호만 보냄
           },
           {
-            params: { token: this.token }, // token은 query parameter로 전달
+            headers: {
+              "Content-Type": "application/json",
+            },
+            params: {
+              token: this.token, // 쿼리 파라미터로 token 전달
+            },
           }
         );
 
@@ -51,7 +56,7 @@ export default {
           this.$router.push("/login"); // 성공 후 로그인 페이지로 이동
         }
       } catch (error) {
-        alert("비밀번호 변경에 실패했습니다."); //
+        alert("비밀번호 변경에 실패했습니다.");
         console.error(error);
       }
     },
