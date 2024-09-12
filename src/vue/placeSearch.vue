@@ -100,7 +100,11 @@ export default {
       // placeType을 URL로 인코딩하여 공백이나 한글 처리
       const encodedPlaceType = encodeURIComponent(placeType);
 
-      let query = `/places?placeType=${encodedPlaceType}&page=${page}&size=${size}&userId=${userId}`;
+      // userId가 null일 경우에는 userId 파라미터를 추가하지 않음
+      let query = `/places?placeType=${encodedPlaceType}&page=${page}&size=${size}`;
+      if (userId) {
+        query += `&userId=${userId}`;
+      }
       if (keyword) {
         query += `&keyword=${encodeURIComponent(keyword)}`;
       }

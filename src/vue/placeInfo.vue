@@ -213,8 +213,12 @@ export default {
     async showInfo() {
       const no = this.$route.query.placeNo;
       if (no) {
+        let query = `/places/${no}`;
+        if (this.userId) {
+          query += `?userId=${this.userId}`;
+        }
         await apiClient
-          .get(`/places/${no}?userId=${this.userId}`)
+          .get(query)
           .then((res) => {
             this.place = res.data;
             // 좋아요 수를 가져오는 메서드 호출
