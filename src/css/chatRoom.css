@@ -1,14 +1,24 @@
 #chatRoom {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  max-width: 600px;
+  height: 710px;
+  max-width: 550px;
   margin: 0 auto;
+  position: relative; /* z-index가 적용되기 위해 position 속성 추가 */
+  z-index: 1;
+}
+
+.board-container {
+  background-color: white; /* 필요 시 배경색 설정 */
+  height: 110px;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  font-size: 12px;
 }
 
 .chat-container {
   flex: 1;
-  height: 400px;
+  height: 500px;
   overflow-y: auto; /* 스크롤을 가능하게 설정 */
   padding: 10px;
   border: 1px solid #ccc;

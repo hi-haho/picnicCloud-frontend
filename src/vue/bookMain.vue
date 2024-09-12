@@ -6,7 +6,7 @@
       <div class="slider-container">
         <button class="slider-button left" @click="scrollLeft(0)">&lt;</button>
         <div class="image-list" ref="imageList1">
-          <div class="image-item" v-for="(image, index) in images" :key="index">
+          <div class="image-item" v-for="(image, index) in images" :key="index" @click="goToBookDetail(image.no)">
             <img :src="require(`@/image/${image.src}`)" :alt="image.alt" />
             <p>{{ image.title }}</p>
           </div>
@@ -24,7 +24,7 @@
         <!-- 이미지 리스트 (기존 정적 배열 나열) -->
         <div class="image-list-static">
           <h3>책 읽기 첫걸음</h3>
-          <div class="image-item" v-for="(book, index) in books" :key="index">
+          <div class="image-item" v-for="(book, index) in books" :key="index" @click="goToBookDetail(book.no)">
             <img :src="require(`@/image/${book.src}`)" :alt="book.title" />
             <p>{{ book.title }}</p>
             <p class="author">{{ book.author }}</p>
@@ -43,6 +43,7 @@
               class="image-item-small"
               v-for="(smallImage, index) in smallImages"
               :key="index"
+              @click="goToBookDetail(smallImage.no)"
             >
               <img
                 :src="require(`@/image/${smallImage.src}`)"
@@ -58,49 +59,62 @@
 </template>
 
 <script>
+import { useRouter } from "vue-router"; // Vue Router를 사용
 
 export default {
   data() {
     return {
       images: [
-        { src: "1.jpg", alt: "이미지 1", title: "책 제목 1" },
-        { src: "16.jpg", alt: "이미지 2", title: "책 제목 2" },
-        { src: "3.jpg", alt: "이미지 1", title: "책 제목 3" },
-        { src: "4.jpg", alt: "이미지 2", title: "책 제목 4" },
-        { src: "5.jpg", alt: "이미지 1", title: "책 제목 5" },
-        { src: "6.jpg", alt: "이미지 2", title: "책 제목 6" },
-        { src: "7.jpg", alt: "이미지 1", title: "책 제목 7" },
-        { src: "8.jpg", alt: "이미지 2", title: "책 제목 8" },
+        { src: "1.jpg", alt: "이미지 1", title: "책 제목 1", no: 1 },
+        { src: "16.jpg", alt: "이미지 2", title: "책 제목 2", no: 2 },
+        { src: "3.jpg", alt: "이미지 1", title: "책 제목 3", no: 3 },
+        { src: "4.jpg", alt: "이미지 2", title: "책 제목 4", no: 4 },
+        { src: "5.jpg", alt: "이미지 1", title: "책 제목 5", no: 5 },
+        { src: "6.jpg", alt: "이미지 2", title: "책 제목 6", no: 6 },
+        { src: "7.jpg", alt: "이미지 1", title: "책 제목 7", no: 7 },
+        { src: "8.jpg", alt: "이미지 2", title: "책 제목 8", no: 8 },
       ],
       books: [
-        { src: "9.jpg", alt: "이미지 1", title: "책 제목 1", author: "작가1" },
+        { src: "9.jpg", alt: "이미지 1", title: "책 제목 1", author: "작가1", no: 9 },
         {
           src: "10.jpg",
           alt: "이미지 2",
           title: "책 제목 2",
           author: "작가2",
+          no: 10,
         },
         {
           src: "11.jpg",
           alt: "이미지 3",
           title: "책 제목 3",
           author: "작가3",
+          no: 11,
         },
         {
           src: "12.jpg",
           alt: "이미지 4",
           title: "책 제목 4",
           author: "작가4",
+          no: 12,
         },
       ],
       smallImages: [
-        { src: "13.jpg", alt: "작은 이미지 1", title: "추천 책 1" },
-        { src: "14.jpg", alt: "작은 이미지 2", title: "추천 책 2" },
-        { src: "15.jpg", alt: "작은 이미지 3", title: "추천 책 3" },
+        { src: "13.jpg", alt: "작은 이미지 1", title: "추천 책 1", no: 13 },
+        { src: "14.jpg", alt: "작은 이미지 2", title: "추천 책 2", no: 14 },
+        { src: "15.jpg", alt: "작은 이미지 3", title: "추천 책 3", no: 15 },
       ],
       currentIndex: [0, 0], // 첫 번째 및 두 번째 슬라이더의 인덱스 유지
       autoSlideInterval: null, // 자동 슬라이드를 위한 인터벌 변수
     };
+  },
+  setup() {
+    const router = useRouter();
+
+    const goToBookDetail = (bookNo) => {
+      router.push(`/book-info/${bookNo}`);
+    };
+
+    return { goToBookDetail };
   },
   mounted() {
     this.startAutoSlide();
@@ -112,36 +126,38 @@ export default {
   methods: {
     // 오른쪽으로 스크롤
     scrollRight(sliderIndex) {
-  this.$nextTick(() => {
-    const imageListRef = this.$refs[`imageList${sliderIndex + 1}`];
-    if (!imageListRef) {
-      console.error('imageListRef가 존재하지 않습니다.');
-      return;
-    }
+      this.$nextTick(() => {
+        const imageListRef = this.$refs[`imageList${sliderIndex + 1}`];
+        if (!imageListRef) {
+          console.error("imageListRef가 존재하지 않습니다.");
+          return;
+        }
 
-    const imageWidth = imageListRef.children[0]?.offsetWidth || imageListRef.offsetWidth / 5;
-    const items = this.imagesOrBooks(sliderIndex);
+        const imageWidth =
+          imageListRef.children[0]?.offsetWidth ||
+          imageListRef.offsetWidth / 5;
+        const items = this.imagesOrBooks(sliderIndex);
 
-    if (
-      this.currentIndex[sliderIndex] <
-        items.length - (sliderIndex === 1 ? 1 : 5) &&
-      imageWidth
-    ) {
-      this.currentIndex[sliderIndex] += 1;
-      imageListRef.scrollBy({
-        left: imageWidth,
-        behavior: "smooth",
+        if (
+          this.currentIndex[sliderIndex] <
+            items.length - (sliderIndex === 1 ? 1 : 5) &&
+          imageWidth
+        ) {
+          this.currentIndex[sliderIndex] += 1;
+          imageListRef.scrollBy({
+            left: imageWidth,
+            behavior: "smooth",
+          });
+        } else {
+          // 끝까지 갔다면 다시 처음으로 돌아가기
+          this.currentIndex[sliderIndex] = 0;
+          imageListRef.scrollTo({
+            left: 0,
+            behavior: "smooth",
+          });
+        }
       });
-    } else {
-      // 끝까지 갔다면 다시 처음으로 돌아가기
-      this.currentIndex[sliderIndex] = 0;
-      imageListRef.scrollTo({
-        left: 0,
-        behavior: "smooth",
-      });
-    }
-  });
-},
+    },
     // 자동 슬라이드 시작
     startAutoSlide() {
       this.autoSlideInterval = setInterval(() => {

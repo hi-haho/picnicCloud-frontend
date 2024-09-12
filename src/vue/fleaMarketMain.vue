@@ -1,57 +1,95 @@
 <template>
   <div id="fleamarket">
     <section id="searchSection">
-      <!-- 카테고리 선택 -->
-      <select v-model="category" @change="fetchData">
-        <option v-for="cat in categories" :key="cat.no" :value="cat.no">
-          {{ cat.categoryName }}
-        </option>
-        <option value="0">전체</option>
-      </select>
-      <!-- 검색창 -->
-      <input type="text" v-model="search" />
-      <button @click="searchbtn">검색</button>
+      <div class="search-wrapper">
+        <!-- 카테고리 선택 -->
+        <select v-model="category">
+          <option value="0">전체</option>
+          <option v-for="cat in categories" :key="cat.no" :value="cat.no">
+            {{ cat.categoryName }}
+          </option>
+        </select>
+
+        <!-- 검색창 -->
+        <input
+          type="text"
+          v-model="search"
+          placeholder="상품명 혹은 설명"
+          class="search-input"
+          @keyup.enter="searchAndFilter"
+        />
+
+        <button @click="searchAndFilter">
+          검색
+        </button>
+      </div>
     </section>
+
     <!-- 글쓰기 버튼 -->
     <div v-if="isLoggedIn">
       <button @click="create">글쓰기</button>
     </div>
-    <!-- 게시판 -->
+
+    <!-- 게시판 리스트 -->
     <div>
       <div v-if="content.length > 0">
         <div class="post-container">
-          <div v-for="(item, index) in content" :key="index" class="onedata">
-            <!-- <form class="oneItem" @click="goToDetail(item.no)"> -->
-              <router-link :to="{ name: 'FleaMarketDetail', params: { no: item.no } }" class="oneItem">
-              <input type="hidden" :value="item.filePath" />
-              <span>
+          <div
+            v-for="(item, index) in content"
+            :key="index"
+            class="onedata"
+          >
+            <router-link
+              :to="{ name: 'FleaMarketDetail', params: { no: item.no } }"
+              class="oneItem"
+            >
+              <span class="image">
                 <!-- 첫 번째 이미지 파일만 표시 -->
-                <img :src="getFirstFilePath(item.filePath)" alt="Image description" />
+                <img
+                  :src="getImagePath(item.files[0])"
+                  alt="이미지 설명"
+                  class="thumbnail"
+                />
               </span>
-              <span>{{ item.fileNo }}</span>
               <span>
-                {{ item.no }}
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.contents }}</p>
-                <p><b>{{ item.price }}</b></p>
-                {{ item.category }}
+                <p><b>{{ item.price }} 원</b></p>
+                <p>{{ formatDate(item.createdate) }}</p>
+                <p>❤️ {{ item.favoriteCnt }}</p>
+                <p><b>카테고리: {{ item.categoryName }}</b></p>
               </span>
-              </router-link>
-            <!-- </form> -->
+            </router-link>
           </div>
         </div>
       </div>
+
       <div v-else>
-        <h2>올라온 게시글이 없습니다. 새글을 적어주세요</h2>
+        <h2>게시글이 없습니다. 새글을 작성해보세요!</h2>
       </div>
 
       <!-- Pagination Controls -->
       <div v-if="page && page.totalPages > 1" class="pagination">
-        <button @click="changePage(page.number - 1)" :disabled="page.number === 0">Previous</button>
-        <button v-for="pageNum in paginationPages" :key="pageNum" @click="changePage(pageNum)" :class="{ active: pageNum === page.number }">
+        <button
+          @click="changePage(page.number - 1)"
+          :disabled="page.number === 0"
+        >
+          이전
+        </button>
+        <button
+          v-for="pageNum in paginationPages"
+          :key="pageNum"
+          @click="changePage(pageNum)"
+          :class="{ active: pageNum === page.number }"
+        >
           {{ pageNum + 1 }}
         </button>
-        <button @click="changePage(page.number + 1)" :disabled="page.number === page.totalPages - 1">Next</button>
+        <button
+          @click="changePage(page.number + 1)"
+          :disabled="page.number === page.totalPages - 1"
+        >
+          다음
+        </button>
       </div>
     </div>
   </div>
@@ -61,82 +99,91 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/api/api';
+import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import '@/css/fleamarket.css';
 
 export default {
-  name: 'fleaMarketMain',
+  name: 'FleaMarketMain',
   setup() {
     const content = ref([]);
     const categories = ref([]);
     const category = ref(0); // 선택된 카테고리
-    const search = ref("");
-    const router = useRouter(); // router 객체를 가져옵니다
+    const search = ref('');
+    const router = useRouter();
     const page = ref({
       size: 0,
       number: 0,
       totalElements: 0,
-      totalPages: 1
+      totalPages: 1,
     });
     const pageNumber = ref(0); // 현재 페이지 번호
     const size = ref(9); // 페이지당 아이템 수
-
-     // 로그인 상태 저장할 변수
     const isLoggedIn = ref(false);
 
-    // JWT 토큰이 있는지 확인하여 로그인 상태 설정
+    // 로그인 상태 확인
     const checkLoginStatus = () => {
       const token = localStorage.getItem('token');
-      isLoggedIn.value = !!token;  // 토큰이 있으면 로그인 상태 true
+      isLoggedIn.value = !!token;
     };
 
-    const fetchCategories = async () => {
-      try {
-        const response = await apiClient.get('/categories');
-        categories.value = response.data;
-      } catch (err) {
-        console.error("Category Fetch error: ", err);
-      }
-    };
-
-    const fetchData = async () => {
+    // 카테고리와 검색어를 함께 적용하여 게시글 가져오기
+    const searchAndFilter = async () => {
       try {
         const categoryParam = category.value === 0 ? 0 : category.value;
-        const url = `/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(search.value)}`;
-        
-        const response = await apiClient.get(url,{headers: {
-        
-      }});
-        
+        const url = `/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(
+          search.value
+        )}&sort=createdate,desc`; // 최신 글을 먼저 불러오도록 정렬
+        const response = await apiClient.get(url);
         content.value = response.data.content;
         page.value = response.data.page;
       } catch (err) {
-        console.error("fleaMain Fetch error: ", err);
+        console.error('fleaMain Fetch error:', err);
+      }
+    };
+
+    // 카테고리 가져오기
+    const Axioscategories = async () => {
+      try {
+        const response = await apiClient.get('/categories');
+        categories.value = response.data.map(cat => ({
+          no: Number(cat.no),
+          categoryName: cat.categoryName
+        }));
+      } catch (err) {
+        console.error('Category Axios error: ', err);
       }
     };
 
     const changePage = (newPageNumber) => {
-      newPageNumber.value = newPageNumber;
-      fetchData(); // 메서드 재실행
+      if (newPageNumber >= 0 && newPageNumber < page.value.totalPages) {
+        pageNumber.value = newPageNumber;
+        searchAndFilter(); // 페이지 변경 시에도 카테고리와 검색어 필터를 적용하여 불러오기
+      }
     };
 
-    const getFirstFilePath = (mfilePath) => {
-      return Array.isArray(mfilePath) ? mfilePath[0] : mfilePath;
+    const formatDate = (dateString) => {
+      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+      return new Date(dateString).toLocaleDateString('ko-KR', options);
     };
 
-    const goToDetail = (no) => {
-      router.push({ name: 'FleaMarketDetail', params: { no } });
+    const getImagePath = (file) => {
+      return file ? `http://localhost:8080/image/flea/${file.split('/').pop()}` : ''; // 파일 경로를 절대 경로로 변환
     };
 
     const create = () => {
+      const userId = getUserIdFromToken();
+      if (!userId) {
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        router.push('/login'); // 로그인 페이지로 이동
+        return;
+      }
       router.push('/fleaMarketCreate');
     };
 
-    const searchbtn = () => {
-      pageNumber.value = 0; // 검색 시 첫 페이지로 초기화
-      fetchData();
-    };
-    
     const paginationPages = computed(() => {
-      const range = 2; // 현재 페이지를 기준으로 보여줄 페이지 번호 범위
+      const range = 2;
       const start = Math.max(0, page.value.number - range);
       const end = Math.min(page.value.totalPages - 1, page.value.number + range);
       const pages = [];
@@ -148,8 +195,8 @@ export default {
 
     onMounted(() => {
       checkLoginStatus();
-      fetchCategories();
-      fetchData();
+      Axioscategories();
+      searchAndFilter(); // 초기 화면 로드시에도 카테고리와 검색어 필터를 적용하여 게시글 불러오기
     });
 
     return {
@@ -160,16 +207,15 @@ export default {
       page,
       pageNumber,
       size,
-      fetchCategories,
-      fetchData,
+      searchAndFilter,
+      getImagePath,
       changePage,
-      getFirstFilePath,
-      goToDetail,
+      formatDate,
       create,
-      searchbtn,
+      Axioscategories,
+      paginationPages,
       isLoggedIn,
-      paginationPages
     };
-  }
+  },
 };
 </script>

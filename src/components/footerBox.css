@@ -14,13 +14,36 @@ html, body {
   height: 184px;
   border-top: 1px solid #87ceeb;
   box-sizing: border-box;
-  text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: flex-start; /* 왼쪽 정렬 */
   flex-direction: column;
+  padding-left: 20px; /* 왼쪽에 약간의 패딩 추가 */
   font-family: "Pretendard Variable", Pretendard;
 }
+
+#logo img {
+  position: relative;
+  top: 30px;
+}
+.footer-info p {
+  margin: 5px 0;
+  font-size: 14px;
+  position: relative;
+  top: -70px;
+  color: gray;
+}
+
+.footer-info a {
+  font-weight: bold;
+  text-decoration: none;
+  color: gray;
+}
+
+.footer-info a:hover {
+  color: green;
+}
+
 
 /* 반응형 디자인 */
 

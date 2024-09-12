@@ -6,7 +6,7 @@
         <input type="radio" id="Repo1" value="1" v-model="selectedReportCode">
         <label for="Repo1"> 불쾌한 표현 사용</label><br>
         <input type="radio" id="Repo2" value="2" v-model="selectedReportCode">
-        <label for="Repo2"> 관련없는 리뷰</label><br>
+        <label for="Repo2"> 관련없는 게시글</label><br>
         <input type="radio" id="Repo3" value="3" v-model="selectedReportCode">
         <label for="Repo3"> 스팸/홍보 글</label><br>
         <input type="radio" id="Repo4" value="4" v-model="selectedReportCode">
@@ -22,51 +22,72 @@
 </template>
 
 <script>
-import axios from 'axios';
+import apiClient from "@/api/api.js";
+import { useRouter, useRoute } from "vue-router";
+import { ref } from 'vue';
+import { getUserIdFromToken } from '@/utils/auth';
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import '@/css/fleaReporte.css'
 
 export default {
   name: 'fleaMarketReport',
-  data() {
-    return {
-      selectedReportCode: null,
-      itemNo: null,
-      userId: 'user1' // 로그인 상태에서 실제 사용자 ID를 가져와야 함
-    };
-  },
-  mounted() {
-    const urlParams = new URLSearchParams(window.location.search);
-    this.itemNo = urlParams.get('no');
-    this.userId = urlParams.get('id'); // 실제 로그인 상태에서 가져와야 함
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const selectedReportCode = ref(null); // 선택한 신고 유형의 코드
+    const itemNo = ref(route.params.no); // URL 파라미터에서 아이템 번호 가져오기
+    const userId = ref(getUserIdFromToken()); // 현재 사용자 ID 가져오기
 
-    // 로그인 안된 경우 로그인 페이지로 이동
-    // if (!this.userId) {
-    //   alert('로그인 후 이용해 주세요.');
-    //   window.location.href = 'login.html'; // 로그인 페이지로 리다이렉트
-    // }
-  },
-  methods: {
-    async submitReport() {
-      if (!this.selectedReportCode) {
-        alert('신고 유형을 선택해 주세요.');
+    // 신고 처리 함수
+    const submitReport = async () => {
+      if (selectedReportCode.value === null) {
+        toast.error('신고 유형을 선택해 주세요.');
         return;
       }
+      if (itemNo.value === null) {
+        toast.error('게시글 번호를 다시 선택해 주세요.');
+        return;
+      }
+      if (userId.value === null) {
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해 주세요.");
+        router.push("/login");
+        return;
+      }
+      
       try {
-        await axios.post('/fleaMarket/report', {
-          reportCode: this.selectedReportCode,
-          fleaBoardNo: this.itemNo,
-          userId: this.userId
+        const response = await apiClient.post('/fleaMarket/report', {
+          reportCode: Number(selectedReportCode.value), // 숫자형으로 변환하여 전송
+          fleaBoardNo: Number(itemNo.value), // 숫자형으로 변환하여 전송
+          userId: userId.value
         }, {
           headers: {
             'Content-Type': 'application/json'
           }
         });
-        alert('신고가 완료되었습니다.');
-        window.location.href = `fleamarket.html?no=${this.itemNo}`; // 신고 후 이동할 페이지
+
+       const message = response.data;
+        if (message === "신고 성공") {
+          toast.success('신고가 완료되었습니다.');
+        } else if (message === "이미 신고됨") {
+          toast.warn('이미 신고한 게시글입니다.');
+        } else if (message === "잘못된 입력입니다.") {
+          toast.error('잘못된 입력입니다. 다시 시도해 주세요.');
+        } else {
+          toast.error('알 수 없는 오류가 발생했습니다.');
+        }
+
+        router.push(`/fleaMarketDetail/${itemNo.value}`);
       } catch (error) {
         console.error('Error:', error);
         alert('신고 실패. 다시 시도해 주세요.');
       }
-    }
+    };
+
+    return {
+      selectedReportCode,
+      submitReport
+    };
   }
 };
 </script>

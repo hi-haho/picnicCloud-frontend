@@ -15,8 +15,12 @@ import myPosts from './vue/myPosts.vue';
 import myLikes from './vue/myLikes.vue';
 import bookMain from './vue/bookMain.vue';
 import chatRoom from './vue/chatRoom.vue';
-import chatList from './vue/chatList.vue';
+// import chatList from './vue/chatList.vue';
 import placeInfo from './vue/placeInfo.vue';
+import ResetIdPassword from './vue/resetIdPassword.vue';
+import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
+import updatePassword from './vue/updatePassword.vue'; // updatePassword 컴포넌트 임포트
+import bookInfo from './vue/bookInfo.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -24,7 +28,7 @@ const routes = [
   { path: '/map',component: map},
   { path: '/placeSearch',component: placeSearch},
   { path: '/fleaMarketMain',component: fleaMarketMain},
-  { path: '/fleaMarketReport', component: fleaMarketReport, meta: { requiresAuth: true } },
+  { path: '/fleaMarketReport/:no', component: fleaMarketReport, meta: { requiresAuth: true } },
   { path: '/fleaMarketCreate', component: fleaMarketCreate, meta: { requiresAuth: true } },
   { path: '/fleaMarketUpdate/:no', component: fleaMarketUpdate, meta: { requiresAuth: true } },
   { path: '/fleaMarketDetail/:no', name: 'FleaMarketDetail', component: fleaMarketDetail },
@@ -34,7 +38,7 @@ const routes = [
   { path: '/myPosts', component: myPosts, meta: { requiresAuth: true } },
   { path: '/myLikes', component: myLikes, meta: { requiresAuth: true } },
   { path: '/bookMain', component: bookMain },
-  { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
+  // { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
   { path: '/chatRoom/:chatRoomId/:senderId/:receiverId', name: 'chatRoom', component:chatRoom, 
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId),
@@ -47,7 +51,25 @@ const routes = [
       chatRoomId: Number(route.params.chatRoomId)
     })
   },
-  { path: '/placeInfo', component: placeInfo, meta: { requiresAuth: true } },
+  { path: '/placeInfo', component: placeInfo },
+  { path: '/resetIdPassword', component: ResetIdPassword },
+  { 
+    path: '/auth/reset-password', 
+    component: ResetPasswordConfirm, 
+    props: (route) => ({ token: route.query.token }) // 쿼리 파라미터로 토큰 전달
+  },
+  { 
+    path: '/update-password', 
+    component: updatePassword, 
+    props: (route) => ({ token: route.query.token }) // updatePassword 페이지로 토큰 전달
+  },
+  { 
+    path: '/book-info/:no', // BookDetail 페이지 경로 추가
+    name: 'bookInfo', 
+    component: bookInfo , 
+    props: true // URL 파라미터를 props로 전달
+  }
+  
 ];
 
 const router = createRouter({

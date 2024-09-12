@@ -1,52 +1,66 @@
 <template>
-  <div id="detail">
-    <div v-if="items">
-      <!-- 이미지 및 아이템 정보 -->
-      <div class="item-container">
-        <img :src="getFirstFilePath(items.filePath)" alt="first Image">
-        <div class="item-info">
-          <span>{{ showEditButtons }}</span>
-          <span class="item-title">{{ items.title }}</span>
-          <span class="item-price">{{ items.price }}</span>
-          <span class="item-category">{{ items.categoryName }}</span>
-          <div class="item-buttons">
-            <button v-if="!isAuthor" @click="createChatRoom">채팅방</button>
-          </div>
+  <div id="detailPage" v-if="items">
+    <!-- 상단: 이미지와 제목/가격 섹션 -->
+    <div class="upper-section">
+      <div class="image-container">
+        <img
+          v-if="items && items.files && items.files.length > 0"
+          :src="getImagePath(items.files[0])"
+          alt="이미지 설명"
+          class="thumbnail"
+        />
+        <div v-else class="no-image-placeholder">이미지가 없습니다</div>
+      </div>
+
+      <div class="info-container">
+        <h2>{{ items.title }}</h2>
+        <h3 v-if="items.price !== null">₩{{ items.price.toLocaleString() }}</h3>
+        <h3 v-else>가격 정보 없음</h3>
+
+        <!-- 좋아요 버튼 및 좋아요 수 -->
+        <div class="like-section">
+          <button @click="toggleFavorite">
+            <span>{{ items.favorite ? '❤️' : '🩶' }}</span>
+          </button>
         </div>
-      </div>
 
-      <!-- 상단 버튼 (목록보기, 수정, 삭제) -->
-      <div>
-        <span v-if="showEditButtons">
-          <button @click="fleaUpdate">수정</button>
-          <button @click="fleaDelete">삭제</button>
-          <button v-if="!isAuthor" @click="report(items.no)">신고</button>
-        </span>
-        <span>{{ items.favoriteCnt }}</span>
-        <button @click="toggleFavorite">
-          <img :src="items.favorite ? './image/icon/liked-icon.png' : './image/icon/unliked-icon.png'" alt="Favorite">
-        </button>
-        <button @click="list">목록보기</button>
-      </div>
+        <!-- 채팅 -->
+        <div v-if="!isAuthor">
+          <button @click="createChatRoom">채팅방</button>
+        </div>
 
-      <!-- 하단 상세 정보 -->
-      <div class="item-description">
-        <h3>상품 상세 정보</h3>
-        <p>{{ items.contents }}</p>
+        <!-- 상품 카테고리 및 등록일 또는 수정일 -->
+        <p>카테고리: {{ items.categoryName }}</p>
+        <p>{{ getDisplayDate() }}</p>
       </div>
     </div>
 
-    <div v-else>
-      <h2>Loading...</h2>
+    <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
+    <div class="item-buttons">
+      <span v-if="showEditButtons">
+        <button @click="fleaUpdate">수정</button>
+        <button @click="fleaDelete">삭제</button>
+      </span>
+      <button v-if="!isAuthor" @click="report(items.no)">신고</button>
+      <button @click="list">목록보기</button>
+    </div>
+
+    <!-- 하단: 상품 설명 및 채팅방 생성 버튼 -->
+    <div class="lower-section">
+      <h4>상품 상세 정보</h4>
+      <p>{{ items.contents }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import jwt_decode from 'jwt-decode';
-import apiClient from '@/api/api.js';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import apiClient from '@/api/api.js';
+import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import "@/css/fleaDetail.css";
 
 export default {
   name: 'fleaMarketDetail',
@@ -57,25 +71,10 @@ export default {
     const items = ref(null);
     const isLoggedIn = ref(false);
     const isAuthor = ref(false);
-    
-    const getUserIdFromToken = () => {
-      const token = localStorage.getItem('token');  // JWT 토큰을 가져옴
-      if (!token) return null;
-      const decodedToken = jwt_decode(token);
-      const currentTime = Math.floor(Date.now() / 1000);
-
-      if (decodedToken.exp < currentTime) {
-        // 토큰이 만료되었을 경우
-        localStorage.removeItem('token');
-        return null;
-      }
-      
-      return decodedToken.sub;
-    };
 
     const checkLoginStatus = () => {
-      const token = localStorage.getItem('token');
-      isLoggedIn.value = !!token;  // 토큰이 있으면 로그인 상태 true
+      const token = localStorage.getItem("token");
+      isLoggedIn.value = !!token; // 토큰이 있으면 로그인 상태 true
     };
 
     const detailOne = async () => {
@@ -85,51 +84,83 @@ export default {
           items.value = response.data;
           const userId = getUserIdFromToken();
           isAuthor.value = userId === response.data.userId;
+
+          // 로컬 스토리지에서 좋아요 상태를 확인하고 업데이트
+          const likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+          items.value.favorite = likedItems.includes(no);
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
+          toast.error("상품 정보를 불러오는 데 실패했습니다.", {
+            position: "top-center",
+          });
         }
       } else {
         console.log("URL에 번호 없음");
+        toast.error("유효하지 않은 URL입니다.", {
+          position: "top-center",
+        });
       }
     };
 
-    const getFirstFilePath = (filePath) => {
-      return Array.isArray(filePath) ? filePath[0] : filePath;
+    const getImagePath = (file) => {
+      return file ? `http://localhost:8080${file}` : '';
     };
 
-    // 채팅 관련
-    const createChatRoom = async () => {
-      const token = localStorage.getItem('token');
+    // 날짜 형식 변환 함수
+    const formatDate = (dateString) => {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      return new Date(dateString).toLocaleDateString("ko-KR", options);
+    };
+
+    // 등록일 또는 수정일 표시 함수
+    const getDisplayDate = () => {
+      if (items.value && items.value.updatedate) {
+        return `수정일: ${formatDate(items.value.updatedate)}`;
+      } else if (items.value && items.value.createdate) {
+        return `등록일: ${formatDate(items.value.createdate)}`;
+      }
+      return "";
+    };
+
+    // 좋아요 토글
+    const toggleFavorite = async () => {
       const userId = getUserIdFromToken();
-
-      if (!token || !userId) {
-          alert('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
-          router.push('/login');
-          return;
+      if (!userId) {
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
+        router.push("/login"); // 로그인 페이지로 이동
+        return;
       }
-
       try {
-          const response = await apiClient.post('/chat/create', {
-              fleaMarketNo: no
-          }, {
-              headers: {
-                  'Authorization': `Bearer ${token}`,
-                  'Content-Type': 'application/json'
-              }
-          });
+        const response = await apiClient.patch("/fleaMarket/favorite", {
+          userId: userId,
+          fleaMarketNo: no,
+        });
 
-          const chatRoomId = response.data.no;
-          const sellerIdFromResponse = response.data.sellerId;
-          if (chatRoomId) {
-              router.push({
-                  name: 'chatRoom',
-                  params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse }
-              });
-          } else {
-              console.error('채팅방 ID를 가져오지 못했습니다.');
+        // 좋아요 상태 및 카운트 업데이트
+        items.value.favorite = !items.value.favorite;
+        items.value.favoriteCnt = response.data.favoriteCount;
+
+        // 로컬 스토리지에서 좋아요 상태 업데이트
+        let likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+        if (items.value.favorite) {
+          if (!likedItems.includes(no)) {
+            likedItems.push(no);
           }
-      } catch (error) {
-          console.error('채팅방 생성 실패:', error);
+        } else {
+          likedItems = likedItems.filter(itemNo => itemNo !== no);
+        }
+        localStorage.setItem('likedItems', JSON.stringify(likedItems));
+
+        toast.success("좋아요 상태가 변경되었습니다.", {
+          position: "top-center",
+        });
+      } catch (err) {
+        console.log("toggleFavorite Axios error: ", err);
+        toast.error("좋아요 상태 변경에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     };
 
@@ -138,74 +169,119 @@ export default {
     };
 
     const fleaDelete = async () => {
-      const res = confirm('다시 되돌릴 수 없습니다. 삭제하시겠습니까?');
+      const res = confirm("다시 되돌릴 수 없습니다. 삭제하시겠습니까?");
       if (!res) {
-        console.log('취소하였습니다.');
+        console.log("취소하였습니다.");
       } else {
         try {
           await apiClient.delete(`/fleaMarket/${no}`);
-          alert('삭제되었습니다.');
-          router.push('/fleaMarketMain');
+          toast.success("삭제되었습니다.", {
+            position: "top-center",
+          });
+          router.push("/fleaMarketMain");
         } catch (err) {
-          alert('삭제가 실패했습니다.');
-          router.push('/fleaMarketMain');
+          toast.error("삭제가 실패했습니다.", {
+            position: "top-center",
+          });
+          router.push("/fleaMarketMain");
         }
       }
     };
 
     const list = () => {
-      router.push('/fleaMarketMain');
+      router.push("/fleaMarketMain");
     };
 
-    const toggleFavorite = async () => {
+    // 채팅방 생성
+    const createChatRoom = async () => {
+      const token = localStorage.getItem("token");
       const userId = getUserIdFromToken();
-      if (!userId) {
-        alert('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
-        router.push('/login');  // 로그인 페이지로 이동
+
+      if (!token || !userId) {
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
+        router.push("/login");
         return;
       }
+
       try {
-        const response = await apiClient.patch('/fleaMarket/favorite', {
-          userId: userId,
-          fleaMarketNo: no
+        const response = await apiClient.post(
+          "/chat/create",
+          {
+            fleaMarketNo: no,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const chatRoomId = response.data.no;
+        const sellerIdFromResponse = response.data.sellerId;
+        if (chatRoomId) {
+          router.push({
+            name: "chatRoom",
+            params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse },
+          });
+          toast.success("채팅방이 생성되었습니다.", {
+            position: "top-center",
+          });
+        } else {
+          console.error("채팅방 ID를 가져오지 못했습니다.");
+          toast.error("채팅방 생성에 실패했습니다.", {
+            position: "top-center",
+          });
+        }
+      } catch (error) {
+        console.error("채팅방 생성 실패:", error);
+        toast.error("채팅방 생성에 실패했습니다.", {
+          position: "top-center",
         });
-        items.value.favorite = !items.value.favorite;
-        items.value.favoriteCnt = response.data.favoriteCount;
-      } catch (err) {
-        console.log("toggleFavorite Axios error: ", err);
       }
     };
 
     const report = async (no) => {
+      const userId = getUserIdFromToken();
+      if (!userId) {
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
+        router.push("/login"); // 로그인 페이지로 이동
+        return;
+      }
       try {
-        await apiClient.post('/fleaMarket/report', { no });
-        alert('신고가 완료되었습니다.');
+        router.push(`/fleaMarketReport/${no}`);
       } catch (err) {
         console.log("report Axios error: ", err);
-        alert('신고에 실패했습니다.');
+        toast.error("신고에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     };
 
-    onMounted(async() => {
+    onMounted(async () => {
       checkLoginStatus();
       await detailOne();
     });
-
     const showEditButtons = computed(() => isLoggedIn.value && isAuthor.value);
 
-    return {
-      items,
-      getFirstFilePath,
-      fleaUpdate,
-      fleaDelete,
-      list,
-      toggleFavorite,
-      createChatRoom,
-      report,
-      showEditButtons,
-      isAuthor,
-      isLoggedIn
-    };
-  }
+return {
+  items,
+  getImagePath,
+  getDisplayDate,
+  fleaUpdate,
+  fleaDelete,
+  list,
+  toggleFavorite,
+  createChatRoom,
+  report,
+  showEditButtons,
+  isAuthor,
+  isLoggedIn,
+};
+},
 };
 </script>
