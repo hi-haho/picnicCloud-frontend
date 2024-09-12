@@ -52,7 +52,7 @@
         </div>
       </article>
       <article id="body3">
-        <h3>올 가을에는 마음을 살찌워 보아요.</h3>
+        <h3>도서 추천 : 나의 감정 알아가기</h3>
         <div class="recommend">
           <div class="wrap">
             <div class="book book1" aria-label="추천 도서 1"></div>
