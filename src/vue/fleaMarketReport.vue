@@ -26,6 +26,8 @@ import apiClient from "@/api/api.js";
 import { useRouter, useRoute } from "vue-router";
 import { ref } from 'vue';
 import { getUserIdFromToken } from '@/utils/auth';
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import '@/css/fleaReporte.css'
 
 export default {
@@ -40,15 +42,15 @@ export default {
     // 신고 처리 함수
     const submitReport = async () => {
       if (selectedReportCode.value === null) {
-        alert('신고 유형을 선택해 주세요.');
+        toast.error('신고 유형을 선택해 주세요.');
         return;
       }
       if (itemNo.value === null) {
-        alert('게시글 번호를 다시 선택해 주세요.');
+        toast.error('게시글 번호를 다시 선택해 주세요.');
         return;
       }
       if (userId.value === null) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해 주세요.");
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해 주세요.");
         router.push("/login");
         return;
       }
@@ -66,13 +68,13 @@ export default {
 
        const message = response.data;
         if (message === "신고 성공") {
-          alert('신고가 완료되었습니다.');
+          toast.success('신고가 완료되었습니다.');
         } else if (message === "이미 신고됨") {
-          alert('이미 신고한 게시글입니다.');
+          toast.warn('이미 신고한 게시글입니다.');
         } else if (message === "잘못된 입력입니다.") {
-          alert('잘못된 입력입니다. 다시 시도해 주세요.');
+          toast.error('잘못된 입력입니다. 다시 시도해 주세요.');
         } else {
-          alert('알 수 없는 오류가 발생했습니다.');
+          toast.error('알 수 없는 오류가 발생했습니다.');
         }
 
         router.push(`/fleaMarketDetail/${itemNo.value}`);

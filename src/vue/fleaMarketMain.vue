@@ -100,6 +100,8 @@ import { ref, onMounted, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import apiClient from '@/api/api';
 import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import '@/css/fleamarket.css';
 
 export default {
@@ -173,7 +175,7 @@ export default {
     const create = () => {
       const userId = getUserIdFromToken();
       if (!userId) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
         router.push('/login'); // 로그인 페이지로 이동
         return;
       }

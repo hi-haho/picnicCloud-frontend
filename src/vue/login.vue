@@ -57,6 +57,7 @@ export default {
     // 로그인 후 페이지 리다이렉트
     this.$router.push('/');
   } catch (error) {
+    console.log('에러 발생!', error);
     console.error('로그인 실패:', error);
     if (error.response && error.response.data) {
       // 서버에서 반환한 오류 메시지를 사용

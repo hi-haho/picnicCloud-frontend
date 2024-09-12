@@ -58,6 +58,8 @@
 
 <script>
 import apiClient from '@/api/api.js';
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 
 export default {
   name: "KakaoMap",
@@ -156,7 +158,7 @@ export default {
           }
         );
       } else {
-        alert("현재 위치를 사용할 수 없습니다.");
+        toast.error("현재 위치를 사용할 수 없습니다.");
       }
     },
     searchPlaces() {
@@ -179,9 +181,9 @@ export default {
           // 검색된 장소들에 맞게 지도의 중심과 확대/축소를 조정
           this.map.setBounds(bounds);
         } else if (status === window.kakao.maps.services.Status.ZERO_RESULT) {
-          alert("검색 결과가 없습니다.");
+          toast.warn("검색 결과가 없습니다.");
         } else {
-          alert("검색 중 오류가 발생했습니다.");
+          toast.error("검색 중 오류가 발생했습니다.");
         }
       });
     },
@@ -349,7 +351,7 @@ export default {
           this.map.setCenter(locPosition);
         });
       } else {
-        alert("현재 위치를 사용할 수 없습니다.");
+        toast.error("현재 위치를 사용할 수 없습니다.");
       }
     },
     filterByCategory(category) {
