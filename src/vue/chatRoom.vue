@@ -6,7 +6,7 @@
     </div>
 
     <!-- 게시판 정보 표시 -->
-    <div v-if="board">
+    <div class="board-container" v-if="board">
       <h2>{{ board.title }}</h2>
       <p>가격: {{ board.price }}</p>
       <p>{{ board.contents }}</p>
@@ -61,7 +61,7 @@ export default {
     return {
       messages: [],
       newMessage: "",
-      board: null,
+      board: {},
       stompClient: null,
       showSiteNotification: false, // 알림 표시 여부
       siteNotificationMessage: "", // 알림 메시지 내용
@@ -173,18 +173,27 @@ export default {
           },
         });
 
-        if (!response.data || !Array.isArray(response.data.messages)) {
-          console.error("응답 데이터가 유효하지 않습니다:", response.data);
-          return;
-        }
+        console.log("전체 응답 데이터:", response.data); // 전체 응답 확인
 
-        this.messages = response.data.messages;
-        this.scrollToBottom();
+        if (response.data) {
+          this.messages = response.data.messages; // 메시지 목록 저장
+
+          // board 데이터가 따로 없는 경우 응답 데이터를 직접 할당
+          this.board = {
+            title: response.data.title,
+            price: response.data.price,
+            contents: response.data.contents || "내용 없음", // 필요한 경우 기본값 설정
+          };
+          console.log("저장된 board 데이터:", this.board); // 저장된 board 데이터 확인
+          this.scrollToBottom();
+        } else {
+          console.error("응답 데이터가 유효하지 않습니다:", response.data);
+        }
       } catch (error) {
-        console.error("메시지 불러오기 실패:", error);
+        console.error("메시지 및 게시판 정보 불러오기 실패:", error);
       }
     },
-
+    
     // 메시지 전송 함수
     async sendMessage() {
       if (this.newMessage.trim() === "") return;

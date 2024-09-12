@@ -212,6 +212,25 @@ a {
   cursor: pointer; /* 목록 항목에 커서 변경 */
 }
 
+.chat-room-otherId {
+  font-size: 16px; /* 보낸 사람의 글씨 크기 */
+  font-weight: bold; /* 보낸 사람의 글씨를 굵게 */
+}
+
+.chat-room-message {
+  font-size: 15px; /* 메시지 내용의 글씨 크기 */
+  color: #333; /* 메시지 내용의 색상 */
+  margin-left: 5px; /* 보낸 사람과 메시지 사이의 간격 */
+  margin-top: 5px;
+}
+
+.chat-room-time {
+  font-size: 12px; /* 메시지 시간의 글씨 크기 */
+  color: #888; /* 시간 색상 */
+  margin-top: 3px; /* 메시지와 시간 간격 */
+}
+
+
 /* 작은 "X" 버튼 스타일 */
 .close-button {
   position: absolute;
@@ -227,6 +246,7 @@ a {
 .close-button:hover {
   color: #ff0000;
 }
+
 }
 
 /* 모바일 화면 (max-width 500px) */
@@ -286,5 +306,4 @@ a {
     margin-top: 10px;
   }
 
-  
 }

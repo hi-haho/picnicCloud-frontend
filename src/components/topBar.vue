@@ -27,11 +27,13 @@
                 class="chat-room-item"
                 @click="enterChatRoom(chatRoom.chatRoomNo)"
               >
-                <span>{{ chatRoom.senderId }} {{ chatRoom.lastMessage }}</span>
-                <br />
-                <small>{{
+                <!-- 보낸 사람을 별도의 태그로 분리 -->
+                <span class="chat-room-otherId">{{ chatRoom.otherId }}</span>
+                <!-- 메시지 내용을 별도의 태그로 분리 -->
+                <span class="chat-room-message">{{ chatRoom.lastMessage }}</span>
+                <span class="chat-room-time">{{
                   formatLastMessageTime(chatRoom.lastMessageTime)
-                }}</small>
+                }}</span>
                 <!-- 나가기 버튼 -->
                 <button
                   class="close-button"
@@ -41,7 +43,6 @@
                 </button>
               </div>
               <div v-if="chatRooms.length === 0">채팅방이 없습니다</div>
-              <button @click="toggleChatModal">닫기</button>
             </div>
           </li>
         </ul>
