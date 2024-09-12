@@ -57,6 +57,8 @@ import { onMounted, ref } from 'vue';
 import apiClient from '@/api/api';
 import jwt_decode from 'jwt-decode'; // Import jwt_decode
 import { useRouter } from 'vue-router';
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import '@/css/fleaCreate.css';
 
 export default {
@@ -114,7 +116,10 @@ export default {
 
     const fleamarketInput = async () => {
       const token = localStorage.getItem('token');
-      if (!validateForm()) return;
+      if (!validateForm()) {
+        toast.error("폼을 모두 작성해 주세요.");
+        return;
+      }
 
       const formData = new FormData();
       const dto = {
@@ -140,10 +145,11 @@ export default {
         });
 
         console.log(response.data);
-        alert('성공');
+        toast.success('성공적으로 업로드되었습니다.');
         router.push('/fleaMarketMain');
       } catch (err) {
         console.error('Error:', err);
+        toast.error('업로드에 실패했습니다.');
       }
     };
 
@@ -176,4 +182,3 @@ export default {
   },
 };
 </script>
-
