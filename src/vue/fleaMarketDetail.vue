@@ -57,7 +57,9 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api/api.js';
-import { getUserIdFromToken } from '@/utils/auth';
+import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import "@/css/fleaDetail.css";
 
 export default {
@@ -88,9 +90,15 @@ export default {
           items.value.favorite = likedItems.includes(no);
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
+          toast.error("상품 정보를 불러오는 데 실패했습니다.", {
+            position: "top-center",
+          });
         }
       } else {
         console.log("URL에 번호 없음");
+        toast.error("유효하지 않은 URL입니다.", {
+          position: "top-center",
+        });
       }
     };
 
@@ -118,7 +126,9 @@ export default {
     const toggleFavorite = async () => {
       const userId = getUserIdFromToken();
       if (!userId) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
         router.push("/login"); // 로그인 페이지로 이동
         return;
       }
@@ -143,8 +153,14 @@ export default {
         }
         localStorage.setItem('likedItems', JSON.stringify(likedItems));
 
+        toast.success("좋아요 상태가 변경되었습니다.", {
+          position: "top-center",
+        });
       } catch (err) {
         console.log("toggleFavorite Axios error: ", err);
+        toast.error("좋아요 상태 변경에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     };
 
@@ -159,10 +175,14 @@ export default {
       } else {
         try {
           await apiClient.delete(`/fleaMarket/${no}`);
-          alert("삭제되었습니다.");
+          toast.success("삭제되었습니다.", {
+            position: "top-center",
+          });
           router.push("/fleaMarketMain");
         } catch (err) {
-          alert("삭제가 실패했습니다.");
+          toast.error("삭제가 실패했습니다.", {
+            position: "top-center",
+          });
           router.push("/fleaMarketMain");
         }
       }
@@ -178,7 +198,9 @@ export default {
       const userId = getUserIdFromToken();
 
       if (!token || !userId) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
         router.push("/login");
         return;
       }
@@ -204,18 +226,29 @@ export default {
             name: "chatRoom",
             params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse },
           });
+          toast.success("채팅방이 생성되었습니다.", {
+            position: "top-center",
+          });
         } else {
           console.error("채팅방 ID를 가져오지 못했습니다.");
+          toast.error("채팅방 생성에 실패했습니다.", {
+            position: "top-center",
+          });
         }
       } catch (error) {
         console.error("채팅방 생성 실패:", error);
+        toast.error("채팅방 생성에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     };
 
     const report = async (no) => {
       const userId = getUserIdFromToken();
       if (!userId) {
-        alert("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
+        toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
+        });
         router.push("/login"); // 로그인 페이지로 이동
         return;
       }
@@ -223,7 +256,9 @@ export default {
         router.push(`/fleaMarketReport/${no}`);
       } catch (err) {
         console.log("report Axios error: ", err);
-        alert("신고에 실패했습니다.");
+        toast.error("신고에 실패했습니다.", {
+          position: "top-center",
+        });
       }
     };
 
@@ -231,23 +266,22 @@ export default {
       checkLoginStatus();
       await detailOne();
     });
-
     const showEditButtons = computed(() => isLoggedIn.value && isAuthor.value);
 
-    return {
-      items,
-      getImagePath,
-      getDisplayDate,
-      fleaUpdate,
-      fleaDelete,
-      list,
-      toggleFavorite,
-      createChatRoom,
-      report,
-      showEditButtons,
-      isAuthor,
-      isLoggedIn,
-    };
-  },
+return {
+  items,
+  getImagePath,
+  getDisplayDate,
+  fleaUpdate,
+  fleaDelete,
+  list,
+  toggleFavorite,
+  createChatRoom,
+  report,
+  showEditButtons,
+  isAuthor,
+  isLoggedIn,
+};
+},
 };
 </script>
