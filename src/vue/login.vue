@@ -20,6 +20,8 @@
           />
         </div>
         <button type="submit" class="login-button">로그인</button>
+        <button type="button" class="reset-button" @click="handleReset">아이디찾기 / 비밀번호재설정</button>
+
       </form>
       <div class="links">
         <router-link to="/signUp">회원가입</router-link>
@@ -64,8 +66,12 @@ export default {
       toast.error('로그인 실패: 서버와의 연결 문제.');
       }
     }
-  }
-  }
+    },
+    handleReset() {
+      // 아이디찾기/비밀번호 재설정 페이지로 리다이렉트
+      this.$router.push('/resetIdPassword');
+    },
+  },
 };
 </script>
 
