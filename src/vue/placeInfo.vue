@@ -42,6 +42,10 @@
             </button>
             {{ userHasLiked ? "좋아요 취소" : "좋아요" }} ({{ placelikeCount }})
           </p>
+          <!-- 목록으로 돌아가기 버튼 -->
+          <p>
+            <button @click="goBackToList" class="back-button">목록으로 돌아가기</button>
+          </p>
         </div>
       </div>
 
@@ -61,7 +65,7 @@
           :class="{ active: activeTab === 'tab2' }"
           @click="activeTab = 'tab2'"
         >
-          리뷰
+          리뷰( {{place.reviewCount}} )
         </li>
       </ul>
 
@@ -176,12 +180,16 @@
 </template>
 
 <script>
-import axios from "axios";
+import apiClient from "@/api/api.js";
+import { getUserIdFromToken } from '@/utils/auth';
+// import { useRouter, useRoute } from "vue-router";
 import "../css/placeInfo.css";
+
 export default {
   name: "PlaceInfo",
   data() {
     return {
+      userId:"",
       place: null,
       activeTab: "tab1",
       placelikeCount: 0,
@@ -194,18 +202,25 @@ export default {
     };
   },
   methods: {
+    initializeUser() {
+      this.userId = getUserIdFromToken(this.token);
+    },
+    goBackToList() {
+      this.$router.back();
+    },
+
     // 장소 정보 및 좋아요 상태 초기화
-    showInfo() {
+    async showInfo() {
       const no = this.$route.query.placeNo;
       if (no) {
-        axios
-          .get(`http://localhost:8080/places/${no}`)
+        await apiClient
+          .get(`/places/${no}?userId=${this.userId}`)
           .then((res) => {
             this.place = res.data;
             // 좋아요 수를 가져오는 메서드 호출
             this.fetchPlaceLikeCount(no);
             // 사용자가 좋아요를 눌렀는지 확인하는 메서드 호출
-            this.checkUserLikeStatus(no);
+            this.checkLikeStatus(no);
           })
           .catch((err) => {
             console.log("장소 정보: ", err);
@@ -215,9 +230,9 @@ export default {
       }
     },
     // 장소 좋아요 수 가져오기
-    fetchPlaceLikeCount(placeNo) {
-      axios
-        .get(`http://localhost:8080/places/${placeNo}/likes-count`)
+    async fetchPlaceLikeCount(placeNo) {
+      await apiClient
+        .get(`/places/${placeNo}/likes-count`)
         .then((res) => {
           this.placelikeCount = res.data;
         })
@@ -226,15 +241,17 @@ export default {
         });
     },
     // 장소 좋아요 상태 확인 및 토글 처리
-    checkLikeStatus() {
-      if (!this.place || !this.place.placeNo) return;
-      axios
-        .post(
-          `http://localhost:8080/places/${this.place.placeNo}/likes-toggle`,
-          null,
+    async checkLikeStatus() {
+      if (!this.place || !this.place.no) return;
+      await apiClient
+        .get(
+          `/places/${this.place.no}/likes-status`,
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
             },
           }
         )
@@ -247,23 +264,25 @@ export default {
         });
     },
 
-    // 장소좋아요 버튼 클릭
-    toggleLike() {
+    // 장소 좋아요 버튼 클릭
+    async toggleLike() {
       if (!this.token) {
         alert("로그인이 필요합니다.");
         this.$router.push({ name: "Login" }); // 로그인 페이지로 리다이렉트
         return;
       }
+      if (!this.place || !this.place.no) return;
 
-      if (!this.place || !this.place.placeNo) return;
-
-      axios
+      await apiClient
         .post(
-          `http://localhost:8080/places/${this.place.placeNo}/likes-toggle`,
+          `/places/${this.place.no}/likes-toggle`,
           null,
           {
             headers: {
               Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
             },
           }
         )
@@ -278,7 +297,7 @@ export default {
 
     // 장소 이미지관리
     getImageUrl(imagePath) {
-      return imagePath ? `http://localhost:8080/${imagePath}` : "";
+      return imagePath ? `/${imagePath}` : "";
     },
     getDefaultImageUrl(placeType) {
       const defaultImageUrls = {
@@ -303,8 +322,8 @@ export default {
 
     //리뷰 조회
     fetchReviews(placeNo) {
-      axios
-        .get(`http://localhost:8080/reviews/${placeNo}`, {
+      apiClient
+        .get(`/reviews/${placeNo}`, {
           params: {
             page: 0,
             size: 10,
@@ -325,6 +344,7 @@ export default {
     //리뷰삭제
   },
   mounted() {
+    this.initializeUser();
     this.showInfo();
   },
 };

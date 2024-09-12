@@ -247,6 +247,7 @@ export default {
       const userId = getUserIdFromToken();
       if (!userId) {
         toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
+          position: "top-center",
         });
         router.push("/login"); // 로그인 페이지로 이동
         return;
