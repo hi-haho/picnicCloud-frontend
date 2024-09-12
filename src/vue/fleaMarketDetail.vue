@@ -57,7 +57,7 @@
 import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api/api.js';
-import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
+import { getUserIdFromToken } from '@/utils/auth';
 import "@/css/fleaDetail.css";
 
 export default {
