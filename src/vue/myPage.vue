@@ -1,9 +1,15 @@
 <template>
   <div id="myPageMain">
     <div id="buttonArea">
-      <router-link to="/myPage" exact-active-class="active-link">내 정보</router-link>
-      <router-link to="/myPosts" exact-active-class="active-link">내 게시글</router-link>
-      <router-link to="/myLikes" exact-active-class="active-link">내 찜</router-link>
+      <router-link to="/myPage" exact-active-class="active-link"
+        >내 정보</router-link
+      >
+      <router-link to="/myPosts" exact-active-class="active-link"
+        >내 게시글</router-link
+      >
+      <router-link to="/myLikes" exact-active-class="active-link"
+        >내 찜</router-link
+      >
     </div>
     <div id="contentsArea">
       <h3>내 정보</h3>
@@ -15,6 +21,9 @@
 
       <!-- 비밀번호 변경 버튼 -->
       <button @click="openPasswordChangeModal">비밀번호 변경</button>
+
+      <!-- 계정 비활성화 버튼 -->
+      <button @click="navigateToDeactivationConfirm">계정 비활성화</button>
     </div>
 
     <!-- 비밀번호 변경 모달 -->
@@ -71,6 +80,10 @@ export default {
   },
   methods: {
     ...mapActions(["logout"]),
+
+    navigateToDeactivationConfirm() {
+      this.$router.push("/deactivate-confirm");
+    },
 
     async updateUserInfo() {
       try {
