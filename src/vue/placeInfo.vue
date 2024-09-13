@@ -25,7 +25,7 @@
           <p>{{ place.placeType }}</p>
           <p>
             {{
-              place.address ? `주소 : ${place.address}` : "주소 정보가 없습니다"
+              place.address ? `주소: ${place.address}` : "주소 정보가 없습니다"
             }}
           </p>
           <p>
@@ -150,23 +150,24 @@
 
             <!-- 리뷰 목록 -->
             <h2>리뷰 목록</h2>
+            
             <ul>
               <li v-for="review in reviews" :key="review.no">
                 <h3 v-if="review.id">{{ review.id }}님의 리뷰</h3>
                 <p v-if="review.contents">내용: {{ review.contents }}</p>
                 <p v-if="review.point !== null">평점: {{ review.point }}점</p>
-                <p v-if="review.likeCnt !== null">
-                  좋아요 수: {{ review.likeCnt }}
-                </p>
                 <p v-if="review.createDate">
                   작성일: {{ formatDate(review.createDate) }}
                 </p>
                 <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
-                <!-- 디버깅용 출력 -->
-                <p>로그인한 사용자 ID: {{ loggedInUserId }}</p>
-                <p>리뷰 작성자 ID: {{ review.id }}</p>
-
+                <!-- 좋아요 버튼 및 좋아요 수 -->
+                <button @click="toggleReviewLike(review)" class="like-button">
+                  <span>{{ review.userHasLiked ? "❤️" : "🩶" }}</span>
+                </button>
+                {{ review.userHasLiked ? "좋아요 취소" : "좋아요" }} ({{
+                  review.likeCnt
+                }})
                 <!-- 수정, 삭제 및 신고 버튼 -->
                 <div v-if="isLoggedIn">
                   <button
@@ -211,6 +212,7 @@
 <script>
 import apiClient from "@/api/api.js";
 import { getUserIdFromToken } from "@/utils/auth";
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
 import "../css/placeInfo.css";
 
 export default {
@@ -313,7 +315,7 @@ export default {
     // 장소 좋아요 버튼 클릭
     async toggleLike() {
       if (!this.token) {
-        alert("로그인이 필요합니다.");
+        toast.error('로그인이 필요합니다.');
         this.$router.push({ name: "Login" }); // 로그인 페이지로 리다이렉트
         return;
       }
@@ -380,6 +382,11 @@ export default {
           this.currentPage = response.data.number;
           this.totalPages = response.data.totalPages;
 
+          // 각 리뷰에 대해 좋아요 상태 및 좋아요 수 확인
+          this.reviews.forEach((review) => {
+            this.checkReviewLikeStatus(review);
+          });
+
           // 응답 데이터 확인 (디버깅 용도)
           console.log(this.reviews);
         })
@@ -387,9 +394,67 @@ export default {
           console.error("리뷰를 가져오는 중 오류 발생:", error);
         });
     },
+    //리뷰 좋아요 상태 확인 및 좋아요 수 가져오기
+    async checkReviewLikeStatus(review) {
+      await apiClient
+        .get(`/reviews/${review.no}/likes-status`, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          review.userHasLiked = res.data.liked; // 서버가 반환하는 좋아요 상태
+          review.likeCnt = res.data.likeCount; // 서버에서 반환하는 좋아요 수
+        })
+        .catch((err) => {
+          console.log("리뷰 좋아요 상태 확인 오류: ", err);
+        });
+    },
+    //리뷰 좋아요 버튼 클릭
+    async toggleReviewLike(review) {
+      if (!this.token) {
+        toast.error('로그인이 필요합니다.');
+        this.$router.push({ name: "Login" });
+        return;
+      }
+      // 서버에 좋아요 상태를 업데이트 요청
+      await apiClient
+        .post(`/reviews/${review.no}/likes-toggle`, null, {
+          headers: {
+            Authorization: `Bearer ${this.token}`,
+          },
+          params: {
+            userId: this.userId,
+          },
+        })
+        .then((res) => {
+          review.userHasLiked = res.data.liked; // 서버가 반환한 토글된 좋아요 상태
+          review.likeCnt = res.data.likeCount; // 서버에서 업데이트된 좋아요 수 받음
+        })
+        .catch((err) => {
+          console.log("리뷰 좋아요 토글 오류: ", err);
+        });
+    },
+
+    // 리뷰 좋아요 수 가져오기
+    async fetchReviewLikeCount(review) {
+      await apiClient
+        .get(`/reviews/${review.no}/likes-count`)
+        .then((res) => {
+          review.likeCnt = res.data; // 서버에서 반환하는 좋아요 수
+        })
+        .catch((err) => {
+          console.log("리뷰 좋아요 수 가져오기 오류: ", err);
+        });
+    },
+
     formatDate(date) {
       return new Date(date).toLocaleString(); // 날짜와 시간을 로컬 형식으로 출력
     },
+    //페이징
     previousPage() {
       if (this.currentPage > 0) {
         this.fetchReviews(this.currentPage - 1);
@@ -416,7 +481,7 @@ export default {
     // 리뷰 제출 메서드
     submitReview() {
       if (!this.newReview.contents || !this.newReview.point) {
-        alert("리뷰 내용과 별점을 모두 입력해주세요.");
+        toast.error('리뷰 내용과 별점을 모두 입력해주세요.');
         return;
       }
 
@@ -433,7 +498,7 @@ export default {
         apiClient
           .post(`/reviews/${this.placeNo}`, this.newReview)
           .then(() => {
-            alert("리뷰가 성공적으로 등록되었습니다.");
+            toast.success('리뷰가 성공적으로 등록되었습니다.');
             this.fetchReviews(); // 리뷰 목록을 다시 불러옵니다.
             this.newReview.contents = ""; // 리뷰 작성 후 입력 폼을 초기화합니다.
             this.newReview.point = null;
@@ -464,7 +529,7 @@ export default {
           },
         })
         .then(() => {
-          alert("리뷰가 성공적으로 수정되었습니다.");
+          toast.success('리뷰가 성공적으로 수정되었습니다.');
           this.fetchReviews();
           this.cancelEditMode(); // 수정 후 초기화
         })
@@ -493,7 +558,7 @@ export default {
             },
           })
           .then(() => {
-            alert("리뷰가 성공적으로 삭제되었습니다.");
+            toast.success('리뷰가 성공적으로 삭제되었습니다.');
             this.fetchReviews(); // 삭제 후 리뷰 목록 갱신
           })
           .catch((error) => {
@@ -512,6 +577,7 @@ export default {
   mounted() {
     this.initializeUser();
     this.showInfo();
+    this.fetchReviews(); // 리뷰 목록 가져오기
   },
 };
 </script>

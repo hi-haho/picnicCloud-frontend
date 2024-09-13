@@ -14,6 +14,7 @@
   
   <script>
   import apiClient from "@/api/api";
+  import { toast } from 'vue3-toastify'; 
   
   export default {
     props: {
@@ -59,7 +60,7 @@
             query: { token: this.token } // 필요하면 토큰을 쿼리 파라미터로 전달
           });
         } else {
-          alert('유효하지 않은 토큰입니다.');
+          toast.error('유효하지 않은 토큰입니다.');
         }
       }
     }
