@@ -22,9 +22,18 @@
         <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
       </div>
       <div class="place-info">
+
         <h3>{{ p.name }}</h3>
-        <p>{{ p.address }}</p>
-        <p>📞{{ p.tel }}</p>
+        <p>
+      {{
+        p.address ? `주소: ${p.address}` : "주소 정보가 없습니다"
+      }}
+    </p>
+    <p>
+      {{
+        p.tel ? `📞${p.tel}` : "📞 전화번호 정보가 없습니다"
+      }}
+    </p>
         <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
       </div>
       </router-link>
