@@ -95,6 +95,8 @@
 
 <script>
 import apiClient from "@/api/api";
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 
 export default {
   data() {
@@ -113,7 +115,7 @@ export default {
     async handleSubmit() {
       // 비밀번호 확인
       if (this.password !== this.confirmPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
+        toast.error("비밀번호가 일치하지 않습니다.");
         return;
       }
 
@@ -140,11 +142,11 @@ export default {
           userDto: userDto,
           userDetailDto: userDetailDto,
         });
-        alert("회원가입이 완료되었습니다.");
+        toast.success("회원가입이 완료되었습니다.");
         this.$router.push("/login"); // 회원가입 후 로그인 페이지로 이동
       } catch (error) {
         console.error("회원가입 실패:", error.response.data);
-        alert("회원가입에 실패했습니다. 관리자에게 문의하세요.");
+        toast.error("회원가입에 실패했습니다. 관리자에게 문의하세요.");
       }
     },
   },

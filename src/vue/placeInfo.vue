@@ -48,6 +48,7 @@
             </p>
           </div>
         </div>
+<<<<<<< HEAD
   
         <!-- 탭 버튼 -->
         <ul class="tabs">
@@ -97,6 +98,108 @@
                   : "운영시간 정보가 없습니다"
               }}
             </p>
+=======
+        <!-- 장소 세부 정보 -->
+        <div class="place-details">
+          <p>{{ place.placeType }}</p>
+          <p>
+            {{
+              place.address ? `주소 : ${place.address}` : "주소 정보가 없습니다"
+            }}
+          </p>
+          <p>
+            📞
+            {{
+              place.tel ? `전화번호: ${place.tel}` : "전화번호 정보가 없습니다"
+            }}
+          </p>
+          <p>⭐{{ place.point.toFixed(1) }}</p>
+          <!-- 좋아요 버튼 -->
+          <p>
+            <button @click="toggleLike" class="like-button">
+              <span>{{ userHasLiked ? "❤️" : "🩶" }}</span>
+            </button>
+            {{ userHasLiked ? "좋아요 취소" : "좋아요" }} ({{ placelikeCount }})
+          </p>
+          <!-- 목록으로 돌아가기 버튼 -->
+          <p>
+            <button @click="goBackToList" class="back-button">목록으로 돌아가기</button>
+          </p>
+        </div>
+      </div>
+
+      <!-- 탭 버튼 -->
+      <ul class="tabs">
+        <!-- 첫 번째 탭: 상세 정보 -->
+        <li
+          class="tab-button"
+          :class="{ active: activeTab === 'tab1' }"
+          @click="activeTab = 'tab1'"
+        >
+          상세정보
+        </li>
+        <!-- 두 번째 탭: 리뷰 -->
+        <li
+          class="tab-button"
+          :class="{ active: activeTab === 'tab2' }"
+          @click="activeTab = 'tab2'"
+        >
+          리뷰( {{place.reviewCount}} )
+        </li>
+      </ul>
+
+      <!-- 탭 내용 -->
+      <div class="tab-content">
+        <!-- 첫 번째 탭 내용: 장소 상세 정보 -->
+        <div
+          id="tab1"
+          class="tab-pane"
+          :class="{ active: activeTab === 'tab1' }"
+        >
+          <p>
+            <span class="bold-text">장소 설명</span><br />
+            {{ place.description ? place.description : "추가 정보가 없습니다" }}
+          </p>
+          <br />
+          <p>
+            <span class="bold-text">입장료</span><br />
+            {{
+              place.entranceFee ? place.entranceFee : "입장료 정보가 없습니다"
+            }}
+          </p>
+          <br />
+          <p>
+            <span class="bold-text">운영시간</span><br />
+            {{
+              place.operationTime
+                ? place.operationTime
+                : "운영시간 정보가 없습니다"
+            }}
+          </p>
+        </div>
+
+        <!-- 두 번째 탭 내용: 리뷰 -->
+        <div
+          id="tab2"
+          class="tab-pane"
+          :class="{ active: activeTab === 'tab2' }"
+        >
+          <!-- 별점 입력 -->
+          <div class="rating">
+            <span
+              v-for="n in 5"
+              :key="n"
+              @click="setRating(n)"
+              @mouseover="onStarHover(n)"
+              @mouseleave="resetRating"
+              :class="{
+                star: true,
+                active: n <= currentRating || n <= hoverRating,
+              }"
+            >
+              ★
+            </span>
+>>>>>>> 3ac2e1f57de93b46ee681211a712432b5153993c
           </div>
   
           <!-- 두 번째 탭 내용: 리뷰 -->
@@ -177,6 +280,7 @@
         <p>해당 번호의 장소는 존재하지 않습니다</p>
       </div>
     </div>
+<<<<<<< HEAD
   </template>
   
   <script>
@@ -239,10 +343,67 @@
           .get(`/places/${placeNo}/likes-count`)
           .then((res) => {
             this.placelikeCount = res.data;
+=======
+
+    <!-- 장소 정보가 없는 경우 메시지 표시 -->
+    <div v-else>
+      <p>해당 번호의 장소는 존재하지 않습니다</p>
+    </div>
+  </div>
+</template>
+
+<script>
+import apiClient from "@/api/api.js";
+import { getUserIdFromToken } from '@/utils/auth';
+// import { useRouter, useRoute } from "vue-router";
+import "../css/placeInfo.css";
+
+export default {
+  name: "PlaceInfo",
+  data() {
+    return {
+      userId:"",
+      place: null,
+      activeTab: "tab1",
+      placelikeCount: 0,
+      userHasLiked: false, // 사용자 좋아요 상태를 관리
+      currentRating: 0, // 현재 선택된 별점
+      hoverRating: 0, // 마우스 오버 시 별점
+      reviewText: "", // 리뷰 텍스트를 저장할 데이터 속성
+      reviews: [], // Initialize as an empty array
+      token: localStorage.getItem("token"), // 사용자 로그인 여부 확인
+    };
+  },
+  methods: {
+    initializeUser() {
+      this.userId = getUserIdFromToken(this.token);
+    },
+    goBackToList() {
+      this.$router.back();
+    },
+
+    // 장소 정보 및 좋아요 상태 초기화
+    async showInfo() {
+      const no = this.$route.query.placeNo;
+      if (no) {
+        let query = `/places/${no}`;
+        if (this.userId) {
+          query += `?userId=${this.userId}`;
+        }
+        await apiClient
+          .get(query)
+          .then((res) => {
+            this.place = res.data;
+            // 좋아요 수를 가져오는 메서드 호출
+            this.fetchPlaceLikeCount(no);
+            // 사용자가 좋아요를 눌렀는지 확인하는 메서드 호출
+            this.checkLikeStatus(no);
+>>>>>>> 3ac2e1f57de93b46ee681211a712432b5153993c
           })
           .catch((err) => {
             console.log("좋아요 수 가져오기 오류: ", err);
           });
+<<<<<<< HEAD
       },
       // 장소 좋아요 상태 확인 및 토글 처리
       async checkLikeStatus() {
@@ -353,3 +514,129 @@
     },
   };
   </script>
+=======
+      } else {
+        console.log("No place number provided in the URL.");
+      }
+    },
+    // 장소 좋아요 수 가져오기
+    async fetchPlaceLikeCount(placeNo) {
+      await apiClient
+        .get(`/places/${placeNo}/likes-count`)
+        .then((res) => {
+          this.placelikeCount = res.data;
+        })
+        .catch((err) => {
+          console.log("좋아요 수 가져오기 오류: ", err);
+        });
+    },
+    // 장소 좋아요 상태 확인 및 토글 처리
+    async checkLikeStatus() {
+      if (!this.place || !this.place.no) return;
+      await apiClient
+        .get(
+          `/places/${this.place.no}/likes-status`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
+            },
+          }
+        )
+        .then((res) => {
+          this.userHasLiked = res.data.liked; // 서버가 반환하는 값에 맞춰 처리
+          this.placelikeCount = res.data.likeCount; // 서버에서 업데이트된 좋아요 수를 받음
+        })
+        .catch((err) => {
+          console.log("좋아요 상태 확인 오류: ", err);
+        });
+    },
+
+    // 장소 좋아요 버튼 클릭
+    async toggleLike() {
+      if (!this.token) {
+        alert("로그인이 필요합니다.");
+        this.$router.push({ name: "Login" }); // 로그인 페이지로 리다이렉트
+        return;
+      }
+      if (!this.place || !this.place.no) return;
+
+      await apiClient
+        .post(
+          `/places/${this.place.no}/likes-toggle`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
+            },
+          }
+        )
+        .then((res) => {
+          this.userHasLiked = res.data.liked; // 좋아요 상태 토글
+          this.placelikeCount = res.data.likeCount; // 좋아요 수 업데이트
+        })
+        .catch((err) => {
+          console.log("좋아요 토글 오류: ", err);
+        });
+    },
+
+    // 장소 이미지관리
+    getImageUrl(imagePath) {
+      return imagePath ? `/${imagePath}` : "";
+    },
+    getDefaultImageUrl(placeType) {
+      const defaultImageUrls = {
+        "공공형 키즈카페": require("@/image/placePic/공공형 키즈카페_1.jpg"),
+        아동서점: require("@/image/placePic/아동서점_1.jpg"),
+        자연휴양림: require("@/image/placePic/자연휴양림_1.jpg"),
+        캠핑: require("@/image/placePic/캠핑_1.jpg"),
+      };
+      return defaultImageUrls[placeType] || "";
+    },
+
+    //리뷰 별점
+    setRating(rating) {
+      this.currentRating = rating;
+    },
+    onStarHover(rating) {
+      this.hoverRating = rating;
+    },
+    resetRating() {
+      this.hoverRating = 0;
+    },
+
+    //리뷰 조회
+    fetchReviews(placeNo) {
+      apiClient
+        .get(`/reviews/${placeNo}`, {
+          params: {
+            page: 0,
+            size: 10,
+          },
+        })
+        .then((res) => {
+          this.reviews = res.data.content || []; // Ensure reviews is always an array
+        })
+        .catch((err) => {
+          console.log("리뷰 목록 가져오기 오류: ", err);
+          this.reviews = []; // Set reviews to an empty array in case of error
+        });
+    },
+    //리뷰생성
+
+    //리뷰수정
+
+    //리뷰삭제
+  },
+  mounted() {
+    this.initializeUser();
+    this.showInfo();
+  },
+};
+</script>
+>>>>>>> 3ac2e1f57de93b46ee681211a712432b5153993c

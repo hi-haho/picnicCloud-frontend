@@ -24,6 +24,7 @@ const store = createStore({
         commit('setLoggedIn', { status: true, token }); // 상태와 토큰을 저장합니다
       } catch (error) {
         console.error('로그인 오류:', error);
+        throw error;
       }
     },
     logout({ commit }) {
