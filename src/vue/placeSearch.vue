@@ -10,7 +10,7 @@
         placeholder="시설명 혹은 주소"
         @keydown.enter="searchFunc"
       />
-      <button @click="searchFunc">검색</button>
+      <button @click="searchFunc"> <img src="@/image/navIcon/search.png" alt="검색"></button>
     </div>
 
     <div v-if="totalResults > 0">
