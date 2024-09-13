@@ -112,34 +112,41 @@ export default {
     };
 
     const getChatRoomList = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("토큰이 없습니다.");
-        return;
-      }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    console.error("토큰이 없습니다.");
+    return;
+  }
 
-      const decodedToken = jwt_decode(token);
-      const currentTime = Math.floor(Date.now() / 1000);
+  const decodedToken = jwt_decode(token);
+  const currentTime = Math.floor(Date.now() / 1000);
 
-      if (decodedToken.exp < currentTime) {
-        console.error("토큰이 만료되었습니다.");
-        localStorage.removeItem("token");
-        router.push("/login");
-        return;
-      }
+  if (decodedToken.exp < currentTime) {
+    console.error("토큰이 만료되었습니다.");
+    localStorage.removeItem("token");
+    router.push("/login");
+    return;
+  }
 
-      try {
-        const response = await apiClient.get(`/api/chatList`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        chatRooms.value = response.data;
-        console.log("채팅 목록 조회 성공:", response.data);
-      } catch (error) {
-        console.error("채팅 목록 조회 실패", error);
-      }
-    };
+  try {
+    const response = await apiClient.get(`/api/chatList`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    
+    // 채팅 목록을 마지막 메시지 시간 기준으로 정렬 (최근 메시지가 위로 오게)
+    chatRooms.value = response.data.sort((a, b) => {
+      const timeA = new Date(a.lastMessageTime);
+      const timeB = new Date(b.lastMessageTime);
+      return timeB - timeA; // 시간 비교 (내림차순)
+    });
+
+    console.log("채팅 목록 조회 성공:", response.data);
+  } catch (error) {
+    console.error("채팅 목록 조회 실패", error);
+  }
+};
 
     const enterChatRoom = (chatRoomNo) => {
       router.push(`/listToChatRoom/${chatRoomNo}`);
