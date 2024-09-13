@@ -69,7 +69,25 @@ export default {
       siteNotificationMessage: "", // 알림 메시지 내용
     };
   },
+  watch: {
+    // chatRoomId가 변경될 때 WebSocket 연결을 재설정하고 메시지를 다시 불러옴
+    chatRoomId(newId, oldId) {
+      if (newId !== oldId) {
+        this.disconnectWebSocket(); // 기존 WebSocket 연결 종료
+        this.connect(); // 새로운 WebSocket 연결
+        this.axiosMessages(); // 새로운 채팅방의 메시지 불러오기
+      }
+    },
+  },
   methods: {
+    disconnectWebSocket() {
+      if (this.stompClient) {
+        this.stompClient.disconnect(() => {
+          console.log("WebSocket 연결 종료");
+        });
+        this.stompClient = null;
+      }
+    },
     // 알림 권한 요청 함수
     requestNotificationPermission() {
       if (Notification.permission === "default") {
