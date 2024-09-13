@@ -14,14 +14,18 @@
       </div>
 
       <div class="info-container">
-        <h3 v-if="items.price !== null">가격:  ₩{{ items.price.toLocaleString() }}</h3>
+        <h3 v-if="items.price !== null">
+          가격: ₩{{ items.price.toLocaleString() }}
+        </h3>
         <h3 v-else>가격 정보 없음</h3>
 
         <!-- 좋아요 버튼 및 좋아요 수 -->
         <div class="like-section">
-          <button @click="toggleFavorite">
-            <span>{{ items.favorite ? '❤️' : '🩶' }}</span>
-          </button>
+          <button @click="toggleFavorite" class="like-button">
+            <span>{{
+              items.favorite ? "❤️ 좋아요 취소" : "🩶 좋아요"
+            }}</span></button
+          >({{ items.favoriteCnt }})
         </div>
 
         <!-- 채팅 -->
@@ -30,8 +34,9 @@
         </div>
 
         <!-- 상품 카테고리 및 등록일 또는 수정일 -->
-        <p>카테고리: {{ items.categoryName }}</p>
+        <b>카테고리: {{ items.categoryName }}</b>
         <p>{{ getDisplayDate() }}</p>
+        <p>판매자 : {{ items.userId }}</p>
       </div>
     </div>
 
@@ -54,16 +59,16 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import apiClient from '@/api/api.js';
-import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
-import { toast } from 'vue3-toastify'; // toast 함수 임포트
-import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import { ref, onMounted, computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import apiClient from "@/api/api.js";
+import { getUserIdFromToken } from "@/utils/auth"; // 유틸리티 함수 가져오기
+import { toast } from "vue3-toastify"; // toast 함수 임포트
+import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
 import "@/css/fleaDetail.css";
 
 export default {
-  name: 'fleaMarketDetail',
+  name: "fleaMarketDetail",
   setup() {
     const route = useRoute();
     const router = useRouter();
@@ -82,11 +87,18 @@ export default {
         try {
           const response = await apiClient.get(`/fleaMarket/${no}`);
           items.value = response.data;
+          // 좋아요 수를 다시 불러오기
+          const likeResponse = await apiClient.get(
+            `/fleaMarket/favorite/${no}`
+          );
+          items.value.favoriteCnt = likeResponse.data.likeCount;
+
           const userId = getUserIdFromToken();
           isAuthor.value = userId === response.data.userId;
 
           // 로컬 스토리지에서 좋아요 상태를 확인하고 업데이트
-          const likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+          const likedItems =
+            JSON.parse(localStorage.getItem("likedItems")) || [];
           items.value.favorite = likedItems.includes(no);
         } catch (err) {
           console.log("fleaDetail Axios error:", err);
@@ -103,7 +115,7 @@ export default {
     };
 
     const getImagePath = (file) => {
-      return file ? `http://localhost:8080${file}` : '';
+      return file ? `http://localhost:8080${file}` : "";
     };
 
     // 날짜 형식 변환 함수
@@ -139,19 +151,21 @@ export default {
         });
 
         // 좋아요 상태 및 카운트 업데이트
-        items.value.favorite = !items.value.favorite;
-        items.value.favoriteCnt = response.data.favoriteCount;
+        //items.value.favorite = !items.value.favorite;
+        //items.value.favoriteCnt = response.data.favoriteCount;
+        items.value.favorite = response.data.likedUser; // 백엔드 응답의 likedUser 사용
+        items.value.favoriteCnt = response.data.likeCount;
 
         // 로컬 스토리지에서 좋아요 상태 업데이트
-        let likedItems = JSON.parse(localStorage.getItem('likedItems')) || [];
+        let likedItems = JSON.parse(localStorage.getItem("likedItems")) || [];
         if (items.value.favorite) {
           if (!likedItems.includes(no)) {
             likedItems.push(no);
           }
         } else {
-          likedItems = likedItems.filter(itemNo => itemNo !== no);
+          likedItems = likedItems.filter((itemNo) => itemNo !== no);
         }
-        localStorage.setItem('likedItems', JSON.stringify(likedItems));
+        localStorage.setItem("likedItems", JSON.stringify(likedItems));
 
         toast.success("좋아요 상태가 변경되었습니다.", {
           position: "top-center",
@@ -224,7 +238,11 @@ export default {
         if (chatRoomId) {
           router.push({
             name: "chatRoom",
-            params: { chatRoomId, senderId: userId, receiverId: sellerIdFromResponse },
+            params: {
+              chatRoomId,
+              senderId: userId,
+              receiverId: sellerIdFromResponse,
+            },
           });
           toast.success("채팅방이 생성되었습니다.", {
             position: "top-center",
@@ -268,20 +286,20 @@ export default {
     });
     const showEditButtons = computed(() => isLoggedIn.value && isAuthor.value);
 
-return {
-  items,
-  getImagePath,
-  getDisplayDate,
-  fleaUpdate,
-  fleaDelete,
-  list,
-  toggleFavorite,
-  createChatRoom,
-  report,
-  showEditButtons,
-  isAuthor,
-  isLoggedIn,
-};
-},
+    return {
+      items,
+      getImagePath,
+      getDisplayDate,
+      fleaUpdate,
+      fleaDelete,
+      list,
+      toggleFavorite,
+      createChatRoom,
+      report,
+      showEditButtons,
+      isAuthor,
+      isLoggedIn,
+    };
+  },
 };
 </script>
