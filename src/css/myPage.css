@@ -58,6 +58,19 @@
   color: #333;
 }
 
+#contentsArea button, #tabs button{
+  background-color: #ffff;
+  border: 2px solid #87ceeb;
+  color: #87ceeb;
+  font-weight: bold;
+}
+
+#contentsArea button:hover, #tabs button:hover{
+  background-color: #87ceeb;
+  color: #ffff;
+  font-weight: bold;
+}
+
 input {
   width: 100%;
   padding: 10px;

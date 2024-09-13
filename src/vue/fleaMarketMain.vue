@@ -18,15 +18,16 @@
           class="search-input"
           @keyup.enter="searchAndFilter"
         />
-
+        <div class="searchButton">
         <button @click="searchAndFilter">
-          검색
+          <img src="@/image/navIcon/search.png" alt="검색">
         </button>
+      </div>
       </div>
     </section>
 
     <!-- 글쓰기 버튼 -->
-    <div v-if="isLoggedIn">
+    <div v-if="isLoggedIn" class="button">
       <button @click="create">글쓰기</button>
     </div>
 

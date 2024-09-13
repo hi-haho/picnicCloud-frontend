@@ -20,7 +20,7 @@
             </div>
             <!-- 모달 창 (알림 아이콘 아래) -->
             <div v-if="isChatModalVisible" class="chat-modal">
-              <h2>채팅 목록</h2>
+              <h3>채팅 목록</h3>
               <div
                 v-for="chatRoom in chatRooms"
                 :key="chatRoom.no"
@@ -43,7 +43,7 @@
                 </button>
               </div>
               <div v-if="chatRooms.length === 0">채팅방이 없습니다</div>
-              <button @click="toggleChatModal">닫기</button>
+              <button @click="toggleChatModal" class="closeModal">닫기</button>
             </div>
           </li>
         </ul>

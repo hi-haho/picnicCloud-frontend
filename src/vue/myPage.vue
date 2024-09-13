@@ -17,6 +17,7 @@
       이메일주소 <input type="email" v-model="user.email" /><br /><br />
       주소 <input type="text" v-model="user.address" /><br /><br />
       자녀 나이 <input type="text" v-model="user.childAge" /><br /><br />
+      
       <button @click="updateUserInfo">수정</button>
 
       <!-- 비밀번호 변경 버튼 -->

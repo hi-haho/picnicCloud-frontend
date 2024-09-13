@@ -52,7 +52,7 @@
         </div>
       </article>
       <article id="body3">
-        <h3>영어와 친해지기 : </h3>
+        <h3>이달의 신간 영어동화</h3>
         <div class="recommend">
           <div class="wrap">
             <div class="book book1" aria-label="추천 도서 1" ></div>
