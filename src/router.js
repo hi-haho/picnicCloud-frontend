@@ -19,7 +19,8 @@ import chatRoom from './vue/chatRoom.vue';
 import placeInfo from './vue/placeInfo.vue';
 import ResetIdPassword from './vue/resetIdPassword.vue';
 import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
-import updatePassword from './vue/updatePassword.vue'; // updatePassword 컴포넌트 임포트
+import updatePassword from './vue/updatePassword.vue'; 
+import reviewReport from './vue/reviewReport.vue';
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -61,6 +62,13 @@ const routes = [
     path: '/update-password', 
     component: updatePassword, 
     props: (route) => ({ token: route.query.token }) // updatePassword 페이지로 토큰 전달
+  },
+  { 
+    path: '/reviewReport/:reviewNo', 
+    name: 'ReviewReport', 
+    component: reviewReport, 
+    meta: { requiresAuth: true }, // 로그인한 사용자만 접근 가능
+    props: true  // reviewNo를 props로 전달
   }
 ];
 
