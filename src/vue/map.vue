@@ -10,27 +10,27 @@
           placeholder="지역 검색"
           @keyup.enter="searchPlaces"
         />
-        <button @click="searchPlaces">검색</button>
+        <button @click="searchPlaces"> <img src="@/image/navIcon/search.png" alt="검색"> </button>
       </div>
         <div class="category">
           <h3>분류</h3>
-          <button @click="filterByCategory('전시/공연')">전시/공연</button>
+          <button @click="filterByCategory('전시/공연')"><img src="@/image/navIcon/photo.png" alt=""> 전시/공연</button>
           <button @click="filterByCategory('문화관광/명소')">
-            문화관광/명소
+            <img src="@/image/navIcon/synagogue.png" alt=""> 관광명소
           </button>
         </div>
         <div class="facility">
           <h3>시설</h3>
-          <button @click="toggleFacilityFilter('kidsZone')">키즈존</button>
           <button @click="toggleFacilityFilter('freeParking')">
-            무료 주차
+            <img src="@/image/navIcon/directions_car.png" alt="">무료 주차
           </button>
           <button @click="toggleFacilityFilter('chargedParking')">
-            유료 주차
+            <img src="@/image/navIcon/Union.png" alt="">유료 주차
           </button>
-          <button @click="toggleFacilityFilter('nursingRoom')">수유실</button>
-          <button @click="toggleFacilityFilter('strollerRental')">
-            유모차 대여
+          <button @click="toggleFacilityFilter('kidsZone')"><img src="@/image/navIcon/child_care.png" alt="">키즈존</button>
+          <button @click="toggleFacilityFilter('nursingRoom')"><img src="@/image/navIcon/baby_changing_station.png" alt="">수유실</button>
+          <button @click="toggleFacilityFilter('strollerRental')" class="lastButton">
+            <img src="@/image/navIcon/child_friendly.png" alt="">유모차 대여
           </button>
         </div>
       </div>
