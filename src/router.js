@@ -19,7 +19,8 @@ import chatRoom from './vue/chatRoom.vue';
 import placeInfo from './vue/placeInfo.vue';
 import ResetIdPassword from './vue/resetIdPassword.vue';
 import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
-import updatePassword from './vue/updatePassword.vue'; 
+import updatePassword from './vue/updatePassword.vue'; // updatePassword 컴포넌트 임포트
+import userDeactivation from './vue/userDeactivation.vue';
 import bookInfo from './vue/bookInfo.vue';
 import reviewReport from './vue/reviewReport.vue'; 
 
@@ -40,6 +41,7 @@ const routes = [
   { path: '/myLikes', component: myLikes, meta: { requiresAuth: true } },
   { path: '/bookMain', component: bookMain },
   // { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
+  { path: '/deactivate-confirm', component: userDeactivation, meta: { requiresAuth: true } }, // 추가한 라우트
   { path: '/chatRoom/:chatRoomId/:senderId/:receiverId', name: 'chatRoom', component:chatRoom, 
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId),

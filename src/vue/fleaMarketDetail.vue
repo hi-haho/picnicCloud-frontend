@@ -1,6 +1,7 @@
 <template>
-  <div id="detailPage" v-if="items">
+  <div id="detailPage" class="container" v-if="items">
     <!-- 상단: 이미지와 제목/가격 섹션 -->
+    <h1>{{ items.title }}</h1>
     <div class="upper-section">
       <div class="image-container">
         <img
@@ -13,8 +14,7 @@
       </div>
 
       <div class="info-container">
-        <h2>{{ items.title }}</h2>
-        <h3 v-if="items.price !== null">₩{{ items.price.toLocaleString() }}</h3>
+        <h3 v-if="items.price !== null">가격:  ₩{{ items.price.toLocaleString() }}</h3>
         <h3 v-else>가격 정보 없음</h3>
 
         <!-- 좋아요 버튼 및 좋아요 수 -->

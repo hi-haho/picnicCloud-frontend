@@ -52,10 +52,10 @@
         </div>
       </article>
       <article id="body3">
-        <h3>도서 추천 : 나의 감정 알아가기</h3>
+        <h3>영어와 친해지기 : </h3>
         <div class="recommend">
           <div class="wrap">
-            <div class="book book1" aria-label="추천 도서 1"></div>
+            <div class="book book1" aria-label="추천 도서 1" ></div>
             <div class="book book2" aria-label="추천 도서 2"></div>
           </div>
           <div class="wrap">
