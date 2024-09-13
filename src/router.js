@@ -21,6 +21,7 @@ import ResetIdPassword from './vue/resetIdPassword.vue';
 import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
 import updatePassword from './vue/updatePassword.vue'; 
 import bookInfo from './vue/bookInfo.vue';
+import reviewReport from './vue/reviewReport.vue'; 
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -67,6 +68,12 @@ const routes = [
     path: '/book-info/:no', // BookDetail 페이지 경로 추가
     name: 'bookInfo', 
     component: bookInfo , 
+    props: true // URL 파라미터를 props로 전달
+  },
+  { 
+    path: '/reviewReport/:reviewNo', // reviewReport 페이지 경로 추가
+    name: 'ReviewReport', 
+    component: reviewReport, 
     props: true // URL 파라미터를 props로 전달
   }
   

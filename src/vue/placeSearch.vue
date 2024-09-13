@@ -30,27 +30,6 @@
       </div>
       </router-link>
     </div>
-
-      <!--
-      <div v-for="(p, index) in places" :key="index" class="place-item">
-        <router-link to="/placeInfo">
-        <div class="place-image">
-          
-          <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
-        </div>
-        <div class="place-info">
-          <h3>
-            <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
-              {{ p.name }}
-            </router-link>
-          </h3>
-          <p>{{p.no}}</p>
-          <p>{{ p.address }}</p>
-          <p>📞{{ p.tel }}</p>
-          <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
-        </div>
-      </router-link>
-      </div> -->
     </div>
     <div v-else>
       <p>결과가 없어요</p>
