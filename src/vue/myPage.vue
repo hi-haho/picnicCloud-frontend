@@ -58,6 +58,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import apiClient from "@/api/api";
+import { toast } from "vue3-toastify"; // toast 함수 임포트
+import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
 import "@/css/myPage.css";
 
 export default {
@@ -101,13 +103,13 @@ export default {
         });
 
         if (response.status === 200) {
-          alert("정보가 성공적으로 수정되었습니다.");
+          toast.success("정보가 성공적으로 수정되었습니다.");
         } else {
-          alert("정보 수정에 실패했습니다.");
+          toast.error("정보 수정에 실패했습니다.");
         }
       } catch (error) {
         console.error("정보 수정 오류:", error);
-        alert("정보 수정에 실패했습니다.");
+        toast.error("정보 수정에 실패했습니다.");
       }
     },
 
@@ -124,7 +126,7 @@ export default {
 
     async changePassword() {
       if (this.newPassword !== this.confirmPassword) {
-        alert("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
+        toast.error("새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.");
         return;
       }
 
@@ -136,15 +138,15 @@ export default {
         });
 
         if (response.status === 200) {
-          alert("비밀번호가 성공적으로 변경되었습니다.");
+          toast.success("비밀번호가 성공적으로 변경되었습니다.");
           this.closePasswordChangeModal(); // 모달 닫기 및 필드 초기화
         } else {
-          alert("비밀번호 변경에 실패했습니다.");
+          toast.error("비밀번호 변경에 실패했습니다.");
         }
       } catch (error) {
         const errorMessage =
           error.response?.data || "비밀번호 변경에 실패했습니다.";
-        alert(errorMessage);
+        toast.error(errorMessage);
       }
     },
   },
@@ -154,11 +156,9 @@ export default {
       this.user = response.data; // 서버에서 가져온 사용자 정보를 Vue 컴포넌트의 데이터로 설정합니다.
     } catch (error) {
       console.error("유저 정보 가져오기 오류:", error);
-      alert("유저 정보를 가져오는 데 실패했습니다.");
+      toast.error("유저 정보를 가져오는 데 실패했습니다.");
     }
   },
   mounted() {},
 };
 </script>
-
-<style src="../css/myPage.css"></style>

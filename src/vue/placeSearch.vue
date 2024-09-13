@@ -30,27 +30,6 @@
       </div>
       </router-link>
     </div>
-
-      <!--
-      <div v-for="(p, index) in places" :key="index" class="place-item">
-        <router-link to="/placeInfo">
-        <div class="place-image">
-          
-          <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
-        </div>
-        <div class="place-info">
-          <h3>
-            <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
-              {{ p.name }}
-            </router-link>
-          </h3>
-          <p>{{p.no}}</p>
-          <p>{{ p.address }}</p>
-          <p>📞{{ p.tel }}</p>
-          <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
-        </div>
-      </router-link>
-      </div> -->
     </div>
     <div v-else>
       <p>결과가 없어요</p>
@@ -75,8 +54,9 @@
 </template>
 
 <script>
-import axios from "axios";
 import "../css/placeSearch.css";
+import apiClient from '@/api/api.js';
+import { getUserIdFromToken } from '@/utils/auth';
 
 export default {
   name: "placeSearch",
@@ -94,13 +74,21 @@ export default {
       const hash = window.location.hash;
       const urlParams = new URLSearchParams(hash.substring(hash.indexOf("?")));
       const placeType = urlParams.get("placeType");
+      const userId = getUserIdFromToken();
 
-      let query = `http://localhost:8080/places?placeType=${placeType}&page=${page}&size=${size}`;
+      // placeType을 URL로 인코딩하여 공백이나 한글 처리
+      const encodedPlaceType = encodeURIComponent(placeType);
+
+      // userId가 null일 경우에는 userId 파라미터를 추가하지 않음
+      let query = `/places?placeType=${encodedPlaceType}&page=${page}&size=${size}`;
+      if (userId) {
+        query += `&userId=${userId}`;
+      }
       if (keyword) {
-        query += `&keyword=${keyword}`;
+        query += `&keyword=${encodeURIComponent(keyword)}`;
       }
 
-      axios
+      apiClient
         .get(query)
         .then((res) => {
           this.places = res.data.content;

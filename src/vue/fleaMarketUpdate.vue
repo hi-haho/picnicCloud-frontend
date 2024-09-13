@@ -41,6 +41,8 @@
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import apiClient from '@/api/api.js';
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 
 export default {
   name: 'fleaMarketUpdate',
@@ -81,7 +83,7 @@ export default {
 
     const update = async () => {
       if (!no.value) {
-        alert("유효하지 않은 요청입니다.");
+        toast.error("유효하지 않은 요청입니다.");
         return;
       }
 
@@ -91,7 +93,7 @@ export default {
           router.push({ name: 'FleaMarketDetail', params: { no: no.value } });
         }
       } catch (err) {
-        alert("수정 실패: " + err);
+        toast.error("수정 실패: " + err);
       }
     };
 

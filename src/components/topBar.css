@@ -151,38 +151,9 @@ a {
   text-decoration: none;
   color: black;
 }
-/* 반응형 디자인 */
 
-/* 노트북과 중간 화면 (max-width 1200px) */
-@media (max-width: 1200px) {
-  .bottom-nav {
-    justify-content: space-between; /* 아이템 간격을 균일하게 */
-    padding: 0 20px;
-    display: flex; 
-  }
-
-  .bottom-nav ul {
-    justify-content: space-between; /* 아이템 간격을 균일하게 */
-    padding: 0 10px; /* 좌우 패딩 추가 */
-  }
-
-  .bottom-nav li img {
-    width: 48px;
-    height: 0; /* 처음에 아이콘을 숨김 */
-    transition: height 0.5s ease, box-shadow 0.3s ease;
-  }
-
-  .bottom-nav:hover li img {
-    height: 48px; /* bottom-nav에 마우스를 올리면 아이콘이 펼쳐짐 */
-  }
-
-  .bottom-nav li .nav-text {
-    display: block; /* 텍스트는 그대로 표시 */
-    font-size: 16px; /* 텍스트 크기 조금 줄임 */
-  }
-
-  /* 모달 창 스타일 */
-.chat-modal {
+ /* 모달 창 스타일 */
+ .chat-modal {
   position: absolute;
   top: 120px;
   right: 10px;
@@ -247,6 +218,103 @@ a {
   color: #ff0000;
 }
 
+/* 반응형 디자인 */
+
+/* 노트북과 중간 화면 (max-width 1200px) */
+@media (max-width: 1200px) {
+  .bottom-nav {
+    justify-content: space-between; /* 아이템 간격을 균일하게 */
+    padding: 0 20px;
+    display: flex; 
+  }
+
+  .bottom-nav ul {
+    justify-content: space-between; /* 아이템 간격을 균일하게 */
+    padding: 0 10px; /* 좌우 패딩 추가 */
+  }
+
+  .bottom-nav li img {
+    width: 48px;
+    height: 0; /* 처음에 아이콘을 숨김 */
+    transition: height 0.5s ease, box-shadow 0.3s ease;
+  }
+
+  .bottom-nav:hover li img {
+    height: 48px; /* bottom-nav에 마우스를 올리면 아이콘이 펼쳐짐 */
+  }
+
+  .bottom-nav li .nav-text {
+    display: block; /* 텍스트는 그대로 표시 */
+    font-size: 16px; /* 텍스트 크기 조금 줄임 */
+  }
+
+ /* 모달 창 스타일 */
+ .chat-modal {
+  position: absolute;
+  top: 120px;
+  right: 10px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.notification-icon {
+  cursor: pointer;
+  font-size: 24px;
+  position: relative;
+}
+
+/* 채팅 목록 항목 스타일 */
+.chat-room-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer; /* 목록 항목에 커서 변경 */
+}
+
+.chat-room-otherId {
+  font-size: 16px; /* 보낸 사람의 글씨 크기 */
+  font-weight: bold; /* 보낸 사람의 글씨를 굵게 */
+}
+
+.chat-room-message {
+  font-size: 15px; /* 메시지 내용의 글씨 크기 */
+  color: #333; /* 메시지 내용의 색상 */
+  margin-left: 5px; /* 보낸 사람과 메시지 사이의 간격 */
+  margin-top: 5px;
+}
+
+.chat-room-time {
+  font-size: 12px; /* 메시지 시간의 글씨 크기 */
+  color: #888; /* 시간 색상 */
+  margin-top: 3px; /* 메시지와 시간 간격 */
+}
+
+
+/* 작은 "X" 버튼 스타일 */
+.close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: none;
+  border: none;
+  color: #ff5c5c;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
+
+ 
 }
 
 /* 모바일 화면 (max-width 500px) */
@@ -299,11 +367,65 @@ a {
     font-size: 20px; /* 알림 아이콘 크기 조정 */
   }
 
-  .chat-modal {
-    position: relative;
-    top: auto;
-    right: auto;
-    margin-top: 10px;
-  }
+  /* 모달 창 스타일 */
+ .chat-modal {
+  position: absolute;
+  top: 120px;
+  right: 10px;
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+
+/* 채팅 목록 항목 스타일 */
+.chat-room-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid #ccc;
+  cursor: pointer; /* 목록 항목에 커서 변경 */
+}
+
+.chat-room-otherId {
+  font-size: 16px; /* 보낸 사람의 글씨 크기 */
+  font-weight: bold; /* 보낸 사람의 글씨를 굵게 */
+}
+
+.chat-room-message {
+  font-size: 15px; /* 메시지 내용의 글씨 크기 */
+  color: #333; /* 메시지 내용의 색상 */
+  margin-left: 5px; /* 보낸 사람과 메시지 사이의 간격 */
+  margin-top: 5px;
+}
+
+.chat-room-time {
+  font-size: 12px; /* 메시지 시간의 글씨 크기 */
+  color: #888; /* 시간 색상 */
+  margin-top: 3px; /* 메시지와 시간 간격 */
+}
+
+
+/* 작은 "X" 버튼 스타일 */
+.close-button {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  background: none;
+  border: none;
+  color: #ff5c5c;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  color: #ff0000;
+}
 
 }

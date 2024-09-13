@@ -43,6 +43,7 @@
                 </button>
               </div>
               <div v-if="chatRooms.length === 0">채팅방이 없습니다</div>
+              <button @click="toggleChatModal">닫기</button>
             </div>
           </li>
         </ul>
@@ -85,6 +86,8 @@ import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import apiClient from "@/api/api.js";
 import jwt_decode from "jwt-decode";
+import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import "./topBar.css";
 
 export default {
@@ -98,7 +101,7 @@ export default {
 
     const toggleChatModal = () => {
       if (!isLoggedIn.value) {
-        alert("로그인이 필요합니다.");
+        toast.error("로그인이 필요합니다.");
         router.push("/login"); // 로그인 페이지로 이동
       } else {
         isChatModalVisible.value = !isChatModalVisible.value;
@@ -170,7 +173,7 @@ export default {
 
     const logout = () => {
       store.dispatch("logout");
-      alert("로그아웃 되었습니다.");
+      toast.success("로그아웃 되었습니다.");
       router.push("/");
     };
 
@@ -216,6 +219,3 @@ export default {
 };
 </script>
 
-<style scoped>
-
-</style>
