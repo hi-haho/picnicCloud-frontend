@@ -15,7 +15,11 @@
     <!-- 채팅 내역 표시 -->
     <div class="chat-container" ref="chatContainer">
       <ul class="message-list">
-        <li v-for="message in messages" :key="message.no">
+        <li
+          v-for="message in messages"
+          :key="message.no"
+          :class="{'my-message': message.senderId === currentUserId, 'other-message': message.senderId !== currentUserId}"
+        >
           <strong>{{ message.senderId }}:</strong> {{ message.messageContents }}
           <br />
           <small>{{ formatDate(message.createDate) }}</small>
@@ -35,6 +39,7 @@
   </div>
 </template>
 
+
 <script>
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -43,6 +48,7 @@ import jwt_decode from "jwt-decode";
 import { toast } from 'vue3-toastify'; // toast 함수 임포트
 import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import "../css/chatRoom.css";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -59,14 +65,25 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters(['isLoggedIn']), // 로그인 상태 확인
+    currentUserId() {
+      const token = this.$store.state.token; // Vuex 스토어에서 토큰 가져오기
+      if (token) {
+        const decodedToken = jwt_decode(token); // 토큰 디코딩
+        return decodedToken.sub; // 현재 사용자 ID 반환
+      }
+      return null;
+    },
+  },
   data() {
     return {
       messages: [],
       newMessage: "",
       board: {},
       stompClient: null,
-      showSiteNotification: false, // 알림 표시 여부
-      siteNotificationMessage: "", // 알림 메시지 내용
+      showSiteNotification: false,
+      siteNotificationMessage: "",
     };
   },
   watch: {
