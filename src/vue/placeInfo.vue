@@ -161,10 +161,6 @@
                 </p>
                 <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
-                <!-- 디버깅용 출력 -->
-                <p>로그인한 사용자 ID: {{ loggedInUserId }}</p>
-                <p>리뷰 작성자 ID: {{ review.id }}</p>
-
                 <!-- 좋아요 버튼 및 좋아요 수 -->
                 <button @click="toggleReviewLike(review)" class="like-button">
                   <span>{{ review.userHasLiked ? "❤️" : "🩶" }}</span>
