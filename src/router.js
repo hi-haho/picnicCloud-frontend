@@ -19,13 +19,8 @@ import chatRoom from './vue/chatRoom.vue';
 import placeInfo from './vue/placeInfo.vue';
 import ResetIdPassword from './vue/resetIdPassword.vue';
 import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
-<<<<<<< HEAD
 import updatePassword from './vue/updatePassword.vue'; 
-import reviewReport from './vue/reviewReport.vue';
-=======
-import updatePassword from './vue/updatePassword.vue'; // updatePassword 컴포넌트 임포트
 import bookInfo from './vue/bookInfo.vue';
->>>>>>> 3ac2e1f57de93b46ee681211a712432b5153993c
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -69,18 +64,10 @@ const routes = [
     props: (route) => ({ token: route.query.token }) // updatePassword 페이지로 토큰 전달
   },
   { 
-<<<<<<< HEAD
-    path: '/reviewReport/:reviewNo', 
-    name: 'ReviewReport', 
-    component: reviewReport, 
-    meta: { requiresAuth: true }, // 로그인한 사용자만 접근 가능
-    props: true  // reviewNo를 props로 전달
-=======
     path: '/book-info/:no', // BookDetail 페이지 경로 추가
     name: 'bookInfo', 
     component: bookInfo , 
     props: true // URL 파라미터를 props로 전달
->>>>>>> 3ac2e1f57de93b46ee681211a712432b5153993c
   }
   
 ];
