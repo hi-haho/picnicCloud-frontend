@@ -65,14 +65,14 @@ export default {
   data() {
     return {
       images: [
-        { src: "1.jpg", alt: "이미지 1", title: "책 제목 1", no: 1 },
+        { src: "1.jpeg", alt: "이미지 1", title: "책 제목 1", no: 1 },
         { src: "16.jpg", alt: "이미지 2", title: "책 제목 2", no: 2 },
         { src: "3.jpg", alt: "이미지 1", title: "책 제목 3", no: 3 },
         { src: "4.jpg", alt: "이미지 2", title: "책 제목 4", no: 4 },
         { src: "5.jpg", alt: "이미지 1", title: "책 제목 5", no: 5 },
         { src: "6.jpg", alt: "이미지 2", title: "책 제목 6", no: 6 },
         { src: "7.jpg", alt: "이미지 1", title: "책 제목 7", no: 7 },
-        { src: "8.jpg", alt: "이미지 2", title: "책 제목 8", no: 8 },
+        { src: "8.jpg", alt: "이미지 2", title: "책 제목 9", no: 9 },
       ],
       books: [
         { src: "9.jpg", alt: "이미지 1", title: "책 제목 1", author: "작가1", no: 9 },
