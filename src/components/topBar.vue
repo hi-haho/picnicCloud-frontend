@@ -72,7 +72,7 @@
         <li>
           <router-link to="/bookMain">
             <img src="../image/navIcon/iconBook.png" alt="어린이도서" /><br />
-            <span class="nav-text">어린이도서</span>
+            <span class="nav-text">어린이영어도서</span>
           </router-link>
         </li>
       </ul>
