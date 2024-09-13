@@ -1,7 +1,7 @@
 <template>
   <div id="placeSearch">
     <div class="search-bar">
-      <label for="search">검색 : </label>
+      검색 : 
       <input
         type="text"
         id="search"
