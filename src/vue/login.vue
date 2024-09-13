@@ -71,6 +71,7 @@ export default {
     },
     handleReset() {
       // 아이디 찾기 / 비밀번호 재설정 로직
+      this.$router.push("/resetIdPassword");
     }
   },
 };

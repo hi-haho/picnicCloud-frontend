@@ -22,7 +22,6 @@
         </div>
         <!-- 장소 세부 정보 -->
         <div class="place-details">
-          <p>{{ place.placeType }}</p>
           <p>
             {{
               place.address ? `주소: ${place.address}` : "주소 정보가 없습니다"
@@ -38,9 +37,9 @@
           <!-- 좋아요 버튼 -->
           <p>
             <button @click="toggleLike" class="like-button">
-              <span>{{ userHasLiked ? "❤️" : "🩶" }}</span>
+              <span>{{ userHasLiked ? "❤️ 좋아요 취소" : "🩶좋아요" }}</span>
             </button>
-            {{ userHasLiked ? "좋아요 취소" : "좋아요" }} ({{ placelikeCount }})
+             ({{ placelikeCount }})
           </p>
           <!-- 목록으로 돌아가기 버튼 -->
           <p>
@@ -163,11 +162,9 @@
 
                 <!-- 좋아요 버튼 및 좋아요 수 -->
                 <button @click="toggleReviewLike(review)" class="like-button">
-                  <span>{{ review.userHasLiked ? "❤️" : "🩶" }}</span>
+                  <span>{{ review.userHasLiked ? "❤️좋아요 취소" : "🩶좋아요" }}</span>
                 </button>
-                {{ review.userHasLiked ? "좋아요 취소" : "좋아요" }} ({{
-                  review.likeCnt
-                }})
+
                 <!-- 수정, 삭제 및 신고 버튼 -->
                 <div v-if="isLoggedIn">
                   <button
@@ -316,7 +313,8 @@ export default {
     async toggleLike() {
       if (!this.token) {
         toast.error('로그인이 필요합니다.');
-        this.$router.push({ name: "Login" }); // 로그인 페이지로 리다이렉트
+        //router.push("/login"); // 로그인 페이지로 이동
+        this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         return;
       }
       if (!this.place || !this.place.no) return;
@@ -417,7 +415,7 @@ export default {
     async toggleReviewLike(review) {
       if (!this.token) {
         toast.error('로그인이 필요합니다.');
-        this.$router.push({ name: "Login" });
+        this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         return;
       }
       // 서버에 좋아요 상태를 업데이트 요청

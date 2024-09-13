@@ -23,7 +23,6 @@
       </div>
       <div class="place-info">
         <h3>{{ p.name }}</h3>
-        <p>{{ p.no }}</p>
         <p>{{ p.address }}</p>
         <p>📞{{ p.tel }}</p>
         <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
