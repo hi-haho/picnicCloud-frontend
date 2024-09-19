@@ -2,7 +2,9 @@
   <div id="mainPage">
     <section id="contentArea">
       <div id="mainBanner">
-        <img :src="currentBanner" alt="이벤트 배너">
+        <a :href="currentLink" target="_blank">
+          <img :src="currentBanner" alt="이벤트 배너">
+        </a>
       </div>
       <article id="body1">
         <h3>지금이 딱! 활동 추천</h3>
@@ -79,18 +81,27 @@ export default {
   data() {
     return {
       banners: [
-        require('../image/EventBanner.png'),
-        require('../image/banner2.png'),
+      { 
+          src: require('../image/EventBanner.png'), 
+          link: 'https://map.naver.com/p/entry/place/1705439631?c=15.00,0,0,0,dh' // 첫 번째 배너 링크
+        },
+        { 
+          src: require('../image/banner2.png'), 
+          link: 'https://hwadamsup.com/renewal/pc/ko/index.do' // 두 번째 배너 링크
+        }
       ],
       currentIndex: 0, // 현재 배너 인덱스
       selectedEvent: '' // 선택된 이벤트 날짜를 저장할 데이터
     };
   },
   computed: {
-    currentBanner() {
-      return this.banners[this.currentIndex]; // 현재 보여줄 배너 이미지
-    },
+  currentBanner() {
+    return this.banners[this.currentIndex].src; // 현재 보여줄 배너 이미지 경로
   },
+  currentLink() {
+    return this.banners[this.currentIndex].link; // 현재 보여줄 배너의 링크
+  }
+},
   mounted() {
     this.startSlideshow();
   },

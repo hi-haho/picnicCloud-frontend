@@ -31,8 +31,13 @@
       <button @click="create">글쓰기</button>
     </div>
 
+    <!-- 로딩 중 메시지 표시 -->
+    <div v-if="loading" class="loading">
+      <p>로딩 중입니다... ⏳</p>
+    </div>
+
     <!-- 게시판 리스트 -->
-    <div>
+    <div v-else>
       <div v-if="content.length > 0">
         <div class="post-container">
           <div v-for="(item, index) in content" :key="index" class="onedata">
@@ -123,6 +128,7 @@ export default {
     const pageNumber = ref(0); // 현재 페이지 번호
     const size = ref(9); // 페이지당 아이템 수
     const isLoggedIn = ref(false);
+    const loading = ref(false); // 로딩 상태를 위한 변수 추가
 
     // 로그인 상태 확인
     const checkLoginStatus = () => {
@@ -132,6 +138,7 @@ export default {
 
     // 카테고리와 검색어를 함께 적용하여 게시글 가져오기
     const searchAndFilter = async () => {
+      loading.value = true; // 로딩 시작
       try {
         const categoryParam = category.value === 0 ? 0 : category.value;
         const url = `/fleaMarket?page=${pageNumber.value}&size=${
@@ -144,6 +151,8 @@ export default {
         page.value = response.data.page;
       } catch (err) {
         console.error("fleaMain Fetch error:", err);
+      } finally {
+        loading.value = false; // 로딩 종료
       }
     };
 
@@ -227,7 +236,17 @@ export default {
       Axioscategories,
       paginationPages,
       isLoggedIn,
+      loading,
     };
   },
 };
 </script>
+
+<style scoped>
+.loading {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 18px;
+  color: #555;
+}
+</style>

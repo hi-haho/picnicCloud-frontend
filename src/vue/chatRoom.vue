@@ -20,7 +20,7 @@
           :key="message.no"
           :class="{'my-message': message.senderId === currentUserId, 'other-message': message.senderId !== currentUserId}"
         >
-          <strong>{{ message.senderId }}:</strong> {{ message.messageContents }}
+          <strong>{{ message.senderId }}  </strong> {{ message.messageContents }}
           <br />
           <small>{{ formatDate(message.createDate) }}</small>
         </li>

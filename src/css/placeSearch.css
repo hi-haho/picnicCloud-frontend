@@ -37,13 +37,12 @@
     padding: 6px 15px; /* 버튼 내부에 6px 위아래, 15px 좌우의 여백 추가 */
     background-color: #87CEEB; /* 버튼의 배경색을 파란색으로 설정 */
     color: white; /* 버튼 텍스트 색상을 흰색으로 설정 */
-    border: 1px solid #87CEEB; /* 버튼의 테두리를 파란색으로 설정 */
     border-radius: 4px; /* 버튼의 모서리를 둥글게 처리 */
     cursor: pointer; /* 버튼에 마우스를 올릴 때 커서를 포인터로 변경 */
     font-size: 14px; /* 버튼 텍스트의 크기를 14px로 설정 */
     transition: background-color 0.3s ease; /* 배경색 변화에 0.3초의 전환 효과 추가 */
     position: relative;
-    bottom: 12px;
+    bottom: 7px;
 }
 
 .search-bar button:hover {

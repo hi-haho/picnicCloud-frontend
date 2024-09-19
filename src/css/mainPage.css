@@ -67,9 +67,10 @@ html {
 }
 
 body{
-  height: 100%;
+  height: fit-content;
   background: none;
   font-family: 'NanumSquareRound';
+  background-color: transparent !important;
 }
 
 /* 공통 컨테이너 설정 */

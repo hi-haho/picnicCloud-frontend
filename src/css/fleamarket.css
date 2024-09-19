@@ -34,6 +34,10 @@ h2 {
   color: var(--primary-color-darker);
 }
 
+.loading{
+  text-align: center;
+  font-weight: bold;
+}
 #searchSection {
   margin-bottom: 20px;
   display: flex;
@@ -60,9 +64,10 @@ h2 {
 .searchButton button{
   background-color: var(--primary-color);
   color: white;
-  margin-bottom: 25px;
+  margin-bottom: 15px;
   height: 40px;
   margin-left: 0px;
+  border-radius: 5px;
 }
 
 select {
@@ -71,6 +76,7 @@ select {
   border: 1px solid var(--primary-color-dark);
   border-radius: 5px;
   flex: 1; /* 카테고리 선택 박스를 검색창의 절반 크기로 설정 */
+  margin-top: 10px;
 }
 
 .button button {
