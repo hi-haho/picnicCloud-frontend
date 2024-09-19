@@ -30,6 +30,7 @@
 import { mapActions } from "vuex";
 import { toast } from "vue3-toastify"; // toast 함수 임포트
 import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
+import '../css/login.css';
 
 export default {
   name: "LogIn",
@@ -77,5 +78,3 @@ export default {
   },
 };
 </script>
-
-<style src="../css/login.css"></style>

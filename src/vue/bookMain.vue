@@ -60,6 +60,7 @@
 
 <script>
 import { useRouter } from "vue-router"; // Vue Router를 사용
+import "../css/bookMain.css";
 
 export default {
   data() {
@@ -163,5 +164,3 @@ export default {
   },
 };
 </script>
-
-<style src="../css/bookMain.css"></style>
