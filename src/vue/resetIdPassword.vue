@@ -1,14 +1,16 @@
 <template>
-    <div class="reset-container">
-      <h2 class="reset-id-pw-title">아이디 찾기 / 비밀번호 재설정하기</h2>
-      
-      <div class="input-group">
-        <h3 class="email-title">이메일</h3>
+    <div id="resetBox">
+      <div class="reset-container">
+        <h2 class="reset-id-pw-title">아이디 찾기</h2>
+        <h2 class="reset-id-pw-title">/ 비밀번호 재설정하기</h2>
+        <br>
+        <div class="input-group">
+          <h3 class="email-title">이메일</h3>
         <input 
-          type="email" 
-          v-model="email" 
-          placeholder="이메일을 입력하세요" 
-          required 
+        type="email" 
+        v-model="email" 
+        placeholder="이메일을 입력하세요" 
+        required 
         />
       </div>
       
@@ -17,10 +19,13 @@
         <button type="button" class="reset-button" @click="resetPw">비밀번호 재설정</button>
       </div>
     </div>
+  </div>
   </template>
   
   <script>
 import apiClient from '@/api/api';
+import { toast } from 'vue3-toastify'; 
+import '../css/resetIdPassword.css';
 
 export default {
   data() {
@@ -41,19 +46,19 @@ export default {
           console.log(response.data.userId);
           
           if (response.data.userId) {
-            alert(`아이디는 ${response.data.userId} 입니다.`); // 
+            toast.success(`아이디는 ${response.data.userId} 입니다.`);
           } else {
-            alert('아이디를 찾을 수 없습니다.'); //
+            toast.error('아이디를 찾을 수 없습니다.');
           }
         } catch (error) {
           if (error.response && error.response.status === 404) {
-            alert('해당 이메일의 아이디를 찾을 수 없습니다.'); //
+            toast.error('해당 이메일의 아이디를 찾을 수 없습니다.');
           } else {
-            alert('서버 오류가 발생했습니다. 다시 시도해 주세요.');
+            toast.error('서버 오류가 발생했습니다. 다시 시도해 주세요.');
           }
         }
       } else {
-        alert('이메일을 입력해주세요.'); //
+        toast.error('이메일을 입력해주세요.');
       }
     },
 
@@ -65,17 +70,17 @@ export default {
           const response = await apiClient.post('/auth/reset-password', {
             email: this.email,
           });
-          
-          alert(response.data); // 서버에서 반환된 메시지를 알림으로 표시
+          toast.success(response.data); // 서버에서 반환된 메시지를 알림으로 표시
         } catch (error) {
           if (error.response && error.response.status === 404) {
+            toast.error('해당 이메일의 계정이 존재하지 않습니다.');
             alert('해당 이메일의 계정이 존재하지 않습니다.'); //
           } else {
-            alert('서버 오류가 발생했습니다. 다시 시도해 주세요.');
+            toast.error('서버 오류가 발생했습니다. 다시 시도해 주세요.');
           }
         }
       } else {
-        alert('이메일을 입력해주세요.'); //
+        toast.error('이메일을 입력해주세요.');
       }
     },
   },

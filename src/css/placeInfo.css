@@ -1,85 +1,186 @@
 /* 전체 컨테이너 스타일 */
 .container {
-max-width: 1200px;
-margin: 0 auto;
-margin-bottom: 20px;
-padding: 20px;
-}
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
 
-/* 제목 스타일 */
-h1 {
-text-align: center;
-margin-bottom: 20px;
-}
+  button {
+    background-color: #6ac6eb;
+    margin-right: 0px;
+  }
 
-/* 상단 컨텐츠 레이아웃 */
-.content {
-display: flex;
-align-items: flex-start;
-margin-bottom: 20px;
-}
+  button :hover{
+    background-color: #08AAEB;
+  }
+  /* 제목 스타일 */
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* 상단 컨텐츠 레이아웃 */
+  .content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+  }
+  
+  /* 이미지 스타일 */
+  .place-image {
+    flex: 1;
+    max-width: 40%; /* 이미지가 차지하는 너비 조정 */
+    margin-right: 20px;
+  }
+  
+  .place-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+  
+  /* 텍스트 스타일 */
+  .place-details {
+    flex: 2;
+  }
+  
+  .place-details p {
+    margin: 10px 0;
+    line-height: 1.5;
+  }
+  
+  /* 탭 스타일링 */
+  .tabs {
+    display: flex;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background-color: #f1f1f1;
+  }
+  
+  .tab-button {
+    padding: 5px 10px; /* 버튼 크기 조정 */
+    border: 1px solid #ccc;
+    background-color: #ddd;
+    cursor: pointer;
+    margin-right: 5px; /* 버튼 간격 조정 */
+    flex: none; /* 버튼 크기 고정 */
+    font-size: 14px; /* 버튼 폰트 크기 조정 */
+    margin-right: -1px; /* 탭 버튼 사이의 간격 제거 */
+  }
+  
+  .tab-button.active {
+    background-color: #aaa;
+    color: white;
+    z-index: 1; /* 활성화된 탭이 앞에 보이도록 설정 */
+  }
+  
+  .tab-content {
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  
+  .tab-pane {
+    display: none;
+  }
+  
+  .tab-pane.active {
+    display: block;
+  }
+  
+  /* 별점 스타일링 */
+.rating {
+    display: flex;
+    justify-content: center;
+    font-size: 2rem; /* 별 크기 */
+    cursor: pointer;
+  }
+  
+  .star {
+    color: lightgray; /* 기본 별 색상 */
+    transition: color 0.2s ease-in-out;
+  }
+  
+  .star.active {
+    color: gold; /* 선택된 별 색상 */
+  }
+  
+  .star:hover,
+  .star:hover ~ .star {
+    color: gold; /* 마우스를 올렸을 때 금색으로 변경 */
+  }
+  
+  .rating .star:hover ~ .star {
+    color: lightgray; /* 마우스를 올린 이후의 별들은 원래 색으로 */
+  }
 
-/* 이미지 스타일 */
-.place-image {
-flex: 1;
-max-width: 40%; /* 이미지가 차지하는 너비 조정 */
-margin-right: 20px;
-}
+  .reviewWrite label{
+    width: 100%;
+  }
+  
+  .reviewList{
+    margin-top: 20px;  
+  }
+  ul{
+    list-style: none;
+  }
+  .reviewList h2{
+    text-align: left;
+  }
 
-.place-image img {
-width: 100%;
-height: auto;
-display: block;
-border-radius: 8px;
-}
+  .reviewList h4{
+    text-align: left;
+  }
 
-/* 텍스트 스타일 */
-.place-details {
-flex: 2;
-}
+  .reviewText {
+    background-color: #ddd;
+    position: relative;
+    margin-top: -10px;
+    padding: 10px 10px;
+  }
 
-.place-details p {
-margin: 10px 0;
-line-height: 1.5;
-}
+  .reviewText p{
+    margin-top: 10px;
+  }
+  .review-header {
+    display: flex;
+    justify-content: space-between; /* 좌우로 요소 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin: 10px 0;
+  }
+  
+  .review-left {
+    display: flex;
+    gap: 10px; /* 아이템 간격 조정 */
+    align-items: center;
+  }
 
-/* 탭 스타일링 */
-.tabs {
-display: flex;
-justify-content: flex-start; /* 왼쪽 정렬 */
-list-style-type: none;
-padding: 0;
-margin: 0;
-background-color: #f1f1f1;
-}
+  .review-left a:hover{
+    font-weight: bold;
+  }
 
-.tab-button {
-padding: 5px 10px; /* 버튼 크기 조정 */
-border: 1px solid #ccc;
-background-color: #ddd;
-cursor: pointer;
-margin-right: 5px; /* 버튼 간격 조정 */
-flex: none; /* 버튼 크기 고정 */
-font-size: 14px; /* 버튼 폰트 크기 조정 */
-margin-right: -1px; /* 탭 버튼 사이의 간격 제거 */
-}
+  .review-left a{
+    cursor: pointer ;
+  }
+  
+  .edit-links {
+    display: flex;
+    gap: 5px; /* 수정, 삭제 간의 간격 */
+  }
+  
+  .review-right {
+    text-align: right;
+  }
+  
+  .action-link{
+    margin-right: 5px;
+  }
 
-.tab-button.active {
-background-color: #aaa;
-color: white;
-z-index: 1; /* 활성화된 탭이 앞에 보이도록 설정 */
-}
-
-.tab-content {
-border: 1px solid #ccc;
-border-top: none;
-padding: 20px;
-}
-
-.tab-pane {
-display: none;
-}
-
-.tab-pane.active {
-display: block;
-}
+  .like-button {
+    margin-left: auto; /* 왼쪽 마진 자동 설정으로 오른쪽 정렬 */
+    text-align: right; /* 텍스트를 오른쪽 정렬 */
+    margin-top: 10px; /* 내용 아래로 배치되도록 여백 추가 */
+  }

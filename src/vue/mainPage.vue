@@ -2,7 +2,9 @@
   <div id="mainPage">
     <section id="contentArea">
       <div id="mainBanner">
-        <img :src="currentBanner" alt="이벤트 배너">
+        <a :href="currentLink" target="_blank">
+          <img :src="currentBanner" alt="이벤트 배너">
+        </a>
       </div>
       <article id="body1">
         <h3>지금이 딱! 활동 추천</h3>
@@ -52,10 +54,10 @@
         </div>
       </article>
       <article id="body3">
-        <h3>도서 추천 : 나의 감정 알아가기</h3>
+        <h3>이달의 신간 영어동화</h3>
         <div class="recommend">
           <div class="wrap">
-            <div class="book book1" aria-label="추천 도서 1"></div>
+            <div class="book book1" aria-label="추천 도서 1" ></div>
             <div class="book book2" aria-label="추천 도서 2"></div>
           </div>
           <div class="wrap">
@@ -79,18 +81,27 @@ export default {
   data() {
     return {
       banners: [
-        require('../image/EventBanner.png'),
-        require('../image/banner2.png'),
+      { 
+          src: require('../image/EventBanner.png'), 
+          link: 'https://drrobbin.com/' // 첫 번째 배너 링크
+        },
+        { 
+          src: require('../image/banner2.png'), 
+          link: 'https://hwadamsup.com/renewal/pc/ko/index.do' // 두 번째 배너 링크
+        }
       ],
       currentIndex: 0, // 현재 배너 인덱스
       selectedEvent: '' // 선택된 이벤트 날짜를 저장할 데이터
     };
   },
   computed: {
-    currentBanner() {
-      return this.banners[this.currentIndex]; // 현재 보여줄 배너 이미지
-    },
+  currentBanner() {
+    return this.banners[this.currentIndex].src; // 현재 보여줄 배너 이미지 경로
   },
+  currentLink() {
+    return this.banners[this.currentIndex].link; // 현재 보여줄 배너의 링크
+  }
+},
   mounted() {
     this.startSlideshow();
   },

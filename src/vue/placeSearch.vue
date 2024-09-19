@@ -1,60 +1,52 @@
 <template>
   <div id="placeSearch">
     <div class="search-bar">
-      <label for="search">검색 : </label>
       <input
         type="text"
         id="search"
         class="search"
         v-model="keyword"
-        placeholder="시설명 혹은 주소"
+        placeholder="시설명 혹은 주소 검색"
         @keydown.enter="searchFunc"
       />
-      <button @click="searchFunc">검색</button>
+      <button @click="searchFunc">
+        <img src="@/image/navIcon/search.png" alt="검색" />
+      </button>
     </div>
 
-    <div v-if="totalResults > 0">
-      <p>총 {{totalResults}}개의 장소 </p>
-      <div v-for="(p, index) in places" :key="index" class="place-item">
-      <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
-      <div class="place-image">
-        <!-- 각 정보마다 반복적으로 5장의 이미지 사용 -->
-        <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
-      </div>
-      <div class="place-info">
-        <h3>{{ p.name }}</h3>
-        <p>{{ p.no }}</p>
-        <p>{{ p.address }}</p>
-        <p>📞{{ p.tel }}</p>
-        <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
-      </div>
-      </router-link>
+    <!-- 로딩 중일 때 표시 -->
+    <div v-if="loading" class="loading">
+      <p>로딩 중입니다... ⏳</p>
     </div>
 
-      <!--
+    <!-- 로딩이 완료되고 결과가 있을 때 표시 -->
+    <div v-else-if="totalResults > 0">
+      <p>총 {{ totalResults }}개의 장소</p>
       <div v-for="(p, index) in places" :key="index" class="place-item">
-        <router-link to="/placeInfo">
-        <div class="place-image">
-          
-          <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
-        </div>
-        <div class="place-info">
-          <h3>
-            <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
-              {{ p.name }}
-            </router-link>
-          </h3>
-          <p>{{p.no}}</p>
-          <p>{{ p.address }}</p>
-          <p>📞{{ p.tel }}</p>
-          <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
-        </div>
-      </router-link>
-      </div> -->
+        <router-link :to="{ path: '/placeInfo', query: { placeNo: p.no } }">
+          <div class="place-image">
+            <!-- 각 정보마다 반복적으로 5장의 이미지 사용 -->
+            <img :src="getImageUrl(p.placeType, index)" alt="placeImage" />
+          </div>
+          <div class="place-info">
+            <h3>{{ p.name }}</h3>
+            <p>
+              {{ p.address ? `주소: ${p.address}` : "주소 정보가 없습니다" }}
+            </p>
+            <p>
+              {{ p.tel ? `📞${p.tel}` : "📞 전화번호 정보가 없습니다" }}
+            </p>
+            <p>⭐{{ p.point.toFixed(1) }} 💛{{ p.likeCnt }}</p>
+          </div>
+        </router-link>
+      </div>
     </div>
+
+    <!-- 결과가 없을 때 표시 -->
     <div v-else>
       <p>결과가 없어요</p>
     </div>
+
     <!-- 페이징 버튼 추가 -->
     <div v-if="totalPages > 1" class="pagination">
       <a
@@ -76,8 +68,8 @@
 
 <script>
 import "../css/placeSearch.css";
-import apiClient from '@/api/api.js';
-import { getUserIdFromToken } from '@/utils/auth';
+import apiClient from "@/api/api.js";
+import { getUserIdFromToken } from "@/utils/auth";
 
 export default {
   name: "placeSearch",
@@ -87,11 +79,13 @@ export default {
       keyword: "",
       currentPage: 0, // 현재 페이지 번호
       totalPages: 1, // 총 페이지 수
-      totalResults: 0 // 전체 검색 결과 수
+      totalResults: 0, // 전체 검색 결과 수
+      loading: false, // 로딩 상태를 위한 변수 추가
     };
   },
   methods: {
     axiosData(keyword = "", page = 0, size = 10) {
+      this.loading = true; // 로딩 시작
       const hash = window.location.hash;
       const urlParams = new URLSearchParams(hash.substring(hash.indexOf("?")));
       const placeType = urlParams.get("placeType");
@@ -116,9 +110,11 @@ export default {
           this.totalPages = res.data.page.totalPages; // 응답에서 페이지 정보 추출
           this.currentPage = res.data.page.number; // 현재 페이지 정보 추출
           this.totalResults = res.data.page.totalElements; // 총 결과 수 업데이트
+          this.loading = false; // 로딩 완료
         })
         .catch((err) => {
           console.error("장소출력 오류: ", err);
+          this.loading = false; // 오류 발생 시에도 로딩 상태 종료
         });
     },
 

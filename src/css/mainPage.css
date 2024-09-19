@@ -67,9 +67,10 @@ html {
 }
 
 body{
-  height: 100%;
+  height: fit-content;
   background: none;
   font-family: 'NanumSquareRound';
+  background-color: transparent !important;
 }
 
 /* 공통 컨테이너 설정 */
@@ -90,6 +91,7 @@ body{
   padding: 0 4.7rem; /* body1과 동일한 padding 값 */
   width: 100%;
   box-sizing: border-box; /* padding이 width에 영향을 미치지 않도록 설정 */
+  background-color: none;
 }
 
 #mainBanner img {
@@ -194,7 +196,7 @@ h3 {
 
 .book {
   flex: 1;
-  width: 150px;
+  width: 170px;
   height: 170px;
   border-radius: 50%;
   transition: transform 0.3s ease;
@@ -208,19 +210,20 @@ h3 {
 }
 
 .book1 {
-  background-image: url('@/image/5.jpg');
+  background-image: url('@/image/1.jpg');
 }
 
 .book2 {
-  background-image: url('@/image/9.jpg');
+  background-image: url('@/image/2.jpg');
 }
 
 .book3 {
-  background-image: url('@/image/17.jpg');
+  background-image: url('@/image/3.jpg');
 }
 
 .book4 {
-  background-image: url('@/image/16.jpg');
+  background-image: url('@/image/17.jpg');
+  background-position: center;
 }
 
 /* 반응형 디자인 */
@@ -351,8 +354,8 @@ h3 {
 }
 
   .book {
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 200px;
     border-radius: 50%;
   }
 

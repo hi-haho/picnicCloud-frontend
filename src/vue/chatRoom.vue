@@ -12,16 +12,27 @@
       <p>{{ board.contents }}</p>
     </div>
 
-    <!-- 채팅 내역 표시 -->
-    <div class="chat-container" ref="chatContainer">
-      <ul class="message-list">
-        <li v-for="message in messages" :key="message.no">
-          <strong>{{ message.senderId }}:</strong> {{ message.messageContents }}
-          <br />
-          <small>{{ formatDate(message.createDate) }}</small>
-        </li>
-      </ul>
-    </div>
+   <!-- 채팅 내역 표시 -->
+<div class="chat-container" ref="chatContainer">
+  <ul class="message-list">
+    <li
+      v-for="message in messages"
+      :key="message.no"
+      :class="{'my-message': message.senderId === currentUserId, 'other-message': message.senderId !== currentUserId}"
+    >
+      <strong 
+        class="sender-id" 
+        :class="{'right-align': message.senderId === currentUserId}"
+      >{{ message.senderId }}</strong> <!-- 박스와 분리된 부분 -->
+      <div class="message-content">
+        {{ message.messageContents }}
+        <br />
+        <small>{{ formatDate(message.createDate) }}</small>
+      </div>
+    </li>
+  </ul>
+</div>
+
 
     <!-- 메시지 입력 필드 -->
     <div class="input-container">
@@ -35,6 +46,7 @@
   </div>
 </template>
 
+
 <script>
 import SockJS from "sockjs-client";
 import { Stomp } from "@stomp/stompjs";
@@ -43,6 +55,7 @@ import jwt_decode from "jwt-decode";
 import { toast } from 'vue3-toastify'; // toast 함수 임포트
 import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
 import "../css/chatRoom.css";
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -59,17 +72,46 @@ export default {
       required: true,
     },
   },
+  computed: {
+    ...mapGetters(['isLoggedIn']), // 로그인 상태 확인
+    currentUserId() {
+      const token = this.$store.state.token; // Vuex 스토어에서 토큰 가져오기
+      if (token) {
+        const decodedToken = jwt_decode(token); // 토큰 디코딩
+        return decodedToken.sub; // 현재 사용자 ID 반환
+      }
+      return null;
+    },
+  },
   data() {
     return {
       messages: [],
       newMessage: "",
       board: {},
       stompClient: null,
-      showSiteNotification: false, // 알림 표시 여부
-      siteNotificationMessage: "", // 알림 메시지 내용
+      showSiteNotification: false,
+      siteNotificationMessage: "",
     };
   },
+  watch: {
+    // chatRoomId가 변경될 때 WebSocket 연결을 재설정하고 메시지를 다시 불러옴
+    chatRoomId(newId, oldId) {
+      if (newId !== oldId) {
+        this.disconnectWebSocket(); // 기존 WebSocket 연결 종료
+        this.connect(); // 새로운 WebSocket 연결
+        this.axiosMessages(); // 새로운 채팅방의 메시지 불러오기
+      }
+    },
+  },
   methods: {
+    disconnectWebSocket() {
+      if (this.stompClient) {
+        this.stompClient.disconnect(() => {
+          console.log("WebSocket 연결 종료");
+        });
+        this.stompClient = null;
+      }
+    },
     // 알림 권한 요청 함수
     requestNotificationPermission() {
       if (Notification.permission === "default") {

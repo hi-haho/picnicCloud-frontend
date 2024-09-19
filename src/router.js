@@ -20,7 +20,9 @@ import placeInfo from './vue/placeInfo.vue';
 import ResetIdPassword from './vue/resetIdPassword.vue';
 import ResetPasswordConfirm from './vue/resetPasswordConfirm.vue';
 import updatePassword from './vue/updatePassword.vue'; // updatePassword 컴포넌트 임포트
+import userDeactivation from './vue/userDeactivation.vue';
 import bookInfo from './vue/bookInfo.vue';
+import reviewReport from './vue/reviewReport.vue'; 
 
 const routes = [
   { path: '/', component: mainPage }, //mainpage를 루트 컴포넌트로 상ㅇ
@@ -39,6 +41,7 @@ const routes = [
   { path: '/myLikes', component: myLikes, meta: { requiresAuth: true } },
   { path: '/bookMain', component: bookMain },
   // { path: '/chatList', component: chatList, meta: { requiresAuth: true } },
+  { path: '/deactivate-confirm', component: userDeactivation, meta: { requiresAuth: true } }, // 추가한 라우트
   { path: '/chatRoom/:chatRoomId/:senderId/:receiverId', name: 'chatRoom', component:chatRoom, 
     props: (route) => ({
       chatRoomId: Number(route.params.chatRoomId),
@@ -68,6 +71,12 @@ const routes = [
     name: 'bookInfo', 
     component: bookInfo , 
     props: true // URL 파라미터를 props로 전달
+  },
+  { 
+    path: '/reviewReport/:reviewNo', // reviewReport 페이지 경로 추가
+    name: 'ReviewReport', 
+    component: reviewReport, 
+    props: true // URL 파라미터를 props로 전달
   }
   
 ];
@@ -83,7 +92,11 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token'); // JWT 토큰 가져오기
   if (to.matched.some(record => record.meta.requiresAuth) && !token) {
     // 인증이 필요하고 토큰이 없으면 로그인 페이지로 이동
-    next('/login');
+    //next('/login');
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath } // 로그인 후 돌아갈 경로 저장
+    });
   } else {
     next(); // 그 외의 경우는 정상적으로 다음 라우트로 진행
   }

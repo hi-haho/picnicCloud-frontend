@@ -84,6 +84,8 @@
 </template>
 
 <script>
+import "../css/placeMain.css";
+
 export default {
   name: "PlaceMain",
   data() {
@@ -187,4 +189,3 @@ export default {
 };
 </script>
 
-<style src="../css/placeMain.css"></style>

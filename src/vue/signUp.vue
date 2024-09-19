@@ -60,16 +60,17 @@
         </div>
         <div class="input-group">
           <div class="gender-options">
-            <label>남성</label>
-            <label>
+            <span>남성</span>
+            <label :class="['check', gender === 'male' ? 'active' : '']">
               <input 
                 type="radio" 
                 v-model="gender" 
                 value="male" 
               />
             </label>
-            <label>여성</label>
-            <label>
+            <br>
+            <span>여성</span>
+            <label :class="['check', gender === 'female' ? 'active' : '']">
               <input 
                 type="radio" 
                 v-model="gender" 
@@ -97,6 +98,7 @@
 import apiClient from "@/api/api";
 import { toast } from 'vue3-toastify'; // toast 함수 임포트
 import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import "../css/signUp.css";
 
 export default {
   data() {
@@ -153,4 +155,3 @@ export default {
 };
 </script>
 
-<style src="../css/signUp.css"></style>
