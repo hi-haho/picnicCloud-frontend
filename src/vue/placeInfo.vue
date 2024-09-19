@@ -39,7 +39,7 @@
             <button @click="toggleLike" class="like-button">
               <span>{{ userHasLiked ? "❤️ 좋아요 취소" : "🩶좋아요" }}</span>
             </button>
-             ({{ placelikeCount }})
+            ({{ placelikeCount }})
           </p>
           <!-- 목록으로 돌아가기 버튼 -->
           <p>
@@ -149,7 +149,7 @@
 
             <!-- 리뷰 목록 -->
             <h2>리뷰 목록</h2>
-            
+
             <ul>
               <li v-for="review in reviews" :key="review.no">
                 <h3 v-if="review.id">{{ review.id }}님의 리뷰</h3>
@@ -162,7 +162,9 @@
 
                 <!-- 좋아요 버튼 및 좋아요 수 -->
                 <button @click="toggleReviewLike(review)" class="like-button">
-                  <span>{{ review.userHasLiked ? "❤️좋아요 취소" : "🩶좋아요" }}</span>
+                  <span>{{
+                    review.userHasLiked ? "❤️좋아요 취소" : "🩶좋아요"
+                  }}</span>
                 </button>
                 ({{ review.likeCnt }})
                 <!-- 수정, 삭제 및 신고 버튼 -->
@@ -186,15 +188,17 @@
 
             <!-- 페이지네이션 -->
             <div v-if="totalPages > 1" class="pagination">
-  <button @click="previousPage" :disabled="currentPage === 0">
-    이전
-  </button>
-  <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
-  <button @click="nextPage" :disabled="currentPage === totalPages - 1">
-    다음
-  </button>
-</div>
-
+              <button @click="previousPage" :disabled="currentPage === 0">
+                이전
+              </button>
+              <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+              <button
+                @click="nextPage"
+                :disabled="currentPage === totalPages - 1"
+              >
+                다음
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -210,7 +214,7 @@
 <script>
 import apiClient from "@/api/api.js";
 import { getUserIdFromToken } from "@/utils/auth";
-import { toast } from 'vue3-toastify'; // toast 함수 임포트
+import { toast } from "vue3-toastify"; // toast 함수 임포트
 import "../css/placeInfo.css";
 
 export default {
@@ -313,7 +317,7 @@ export default {
     // 장소 좋아요 버튼 클릭
     async toggleLike() {
       if (!this.token) {
-        toast.error('로그인이 필요합니다.');
+        toast.error("로그인이 필요합니다.");
         //router.push("/login"); // 로그인 페이지로 이동
         this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         return;
@@ -373,13 +377,21 @@ export default {
         .get(`/reviews/${this.placeNo}`, {
           params: {
             page: page,
-            size: 10,
+            size: 5,
           },
         })
         .then((response) => {
-          this.reviews = response.data.content;
-          this.currentPage = response.data.number;
-          this.totalPages = response.data.totalPages;
+          // 리뷰 객체에 초기 속성 추가
+  this.reviews = response.data.content.map(review => ({
+    ...review,
+    userHasLiked: false,
+    likeCnt: 0,
+  }));
+
+
+          this.currentPage = response.data.page.number;
+          this.totalPages = response.data.page.totalPages;
+         
 
           // 각 리뷰에 대해 좋아요 상태 및 좋아요 수 확인
           this.reviews.forEach((review) => {
@@ -415,7 +427,7 @@ export default {
     //리뷰 좋아요 버튼 클릭
     async toggleReviewLike(review) {
       if (!this.token) {
-        toast.error('로그인이 필요합니다.');
+        toast.error("로그인이 필요합니다.");
         this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         return;
       }
@@ -432,8 +444,6 @@ export default {
         .then((res) => {
           review.userHasLiked = res.data.liked; // 서버가 반환한 토글된 좋아요 상태
           review.likeCnt = res.data.likeCount; // 서버에서 업데이트된 좋아요 수 받음
-
-    
         })
         .catch((err) => {
           console.log("리뷰 좋아요 토글 오류: ", err);
@@ -482,7 +492,7 @@ export default {
     // 리뷰 제출 메서드
     submitReview() {
       if (!this.newReview.contents || !this.newReview.point) {
-        toast.error('리뷰 내용과 별점을 모두 입력해주세요.');
+        toast.error("리뷰 내용과 별점을 모두 입력해주세요.");
         return;
       }
 
@@ -499,7 +509,7 @@ export default {
         apiClient
           .post(`/reviews/${this.placeNo}`, this.newReview)
           .then(() => {
-            toast.success('리뷰가 성공적으로 등록되었습니다.');
+            toast.success("리뷰가 성공적으로 등록되었습니다.");
             this.fetchReviews(); // 리뷰 목록을 다시 불러옵니다.
             this.newReview.contents = ""; // 리뷰 작성 후 입력 폼을 초기화합니다.
             this.newReview.point = null;
@@ -530,7 +540,7 @@ export default {
           },
         })
         .then(() => {
-          toast.success('리뷰가 성공적으로 수정되었습니다.');
+          toast.success("리뷰가 성공적으로 수정되었습니다.");
           this.fetchReviews();
           this.cancelEditMode(); // 수정 후 초기화
         })
@@ -559,7 +569,7 @@ export default {
             },
           })
           .then(() => {
-            toast.success('리뷰가 성공적으로 삭제되었습니다.');
+            toast.success("리뷰가 성공적으로 삭제되었습니다.");
             this.fetchReviews(); // 삭제 후 리뷰 목록 갱신
           })
           .catch((error) => {
