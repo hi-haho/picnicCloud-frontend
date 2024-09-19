@@ -318,8 +318,11 @@ export default {
     async toggleLike() {
       if (!this.token) {
         toast.error("로그인이 필요합니다.");
-        //router.push("/login"); // 로그인 페이지로 이동
-        this.$router.push("/login"); // 로그인 페이지로 리다이렉트
+        //this.$router.push("/login"); // 로그인 페이지로 리다이렉트
+        this.$router.push({
+    path: "/login",
+    query: { redirect: this.$route.fullPath },
+  });
         return;
       }
       if (!this.place || !this.place.no) return;
@@ -428,7 +431,11 @@ export default {
     async toggleReviewLike(review) {
       if (!this.token) {
         toast.error("로그인이 필요합니다.");
-        this.$router.push("/login"); // 로그인 페이지로 리다이렉트
+        //this.$router.push("/login"); // 로그인 페이지로 리다이렉트
+        this.$router.push({
+    path: "/login",
+    query: { redirect: this.$route.fullPath },
+  });
         return;
       }
       // 서버에 좋아요 상태를 업데이트 요청
