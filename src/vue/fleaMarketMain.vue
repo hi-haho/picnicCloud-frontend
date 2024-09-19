@@ -19,10 +19,10 @@
           @keyup.enter="searchAndFilter"
         />
         <div class="searchButton">
-        <button @click="searchAndFilter">
-          <img src="@/image/navIcon/search.png" alt="검색">
-        </button>
-      </div>
+          <button @click="searchAndFilter">
+            <img src="@/image/navIcon/search.png" alt="검색" />
+          </button>
+        </div>
       </div>
     </section>
 
@@ -35,11 +35,7 @@
     <div>
       <div v-if="content.length > 0">
         <div class="post-container">
-          <div
-            v-for="(item, index) in content"
-            :key="index"
-            class="onedata"
-          >
+          <div v-for="(item, index) in content" :key="index" class="onedata">
             <router-link
               :to="{ name: 'FleaMarketDetail', params: { no: item.no } }"
               class="oneItem"
@@ -55,10 +51,14 @@
               <span>
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.contents }}</p>
-                <p><b>{{ item.price }} 원</b></p>
+                <p>
+                  <b>{{ item.price }} 원</b>
+                </p>
                 <p>{{ formatDate(item.createdate) }}</p>
                 <p>❤️ {{ item.favoriteCnt }}</p>
-                <p><b>카테고리: {{ item.categoryName }}</b></p>
+                <p>
+                  <b>카테고리: {{ item.categoryName }}</b>
+                </p>
               </span>
             </router-link>
           </div>
@@ -97,22 +97,23 @@
 </template>
 
 <script>
-import { ref, onMounted, computed } from 'vue';
-import { useRouter } from 'vue-router';
-import apiClient from '@/api/api';
-import { getUserIdFromToken } from '@/utils/auth'; // 유틸리티 함수 가져오기
-import { toast } from 'vue3-toastify'; // toast 함수 임포트
-import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
-import '@/css/fleamarket.css';
+import { ref, onMounted, computed } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import apiClient from "@/api/api";
+import { getUserIdFromToken } from "@/utils/auth"; // 유틸리티 함수 가져오기
+import { toast } from "vue3-toastify"; // toast 함수 임포트
+import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
+import "@/css/fleamarket.css";
 
 export default {
-  name: 'FleaMarketMain',
+  name: "FleaMarketMain",
   setup() {
     const content = ref([]);
     const categories = ref([]);
     const category = ref(0); // 선택된 카테고리
-    const search = ref('');
+    const search = ref("");
     const router = useRouter();
+    const route = useRoute();
     const page = ref({
       size: 0,
       number: 0,
@@ -125,7 +126,7 @@ export default {
 
     // 로그인 상태 확인
     const checkLoginStatus = () => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       isLoggedIn.value = !!token;
     };
 
@@ -133,27 +134,29 @@ export default {
     const searchAndFilter = async () => {
       try {
         const categoryParam = category.value === 0 ? 0 : category.value;
-        const url = `/fleaMarket?page=${pageNumber.value}&size=${size.value}&category=${categoryParam}&search=${encodeURIComponent(
+        const url = `/fleaMarket?page=${pageNumber.value}&size=${
+          size.value
+        }&category=${categoryParam}&search=${encodeURIComponent(
           search.value
         )}&sort=createdate,desc`; // 최신 글을 먼저 불러오도록 정렬
         const response = await apiClient.get(url);
         content.value = response.data.content;
         page.value = response.data.page;
       } catch (err) {
-        console.error('fleaMain Fetch error:', err);
+        console.error("fleaMain Fetch error:", err);
       }
     };
 
     // 카테고리 가져오기
     const Axioscategories = async () => {
       try {
-        const response = await apiClient.get('/categories');
-        categories.value = response.data.map(cat => ({
+        const response = await apiClient.get("/categories");
+        categories.value = response.data.map((cat) => ({
           no: Number(cat.no),
-          categoryName: cat.categoryName
+          categoryName: cat.categoryName,
         }));
       } catch (err) {
-        console.error('Category Axios error: ', err);
+        console.error("Category Axios error: ", err);
       }
     };
 
@@ -165,28 +168,36 @@ export default {
     };
 
     const formatDate = (dateString) => {
-      const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
-      return new Date(dateString).toLocaleDateString('ko-KR', options);
+      const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+      return new Date(dateString).toLocaleDateString("ko-KR", options);
     };
 
     const getImagePath = (file) => {
-      return file ? `http://localhost:8080/image/flea/${file.split('/').pop()}` : ''; // 파일 경로를 절대 경로로 변환
+      return file
+        ? `http://localhost:8080/image/flea/${file.split("/").pop()}`
+        : ""; // 파일 경로를 절대 경로로 변환
     };
 
     const create = () => {
       const userId = getUserIdFromToken();
       if (!userId) {
         toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.");
-        router.push('/login'); // 로그인 페이지로 이동
+        router.push({
+          path: "/login",
+          query: { redirect: route.fullPath }, // 현재 경로 저장
+        });
         return;
       }
-      router.push('/fleaMarketCreate');
+      router.push("/fleaMarketCreate");
     };
 
     const paginationPages = computed(() => {
       const range = 2;
       const start = Math.max(0, page.value.number - range);
-      const end = Math.min(page.value.totalPages - 1, page.value.number + range);
+      const end = Math.min(
+        page.value.totalPages - 1,
+        page.value.number + range
+      );
       const pages = [];
       for (let i = start; i <= end; i++) {
         pages.push(i);
