@@ -128,8 +128,8 @@
               </div>
               <p>{{ currentRating }} 점</p>
 
-              <!-- 리뷰 내용 -->
-              <div>
+              <!-- 리뷰 작성 -->
+              <div class="reviewWrite">
                 <label for="reviewContents">리뷰 내용 (최대 300자):</label>
                 <textarea
                   id="reviewContents"
@@ -146,58 +146,64 @@
               리뷰를 작성하려면
               <router-link to="/login">로그인</router-link>하세요.
             </p>
+            
+ <!-- 리뷰 목록 -->
+<ul class="reviewList">
+  <li v-for="review in reviews" :key="review.no">
+    <div class="review-header">
+      <!-- 왼쪽 정렬: 작성자, 작성일, 신고, 수정, 삭제 -->
+      <div class="review-left">
+        <h4><span v-if="review.id">{{ review.id }}</span></h4> 
+         <span v-if="review.createDate">| 작성일: {{ formatDate(review.createDate) }}</span> |
+        <a
+          v-if="isLoggedIn"
+          href="javascript:void(0)"
+          @click="goToReportPage(review.no)"
+          class="action-link"
+        >
+          신고
+        </a>
+        <span v-if="isLoggedIn && review.id === loggedInUserId" class="edit-links">
+          <a href="javascript:void(0)" @click="editReview(review)" class="action-link">수정</a>
+          <a href="javascript:void(0)" @click="deleteReview(review.no)" class="action-link">삭제</a>
+        </span>
+      </div>
+      <!-- 오른쪽 정렬: 평점 -->
+      <div class="review-right">
+        <span v-if="review.point !== null">평점: {{ review.point }}점</span>
+      </div>
+    </div>
+    <div class="reviewText">
+      <p v-if="review.contents">{{ review.contents }}</p>
+      <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
-            <!-- 리뷰 목록 -->
-            <h2>리뷰 목록</h2>
+      <!-- 좋아요 버튼 및 좋아요 수 -->
+       <div class="like-button">
+      <button @click="toggleReviewLike(review)" >
+        {{ review.userHasLiked ? "❤️좋아요" : "🩶좋아요" }}
+      </button>
+      ({{ review.likeCnt }})
+    </div>
+    </div>
+  </li>
+</ul>
 
-            <ul>
-              <li v-for="review in reviews" :key="review.no">
-                <h3 v-if="review.id">{{ review.id }}님의 리뷰</h3>
-                <p v-if="review.contents">내용: {{ review.contents }}</p>
-                <p v-if="review.point !== null">평점: {{ review.point }}점</p>
-                <p v-if="review.createDate">
-                  작성일: {{ formatDate(review.createDate) }}
-                </p>
-                <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
-
-                <!-- 좋아요 버튼 및 좋아요 수 -->
-                <button @click="toggleReviewLike(review)" class="like-button">
-                  <span>{{
-                    review.userHasLiked ? "❤️좋아요 취소" : "🩶좋아요"
-                  }}</span>
-                </button>
-                ({{ review.likeCnt }})
-                <!-- 수정, 삭제 및 신고 버튼 -->
-                <div v-if="isLoggedIn">
-                  <button
-                    v-if="review.id === loggedInUserId"
-                    @click="editReview(review)"
-                  >
-                    수정
-                  </button>
-                  <button
-                    v-if="review.id === loggedInUserId"
-                    @click="deleteReview(review.no)"
-                  >
-                    삭제
-                  </button>
-                  <button @click="goToReportPage(review.no)">신고</button>
-                </div>
-              </li>
-            </ul>
 
             <!-- 페이지네이션 -->
             <div v-if="totalPages > 1" class="pagination">
-              <button @click="previousPage" :disabled="currentPage === 0">
-                이전
-              </button>
-              <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
-              <button
-                @click="nextPage"
-                :disabled="currentPage === totalPages - 1"
+              <a
+                href="javascript:void(0)"
+                @click="previousPage"
+                :class="{ disabled: currentPage === 0 }"
+                >&lt;</a
               >
-                다음
-              </button>
+              <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+              <a
+                href="javascript:void(0)"
+                @click="nextPage"
+                :class="{ disabled: currentPage === totalPages - 1 }"
+                >&gt;</a
+              >
             </div>
           </div>
         </div>
@@ -382,16 +388,14 @@ export default {
         })
         .then((response) => {
           // 리뷰 객체에 초기 속성 추가
-  this.reviews = response.data.content.map(review => ({
-    ...review,
-    userHasLiked: false,
-    likeCnt: 0,
-  }));
-
+          this.reviews = response.data.content.map((review) => ({
+            ...review,
+            userHasLiked: false,
+            likeCnt: 0,
+          }));
 
           this.currentPage = response.data.page.number;
           this.totalPages = response.data.page.totalPages;
-         
 
           // 각 리뷰에 대해 좋아요 상태 및 좋아요 수 확인
           this.reviews.forEach((review) => {
@@ -402,7 +406,10 @@ export default {
           console.log(this.reviews);
         })
         .catch((error) => {
-          console.error("리뷰를 가져오는 중 오류 발생:",  error.response?.data || error.message);
+          console.error(
+            "리뷰를 가져오는 중 오류 발생:",
+            error.response?.data || error.message
+          );
         });
     },
     //리뷰 좋아요 상태 확인 및 좋아요 수 가져오기
