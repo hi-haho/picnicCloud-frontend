@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>계정 비활성화 확인</h2>
-    <p>정말로 계정을 비활성화하시겠습니까? 이 작업은 되돌릴 수 없습니다.</p>
+    <p>정말로 계정을 비활성화하시겠습니까?</p>
     <button v-if="isLoggedIn" @click="confirmDeactivation">확인</button>
     <button v-if="isLoggedIn" @click="cancelDeactivation">취소</button>
     <p v-else>로그인 상태가 아닙니다. 계정 비활성화를 진행할 수 없습니다.</p>
