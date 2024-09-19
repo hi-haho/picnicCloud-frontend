@@ -390,7 +390,7 @@ export default {
           console.log(this.reviews);
         })
         .catch((error) => {
-          console.error("리뷰를 가져오는 중 오류 발생:", error);
+          console.error("리뷰를 가져오는 중 오류 발생:",  error.response?.data || error.message);
         });
     },
     //리뷰 좋아요 상태 확인 및 좋아요 수 가져오기
