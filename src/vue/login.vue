@@ -30,7 +30,7 @@
 import { mapActions } from "vuex";
 import { toast } from "vue3-toastify"; // toast 함수 임포트
 import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
-import '../css/login.css';
+import "../css/login.css";
 
 export default {
   name: "LogIn",
@@ -52,7 +52,7 @@ export default {
         await this.login(loginData); // Vuex 액션 호출
 
         // 로그인 후 리다이렉트: 쿼리 파라미터의 redirect 값 사용
-        const redirect = this.$route.query.redirect || '/';
+        const redirect = this.$route.query.redirect || "/";
         this.$router.push(redirect);
       } catch (error) {
         console.log("에러 발생!", error);
@@ -61,13 +61,11 @@ export default {
         if (error.response && error.response.status === 403) {
           // 계정이 비활성화된 경우
           toast.error(
-            `${
-              error.response.data.message || "계정이 비활성화되었습니다."
-            }`
+            `${error.response.data.message || "계정이 비활성화되었습니다."}`
           );
         } else {
           // 기타 로그인 오류
-          toast.error('로그인 중 오류가 발생했습니다.');
+          toast.error("로그인 중 오류가 발생했습니다.");
         }
       }
     },

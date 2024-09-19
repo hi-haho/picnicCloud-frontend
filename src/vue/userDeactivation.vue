@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="deactivation-container">
     <h2>계정 비활성화 확인</h2>
     <p>정말로 계정을 비활성화하시겠습니까?</p>
     <button v-if="isLoggedIn" @click="confirmDeactivation">확인</button>
@@ -41,3 +41,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.deactivation-container {
+  max-width: 1050px;
+  margin: 0 auto; 
+  width: 100%;
+  box-sizing: border-box;
+}
+</style>
