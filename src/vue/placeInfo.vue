@@ -146,48 +146,74 @@
               리뷰를 작성하려면
               <router-link to="/login">로그인</router-link>하세요.
             </p>
-            
- <!-- 리뷰 목록 -->
-<ul class="reviewList">
-  <li v-for="review in reviews" :key="review.no">
-    <div class="review-header">
-      <!-- 왼쪽 정렬: 작성자, 작성일, 신고, 수정, 삭제 -->
-      <div class="review-left">
-        <h4><span v-if="review.id">{{ review.id }}</span></h4> 
-         <span v-if="review.createDate">| 작성일: {{ formatDate(review.createDate) }}</span> |
-        <a
-          v-if="isLoggedIn"
-          href="javascript:void(0)"
-          @click="goToReportPage(review.no)"
-          class="action-link"
-        >
-          신고
-        </a>
-        <span v-if="isLoggedIn && review.id === loggedInUserId" class="edit-links">
-          <a href="javascript:void(0)" @click="editReview(review)" class="action-link">수정</a>
-          <a href="javascript:void(0)" @click="deleteReview(review.no)" class="action-link">삭제</a>
-        </span>
-      </div>
-      <!-- 오른쪽 정렬: 평점 -->
-      <div class="review-right">
-        <span v-if="review.point !== null">평점: {{ review.point }}점</span>
-      </div>
-    </div>
-    <div class="reviewText">
-      <p v-if="review.contents">{{ review.contents }}</p>
-      <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
-      <!-- 좋아요 버튼 및 좋아요 수 -->
-       <div class="like-button">
-      <button @click="toggleReviewLike(review)" >
-        {{ review.userHasLiked ? "❤️좋아요" : "🩶좋아요" }}
-      </button>
-      ({{ review.likeCnt }})
-    </div>
-    </div>
-  </li>
-</ul>
+            <!-- 리뷰 목록 -->
+            <ul class="reviewList">
+              <li v-for="review in reviews" :key="review.no">
+                <div class="review-header">
+                  <!-- 왼쪽 정렬: 작성자, 작성일, 신고, 수정, 삭제 -->
+                  <div class="review-left">
+                    <h4>
+                      <span v-if="review.id">{{ review.id }}</span>
+                    </h4>
+                    <span v-if="review.createDate"
+                      >| 작성일: {{ formatDate(review.createDate) }}</span
+                    >
+                    |
+                    <a
+                      v-if="isLoggedIn"
+                      href="javascript:void(0)"
+                      @click="goToReportPage(review.no, placeNo)"
+                      class="action-link"
+                    >
+                      신고
+                    </a>
+                    <span
+                      v-if="isLoggedIn && review.id === loggedInUserId"
+                      class="edit-links"
+                    >
+                      <a
+                        href="javascript:void(0)"
+                        @click="editReview(review)"
+                        class="action-link"
+                        >수정</a
+                      >
+                      <a
+                        href="javascript:void(0)"
+                        @click="deleteReview(review.no)"
+                        class="action-link"
+                        >삭제</a
+                      >
+                    </span>
+                  </div>
+                  <!-- 오른쪽 정렬: 평점 -->
+                  <div class="review-right">
+                    <span v-if="review.point !== null"
+                      >평점: {{ review.point }}점</span
+                    >
+                  </div>
+                </div>
+                <div class="reviewText">
+                  <p v-if="review.contents">{{ review.contents }}</p>
+                  <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
+                  <!-- 좋아요 버튼 및 좋아요 수 -->
+                  <div class="like-button">
+                    <button @click="toggleReviewLike(review)">
+                      {{ review.userHasLiked ? "❤️좋아요" : "🩶좋아요" }}
+                    </button>
+                    ({{ review.likeCnt }})
+                  </div>
+                </div>
+              </li>
+            </ul>
+            <!-- ConfirmToast 컴포넌트 -->
+    <ConfirmToast
+      v-if="showToast"
+      message="정말로 이 리뷰를 삭제하시겠습니까?"
+      :onConfirm="deleteReview"
+      :onCancel="cancelDelete"
+    />
 
             <!-- 페이지네이션 -->
             <div v-if="totalPages > 1" class="pagination">
@@ -224,7 +250,9 @@ import { toast } from "vue3-toastify"; // toast 함수 임포트
 import "../css/placeInfo.css";
 
 export default {
+  
   name: "PlaceInfo",
+  
   data() {
     return {
       userId: "",
@@ -254,8 +282,8 @@ export default {
   created() {
     this.placeNo = this.$route.query.placeNo; // 쿼리스트링에서 placeNo 값 가져오기
     this.checkLoginStatus(); // 로그인 상태 확인
-    this.fetchReviews();
   },
+
   methods: {
     initializeUser() {
       this.userId = getUserIdFromToken(this.token);
@@ -324,31 +352,36 @@ export default {
     async toggleLike() {
       if (!this.token) {
         toast.error("로그인이 필요합니다.");
-        //this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         this.$router.push({
-    path: "/login",
-    query: { redirect: this.$route.fullPath },
-  });
+          path: "/login",
+          query: { redirect: this.$route.fullPath },
+        });
         return;
       }
       if (!this.place || !this.place.no) return;
 
-      await apiClient
-        .post(`/places/${this.place.no}/likes-toggle`, null, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-          params: {
-            userId: this.userId,
-          },
-        })
-        .then((res) => {
-          this.userHasLiked = res.data.liked; // 좋아요 상태 토글
-          this.placelikeCount = res.data.likeCount; // 좋아요 수 업데이트
-        })
-        .catch((err) => {
-          console.log("좋아요 토글 오류: ", err);
-        });
+      try {
+        const res = await apiClient.post(
+          `/places/${this.place.no}/likes-toggle`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
+            },
+          }
+        );
+
+        this.userHasLiked = res.data.liked; // 좋아요 상태 토글
+        this.placelikeCount = res.data.likeCount; // 좋아요 수 업데이트
+
+        // 좋아요 상태 변경에 대한 단일 토스트 알림
+        toast.success("좋아요 상태가 변경되었습니다.");
+      } catch (err) {
+        console.log("좋아요 토글 오류: ", err);
+      }
     },
 
     // 장소 이미지관리
@@ -438,30 +471,35 @@ export default {
     async toggleReviewLike(review) {
       if (!this.token) {
         toast.error("로그인이 필요합니다.");
-        //this.$router.push("/login"); // 로그인 페이지로 리다이렉트
         this.$router.push({
-    path: "/login",
-    query: { redirect: this.$route.fullPath },
-  });
+          path: "/login",
+          query: { redirect: this.$route.fullPath },
+        });
         return;
       }
-      // 서버에 좋아요 상태를 업데이트 요청
-      await apiClient
-        .post(`/reviews/${review.no}/likes-toggle`, null, {
-          headers: {
-            Authorization: `Bearer ${this.token}`,
-          },
-          params: {
-            userId: this.userId,
-          },
-        })
-        .then((res) => {
-          review.userHasLiked = res.data.liked; // 서버가 반환한 토글된 좋아요 상태
-          review.likeCnt = res.data.likeCount; // 서버에서 업데이트된 좋아요 수 받음
-        })
-        .catch((err) => {
-          console.log("리뷰 좋아요 토글 오류: ", err);
-        });
+
+      try {
+        const res = await apiClient.post(
+          `/reviews/${review.no}/likes-toggle`,
+          null,
+          {
+            headers: {
+              Authorization: `Bearer ${this.token}`,
+            },
+            params: {
+              userId: this.userId,
+            },
+          }
+        );
+
+        review.userHasLiked = res.data.liked; // 서버가 반환한 토글된 좋아요 상태
+        review.likeCnt = res.data.likeCount; // 서버에서 업데이트된 좋아요 수 받음
+
+        // 좋아요 상태 변경에 대한 단일 토스트 알림
+        toast.success("좋아요 상태가 변경되었습니다.");
+      } catch (err) {
+        console.log("리뷰 좋아요 토글 오류: ", err);
+      }
     },
 
     // 리뷰 좋아요 수 가져오기
@@ -594,9 +632,15 @@ export default {
           });
       }
     },
-    // 신고 페이지로 이동
-    goToReportPage(reviewNo) {
-      this.$router.push({ name: "ReviewReport", params: { reviewNo } });
+
+    goToReportPage(reviewNo, placeNo) {
+      this.$router.push({
+        name: "reviewReport",
+        params: {
+          reviewNo: reviewNo,
+          placeNo: placeNo,
+        },
+      });
     },
   },
   mounted() {

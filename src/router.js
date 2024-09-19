@@ -73,8 +73,8 @@ const routes = [
     props: true // URL 파라미터를 props로 전달
   },
   { 
-    path: '/reviewReport/:reviewNo', // reviewReport 페이지 경로 추가
-    name: 'ReviewReport', 
+    path: '/reviewReport/:reviewNo/:placeNo', // reviewReport 페이지 경로 추가
+    name: 'reviewReport', 
     component: reviewReport, 
     props: true // URL 파라미터를 props로 전달
   }

@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import FooterBox from './components/footerBox.vue';
-import TopBar from './components/topBar.vue';
+import FooterBox from "./components/footerBox.vue";
+import TopBar from "./components/topBar.vue";
 
 export default {
   components: {
