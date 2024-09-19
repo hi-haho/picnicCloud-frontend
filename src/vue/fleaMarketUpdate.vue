@@ -38,29 +38,29 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import apiClient from '@/api/api.js';
-import { toast } from 'vue3-toastify'; // toast 함수 임포트
-import 'vue3-toastify/dist/index.css'; // 토스트 스타일 임포트
+import { ref, onMounted } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import apiClient from "@/api/api.js";
+import { toast } from "vue3-toastify"; // toast 함수 임포트
+import "vue3-toastify/dist/index.css"; // 토스트 스타일 임포트
 
 export default {
-  name: 'fleaMarketUpdate',
+  name: "fleaMarketUpdate",
   setup() {
     const route = useRoute(); // URL의 경로 파라미터에 접근
     const router = useRouter();
     const categories = ref([]);
     const datas = ref({
-      title: '',
-      price: '',
-      contents: '',
-      categoryNo: 0
+      title: "",
+      price: "",
+      contents: "",
+      categoryNo: 0,
     });
     const no = ref(route.params.no); // URL 파라미터에서 'no' 값을 가져옵니다.
 
     const AxiosCategories = async () => {
       try {
-        const response = await apiClient.get('/categories');
+        const response = await apiClient.get("/categories");
         categories.value = response.data;
       } catch (err) {
         console.error("Category Fetch error: ", err);
@@ -90,7 +90,7 @@ export default {
       try {
         await apiClient.put(`/fleaMarket/${no.value}`, datas.value);
         if (confirm("수정하시겠습니까?")) {
-          router.push({ name: 'FleaMarketDetail', params: { no: no.value } });
+          router.push({ name: "FleaMarketDetail", params: { no: no.value } });
         }
       } catch (err) {
         toast.error("수정 실패: " + err);
@@ -99,7 +99,7 @@ export default {
 
     const cancel = () => {
       if (no.value) {
-        router.push({ name: 'FleaMarketDetail', params: { no: no.value } });
+        router.push({ name: "FleaMarketDetail", params: { no: no.value } });
       } else {
         console.error("No parameter is missing in the URL.");
       }
@@ -115,8 +115,8 @@ export default {
       categories,
       no,
       update,
-      cancel
+      cancel,
     };
-  }
+  },
 };
 </script>

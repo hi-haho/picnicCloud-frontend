@@ -7,8 +7,12 @@
     </div>
 
     <div id="tabs">
-        <button @click="activeTab = 'places'">장소</button>
-        <button @click="activeTab = 'markets'">중고거래</button>
+        <button 
+        :class="{ active: activeTab === 'places' }"
+        @click="activeTab = 'places'">장소</button>
+        <button 
+        :class="{ active: activeTab === 'markets' }"
+        @click="activeTab = 'markets'">중고거래</button>
       </div>
 
     <div id="contentsArea">
@@ -37,9 +41,6 @@
     </div>
   </div>
 </template>
-
-
-
 
 <script>
 import { mapGetters } from "vuex";

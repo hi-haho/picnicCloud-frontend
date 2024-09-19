@@ -12,20 +12,27 @@
       <p>{{ board.contents }}</p>
     </div>
 
-    <!-- 채팅 내역 표시 -->
-    <div class="chat-container" ref="chatContainer">
-      <ul class="message-list">
-        <li
-          v-for="message in messages"
-          :key="message.no"
-          :class="{'my-message': message.senderId === currentUserId, 'other-message': message.senderId !== currentUserId}"
-        >
-          <strong>{{ message.senderId }}:</strong> {{ message.messageContents }}
-          <br />
-          <small>{{ formatDate(message.createDate) }}</small>
-        </li>
-      </ul>
-    </div>
+   <!-- 채팅 내역 표시 -->
+<div class="chat-container" ref="chatContainer">
+  <ul class="message-list">
+    <li
+      v-for="message in messages"
+      :key="message.no"
+      :class="{'my-message': message.senderId === currentUserId, 'other-message': message.senderId !== currentUserId}"
+    >
+      <strong 
+        class="sender-id" 
+        :class="{'right-align': message.senderId === currentUserId}"
+      >{{ message.senderId }}</strong> <!-- 박스와 분리된 부분 -->
+      <div class="message-content">
+        {{ message.messageContents }}
+        <br />
+        <small>{{ formatDate(message.createDate) }}</small>
+      </div>
+    </li>
+  </ul>
+</div>
+
 
     <!-- 메시지 입력 필드 -->
     <div class="input-container">

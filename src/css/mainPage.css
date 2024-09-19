@@ -67,9 +67,10 @@ html {
 }
 
 body{
-  height: 100%;
+  height: fit-content;
   background: none;
   font-family: 'NanumSquareRound';
+  background-color: transparent !important;
 }
 
 /* 공통 컨테이너 설정 */
@@ -90,6 +91,7 @@ body{
   padding: 0 4.7rem; /* body1과 동일한 padding 값 */
   width: 100%;
   box-sizing: border-box; /* padding이 width에 영향을 미치지 않도록 설정 */
+  background-color: none;
 }
 
 #mainBanner img {

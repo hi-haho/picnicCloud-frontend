@@ -1,14 +1,16 @@
 <template>
-    <div class="reset-container">
-      <h2 class="reset-id-pw-title">아이디 찾기 / 비밀번호 재설정하기</h2>
-      
-      <div class="input-group">
-        <h3 class="email-title">이메일</h3>
+    <div id="resetBox">
+      <div class="reset-container">
+        <h2 class="reset-id-pw-title">아이디 찾기</h2>
+        <h2 class="reset-id-pw-title">/ 비밀번호 재설정하기</h2>
+        <br>
+        <div class="input-group">
+          <h3 class="email-title">이메일</h3>
         <input 
-          type="email" 
-          v-model="email" 
-          placeholder="이메일을 입력하세요" 
-          required 
+        type="email" 
+        v-model="email" 
+        placeholder="이메일을 입력하세요" 
+        required 
         />
       </div>
       
@@ -17,11 +19,13 @@
         <button type="button" class="reset-button" @click="resetPw">비밀번호 재설정</button>
       </div>
     </div>
+  </div>
   </template>
   
   <script>
 import apiClient from '@/api/api';
 import { toast } from 'vue3-toastify'; 
+import '../css/resetIdPassword.css';
 
 export default {
   data() {

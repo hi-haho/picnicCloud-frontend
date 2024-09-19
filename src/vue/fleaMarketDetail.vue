@@ -13,20 +13,19 @@
         <div v-else class="no-image-placeholder">이미지가 없습니다</div>
       </div>
 
-      
       <div class="info-container">
         <div class="upperInfo">
-        <div class="priceInfo">
-        <h3 v-if="items.price !== null">
-          가격: ₩{{ items.price.toLocaleString() }}
-        </h3>
-        <h3 v-else>가격 정보 없음</h3>
-      </div>
-        <div >
-        <button v-if="!isAuthor" @click="report(items.no)">신고</button>
-      </div>
-    </div>
-        <br>
+          <div class="priceInfo">
+            <h3 v-if="items.price !== null">
+              가격: ₩{{ items.price.toLocaleString() }}
+            </h3>
+            <h3 v-else>가격 정보 없음</h3>
+          </div>
+          <div>
+            <button v-if="!isAuthor" @click="report(items.no)">신고</button>
+          </div>
+        </div>
+        <br />
 
         <!-- 상품 카테고리 및 등록일 또는 수정일 -->
         <b>카테고리: {{ items.categoryName }}</b>
@@ -34,39 +33,35 @@
         <p>판매자 : {{ items.userId }}</p>
 
         <div class="actionButton">
-          
           <!-- 채팅 -->
           <div v-if="!isAuthor" class="chatButton">
             <button @click="createChatRoom">채팅방</button>
           </div>
-          
-          <!-- 좋아요 버튼 및 좋아요 수 -->
-         <div class="like-section">
-          <button @click="toggleFavorite" class="like-button">
-            <span>{{
-              items.favorite ? "❤️ 좋아요 취소" : "🩶 좋아요"
-            }}</span></button
-          >({{ items.favoriteCnt }})
-        </div>
 
+          <!-- 좋아요 버튼 및 좋아요 수 -->
+          <div class="like-section">
+            <button @click="toggleFavorite" class="like-button">
+              <span>{{
+                items.favorite ? "❤️ 좋아요 취소" : "🩶 좋아요"
+              }}</span></button
+            >({{ items.favoriteCnt }})
+          </div>
+        </div>
+        <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
+        <div class="item-buttons">
+          <span v-if="showEditButtons">
+            <button @click="fleaUpdate">수정</button>
+            <button @click="fleaDelete">삭제</button>
+          </span>
+          <button @click="list">목록으로 돌아가기</button>
+        </div>
       </div>
-      <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
-      <div class="item-buttons">
-        <span v-if="showEditButtons">
-          <button @click="fleaUpdate">수정</button>
-          <button @click="fleaDelete">삭제</button>
-        </span>
-        <button @click="list">목록으로 돌아가기</button>
-      </div>
-      </div>
-        
     </div>
 
-
     <!-- 하단: 상품 설명 및 채팅방 생성 버튼 -->
-     <div class="tab">
-    <h4>상품 상세 정보</h4>
-  </div>
+    <div class="tab">
+      <h4>상품 상세 정보</h4>
+    </div>
     <div class="lower-section">
       <p>{{ items.contents }}</p>
     </div>
@@ -156,7 +151,10 @@ export default {
         toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
           position: "top-center",
         });
-        router.push("/login"); // 로그인 페이지로 이동
+        router.push({
+          path: "/login",
+          query: { redirect: route.fullPath }, // 현재 경로 저장
+        });
         return;
       }
       try {
@@ -166,8 +164,6 @@ export default {
         });
 
         // 좋아요 상태 및 카운트 업데이트
-        //items.value.favorite = !items.value.favorite;
-        //items.value.favoriteCnt = response.data.favoriteCount;
         items.value.favorite = response.data.likedUser; // 백엔드 응답의 likedUser 사용
         items.value.favoriteCnt = response.data.likeCount;
 
@@ -230,7 +226,10 @@ export default {
         toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
           position: "top-center",
         });
-        router.push("/login");
+        router.push({
+          path: "/login",
+          query: { redirect: route.fullPath }, // 현재 경로 저장
+        });
         return;
       }
 
@@ -282,7 +281,10 @@ export default {
         toast.error("로그인이 필요합니다. 로그인 후 다시 시도해주세요.", {
           position: "top-center",
         });
-        router.push("/login"); // 로그인 페이지로 이동
+        router.push({
+          path: "/login",
+          query: { redirect: route.fullPath }, // 현재 경로 저장
+        });
         return;
       }
       try {

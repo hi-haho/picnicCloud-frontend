@@ -1,3 +1,11 @@
+#placeSearch{
+    padding: 0 1.6rem; 
+}
+
+.loading{
+    text-align: center;
+    font-weight: bold;
+}
 /* 검색 바 스타일 */
 .search-bar {
     display: flex;
@@ -6,7 +14,6 @@
     gap: 8px; /* 레이블, 입력 필드, 버튼 간의 간격 설정 */
     margin-bottom: 20px;
     background-color: #f4f4f4;
-    padding: 10px;
     border-radius: 5px;
 }
 
@@ -30,13 +37,12 @@
     padding: 6px 15px; /* 버튼 내부에 6px 위아래, 15px 좌우의 여백 추가 */
     background-color: #87CEEB; /* 버튼의 배경색을 파란색으로 설정 */
     color: white; /* 버튼 텍스트 색상을 흰색으로 설정 */
-    border: 1px solid #87CEEB; /* 버튼의 테두리를 파란색으로 설정 */
     border-radius: 4px; /* 버튼의 모서리를 둥글게 처리 */
     cursor: pointer; /* 버튼에 마우스를 올릴 때 커서를 포인터로 변경 */
     font-size: 14px; /* 버튼 텍스트의 크기를 14px로 설정 */
     transition: background-color 0.3s ease; /* 배경색 변화에 0.3초의 전환 효과 추가 */
     position: relative;
-    bottom: 12px;
+    bottom: 7px;
 }
 
 .search-bar button:hover {
@@ -48,6 +54,9 @@
 }
 
 /* 검색 결과 아이템 스타일 */
+.totalResult{
+    display: flex;
+}
 .place-item {
     display: flex; /* 요소들을 수평으로 나란히 정렬 */
     align-items: flex-start; /* 아이템들을 상단에 맞춰 정렬 */
@@ -59,19 +68,19 @@
 }
 
 .place-image {
+    float: left;
     flex-shrink: 0; /* 이미지 크기가 커져도 레이아웃이 깨지지 않도록 설정 */
     margin-right: 16px; /* 이미지와 정보 사이에 16px의 간격 추가 */
 }
 
 .place-image img {
-    width: 70px; /* 이미지의 너비를 120px로 고정 */
-    height: 35px; /* 이미지의 높이를 자동으로 설정하여 비율 유지 */
-    object-fit: fill; 
+    object-fit: cover; 
     border-radius: 8px; /* 이미지의 모서리를 둥글게 처리 */
     display: block;
 }
 
 .place-info {
+    float:left;
     display: flex; /* 요소들을 수직으로 정렬 */
     flex-direction: column; /* 아이템들을 수직 방향으로 나열 */
 }

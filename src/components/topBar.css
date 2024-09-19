@@ -10,13 +10,15 @@ body {
   max-width: 1200px;
   margin: 0 auto; 
   width: 100%;
+  height: fit-content;
   box-sizing: border-box;
-
+  padding: 0 1.6rem; 
 }
+
+
 
 /* TopBar 기본 스타일 */
 header {
-  padding: 1.6rem; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -100,7 +102,7 @@ nav ul li {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid #87ceeb;
   padding: 10px 0;
   position: relative;
 }

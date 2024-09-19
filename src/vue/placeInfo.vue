@@ -37,7 +37,7 @@
           <!-- 좋아요 버튼 -->
           <p>
             <button @click="toggleLike" class="like-button">
-              <span>{{ userHasLiked ? "❤️ 좋아요 취소" : "🩶좋아요" }}</span>
+              {{ userHasLiked ? "❤️ 좋아요 취소" : "🩶좋아요" }}
             </button>
             ({{ placelikeCount }})
           </p>

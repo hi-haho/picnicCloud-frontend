@@ -10,6 +10,10 @@ html, body {
 }
 
 /* FooterBox 기본 스타일 */
+#footerBox{
+  padding: 1.6rem; 
+}
+
 .footer {
   height: 184px;
   border-top: 1px solid #87ceeb;
@@ -18,9 +22,7 @@ html, body {
   justify-content: flex-start; /* 왼쪽 정렬 */
   align-items: flex-start; /* 왼쪽 정렬 */
   flex-direction: column;
-  padding-left: 20px; /* 왼쪽에 약간의 패딩 추가 */
   font-family: "Pretendard Variable", Pretendard;
-  margin-top: 20px;
 }
 
 #logo img {

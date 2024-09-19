@@ -1,23 +1,27 @@
 <template>
-  <div class="update-password-container">
-    <h2>비밀번호 재설정</h2>
-    <form @submit.prevent="submitNewPassword">
-      <div class="form-group">
-        <p>새 비밀번호</p>
-        <input type="password" v-model="newPassword" required />
-      </div>
-      <div class="form-group">
-        <p>비밀번호 확인</p>
-        <input type="password" v-model="confirmPassword" required />
-      </div>
-      <button type="submit">비밀번호 변경</button>
-    </form>
+  <div id="findPassword">
+    <div class="update-password-container">
+      <h2>비밀번호 재설정</h2>
+      <br>
+      <form @submit.prevent="submitNewPassword">
+        <div class="form-group">
+          <p>새 비밀번호</p>
+          <input type="password" v-model="newPassword" required />
+        </div>
+        <div class="form-group">
+          <p>비밀번호 확인</p>
+          <input type="password" v-model="confirmPassword" required />
+        </div>
+        <button type="submit">비밀번호 변경</button>
+      </form>
+    </div>
   </div>
-</template>
+  </template>
 
 <script>
 import apiClient from "@/api/api"; // Axios 인스턴스
 import { toast } from 'vue3-toastify'; 
+import '../css/updatePassword.css';
 
 export default {
   data() {

@@ -58,11 +58,28 @@
   color: #333;
 }
 
-#contentsArea button, #tabs button{
+#contentsArea button{
   background-color: #ffff;
   border: 2px solid #87ceeb;
   color: #87ceeb;
   font-weight: bold;
+}
+
+#tabs button {
+  background-color: #ffffff;
+  border: 2px solid #87ceeb;
+  color: #87ceeb;
+  font-weight: bold;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* 활성화된 탭의 스타일 */
+#tabs button.active {
+  background-color: #87ceeb;
+  color: #ffffff;
 }
 
 #contentsArea button:hover, #tabs button:hover{
