@@ -50,8 +50,9 @@ export default {
 
         await this.login(loginData); // Vuex 액션 호출
 
-        // 로그인 후 페이지 리다이렉트
-        this.$router.push("/");
+        // 로그인 후 리다이렉트: 쿼리 파라미터의 redirect 값 사용
+        const redirect = this.$route.query.redirect || '/';
+        this.$router.push(redirect);
       } catch (error) {
         console.log("에러 발생!", error);
         console.error("로그인 실패:", error);
@@ -72,7 +73,7 @@ export default {
     handleReset() {
       // 아이디 찾기 / 비밀번호 재설정 로직
       this.$router.push("/resetIdPassword");
-    }
+    },
   },
 };
 </script>

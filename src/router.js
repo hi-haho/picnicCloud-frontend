@@ -92,7 +92,11 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token'); // JWT 토큰 가져오기
   if (to.matched.some(record => record.meta.requiresAuth) && !token) {
     // 인증이 필요하고 토큰이 없으면 로그인 페이지로 이동
-    next('/login');
+    //next('/login');
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath } // 로그인 후 돌아갈 경로 저장
+    });
   } else {
     next(); // 그 외의 경우는 정상적으로 다음 라우트로 진행
   }

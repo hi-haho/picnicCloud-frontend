@@ -186,14 +186,15 @@
 
             <!-- 페이지네이션 -->
             <div v-if="totalPages > 1" class="pagination">
-              <button @click="previousPage" :disabled="currentPage === 1">
-                이전
-              </button>
-              <span>페이지 {{ currentPage }} / {{ totalPages }}</span>
-              <button @click="nextPage" :disabled="currentPage === totalPages">
-                다음
-              </button>
-            </div>
+  <button @click="previousPage" :disabled="currentPage === 0">
+    이전
+  </button>
+  <span>페이지 {{ currentPage + 1 }} / {{ totalPages }}</span>
+  <button @click="nextPage" :disabled="currentPage === totalPages - 1">
+    다음
+  </button>
+</div>
+
           </div>
         </div>
       </div>
@@ -431,6 +432,8 @@ export default {
         .then((res) => {
           review.userHasLiked = res.data.liked; // 서버가 반환한 토글된 좋아요 상태
           review.likeCnt = res.data.likeCount; // 서버에서 업데이트된 좋아요 수 받음
+
+    
         })
         .catch((err) => {
           console.log("리뷰 좋아요 토글 오류: ", err);
