@@ -164,7 +164,7 @@
                 <button @click="toggleReviewLike(review)" class="like-button">
                   <span>{{ review.userHasLiked ? "❤️좋아요 취소" : "🩶좋아요" }}</span>
                 </button>
-
+                ({{ review.likeCnt }})
                 <!-- 수정, 삭제 및 신고 버튼 -->
                 <div v-if="isLoggedIn">
                   <button
@@ -185,7 +185,7 @@
             </ul>
 
             <!-- 페이지네이션 -->
-            <div v-if="totalPages > 1">
+            <div v-if="totalPages > 1" class="pagination">
               <button @click="previousPage" :disabled="currentPage === 1">
                 이전
               </button>
