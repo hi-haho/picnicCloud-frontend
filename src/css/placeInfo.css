@@ -5,6 +5,15 @@
     padding: 20px;
   }
   
+
+  button {
+    background-color: #6ac6eb;
+    margin-right: 0px;
+  }
+
+  button :hover{
+    background-color: #08AAEB;
+  }
   /* 제목 스타일 */
   h1 {
     text-align: center;
@@ -86,7 +95,6 @@
 .rating {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
     font-size: 2rem; /* 별 크기 */
     cursor: pointer;
   }
@@ -108,4 +116,71 @@
   .rating .star:hover ~ .star {
     color: lightgray; /* 마우스를 올린 이후의 별들은 원래 색으로 */
   }
+
+  .reviewWrite label{
+    width: 100%;
+  }
   
+  .reviewList{
+    margin-top: 20px;  
+  }
+  ul{
+    list-style: none;
+  }
+  .reviewList h2{
+    text-align: left;
+  }
+
+  .reviewList h4{
+    text-align: left;
+  }
+
+  .reviewText {
+    background-color: #ddd;
+    position: relative;
+    margin-top: -10px;
+    padding: 10px 10px;
+  }
+
+  .reviewText p{
+    margin-top: 10px;
+  }
+  .review-header {
+    display: flex;
+    justify-content: space-between; /* 좌우로 요소 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+    margin: 10px 0;
+  }
+  
+  .review-left {
+    display: flex;
+    gap: 10px; /* 아이템 간격 조정 */
+    align-items: center;
+  }
+
+  .review-left a:hover{
+    font-weight: bold;
+  }
+
+  .review-left a{
+    cursor: pointer ;
+  }
+  
+  .edit-links {
+    display: flex;
+    gap: 5px; /* 수정, 삭제 간의 간격 */
+  }
+  
+  .review-right {
+    text-align: right;
+  }
+  
+  .action-link{
+    margin-right: 5px;
+  }
+
+  .like-button {
+    margin-left: auto; /* 왼쪽 마진 자동 설정으로 오른쪽 정렬 */
+    text-align: right; /* 텍스트를 오른쪽 정렬 */
+    margin-top: 10px; /* 내용 아래로 배치되도록 여백 추가 */
+  }
