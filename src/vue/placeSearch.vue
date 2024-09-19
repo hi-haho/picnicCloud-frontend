@@ -1,13 +1,12 @@
 <template>
   <div id="placeSearch">
     <div class="search-bar">
-      검색 : 
       <input
         type="text"
         id="search"
         class="search"
         v-model="keyword"
-        placeholder="시설명 혹은 주소"
+        placeholder="시설명 혹은 주소 검색"
         @keydown.enter="searchFunc"
       />
       <button @click="searchFunc"> <img src="@/image/navIcon/search.png" alt="검색"></button>

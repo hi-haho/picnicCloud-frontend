@@ -13,14 +13,35 @@
         <div v-else class="no-image-placeholder">이미지가 없습니다</div>
       </div>
 
+      
       <div class="info-container">
+        <div class="upperInfo">
+        <div class="priceInfo">
         <h3 v-if="items.price !== null">
           가격: ₩{{ items.price.toLocaleString() }}
         </h3>
         <h3 v-else>가격 정보 없음</h3>
+      </div>
+        <div >
+        <button v-if="!isAuthor" @click="report(items.no)">신고</button>
+      </div>
+    </div>
+        <br>
 
-        <!-- 좋아요 버튼 및 좋아요 수 -->
-        <div class="like-section">
+        <!-- 상품 카테고리 및 등록일 또는 수정일 -->
+        <b>카테고리: {{ items.categoryName }}</b>
+        <p>{{ getDisplayDate() }}</p>
+        <p>판매자 : {{ items.userId }}</p>
+
+        <div class="actionButton">
+          
+          <!-- 채팅 -->
+          <div v-if="!isAuthor" class="chatButton">
+            <button @click="createChatRoom">채팅방</button>
+          </div>
+          
+          <!-- 좋아요 버튼 및 좋아요 수 -->
+         <div class="like-section">
           <button @click="toggleFavorite" class="like-button">
             <span>{{
               items.favorite ? "❤️ 좋아요 취소" : "🩶 좋아요"
@@ -28,31 +49,25 @@
           >({{ items.favoriteCnt }})
         </div>
 
-        <!-- 채팅 -->
-        <div v-if="!isAuthor">
-          <button @click="createChatRoom">채팅방</button>
-        </div>
-
-        <!-- 상품 카테고리 및 등록일 또는 수정일 -->
-        <b>카테고리: {{ items.categoryName }}</b>
-        <p>{{ getDisplayDate() }}</p>
-        <p>판매자 : {{ items.userId }}</p>
       </div>
+      <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
+      <div class="item-buttons">
+        <span v-if="showEditButtons">
+          <button @click="fleaUpdate">수정</button>
+          <button @click="fleaDelete">삭제</button>
+        </span>
+        <button @click="list">목록으로 돌아가기</button>
+      </div>
+      </div>
+        
     </div>
 
-    <!-- 상단 버튼 (목록보기, 수정, 삭제, 신고) -->
-    <div class="item-buttons">
-      <span v-if="showEditButtons">
-        <button @click="fleaUpdate">수정</button>
-        <button @click="fleaDelete">삭제</button>
-      </span>
-      <button v-if="!isAuthor" @click="report(items.no)">신고</button>
-      <button @click="list">목록보기</button>
-    </div>
 
     <!-- 하단: 상품 설명 및 채팅방 생성 버튼 -->
+     <div class="tab">
+    <h4>상품 상세 정보</h4>
+  </div>
     <div class="lower-section">
-      <h4>상품 상세 정보</h4>
       <p>{{ items.contents }}</p>
     </div>
   </div>

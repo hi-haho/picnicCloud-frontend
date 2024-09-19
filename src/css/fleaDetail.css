@@ -9,6 +9,8 @@
     --button-hover-color: #08AAEB;
 }
 
+
+
 #detailPage {
     max-width: 900px;
     margin: 0 auto;
@@ -26,12 +28,15 @@ h1 {
     margin-bottom: 20px;
   }
 
+
+
 /* 이미지 컨테이너 스타일 */
 .image-container {
     flex: 1;
     max-width: 40%; /* 이미지가 차지하는 너비 조정 */
     margin-right: 20px;
 }
+
 
 .image-container img {
     width: 100%;
@@ -53,8 +58,26 @@ h1 {
     margin-top: 20px;
 }
 
+.upperInfo{
+    display: flex;
+    justify-content: center;
+    justify-content: space-between;
+}
+
+.priceInfo {
+    margin: 0 auto;         /* 중앙 정렬을 위해 좌우 여백 자동 */
+    text-align: center;      /* 텍스트 중앙 정렬 */
+  }
+
+.upperInfo button{
+    background-color: #6ac6eb;
+    margin-left: auto; 
+    margin-top: -20px;
+}
+
 .info-container button {
     border-radius: 5px;
+    background-color: #6ac6eb;
 }
 
 .info-container h3 {
@@ -63,6 +86,22 @@ h1 {
   
 
   
-.like-section button:hover {
-    background-color: #ffb600;
+button:hover {
+    background-color: #08AAEB;
+}
+
+.actionButton{
+    display: flex;
+    justify-content: center;
+}
+
+.tab {
+    padding: 5px 10px; /* 버튼 크기 조정 */
+    border: 1px solid #ccc;
+    background-color: #ddd;
+  }
+
+.lower-section{
+    border: 1px solid #ccc;
+    padding: 20px;
 }

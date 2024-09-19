@@ -16,12 +16,12 @@
       </div>
     </div>
 
-    <!-- 배경색을 가진 공간 -->
-    <div class="spacer"></div>
-
     <div class="book-details">
+      <div class="tab">
+      책 설명
+    </div>
       <div class="details-content">
-      <p>책 설명: {{ book.description ? book.description : "정보가 없습니다." }}</p>
+      <p>{{ book.description ? book.description : "정보가 없습니다." }}</p>
     </div>
   </div>
 </div>
@@ -107,17 +107,20 @@ export default {
   line-height: 1.5;
 }
 
-.book-details {
+
+.details-content {
+  line-height: 1.6;
   background-color: #f9f9f9; /* 배경색 설정 */
   border: 1px solid #ddd; /* 테두리 설정 */
   padding: 20px;
-  margin-top: 20px; /* 상단 여백 추가 */
   text-align: center; /* 텍스트 가운데 정렬 */
 }
 
-.details-content p {
-  margin: 10px 0;
-  line-height: 1.6;
-}
+.tab {
+  margin-top: 20px;
+    padding: 5px 10px; /* 버튼 크기 조정 */
+    border: 1px solid #ccc;
+    background-color: #ddd;
+  }
 
 </style>
