@@ -37,14 +37,33 @@
 }
 
 .message-list li {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 30px;
   padding: 10px;
   border-radius: 12px;
   word-wrap: break-word;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
 }
+
+.sender-id {
+  position: absolute;
+  top: -25px;
+  left: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 5px;
+}
+
+.sender-id.right-align {
+  left: auto;
+  right: 10px; /* 오른쪽 정렬 */
+  text-align: right; /* 텍스트 오른쪽 정렬 */
+}
+
+.message-content {
+  margin-top: 10px;
+}
+
 
 .my-message {
   align-self: flex-end;
@@ -52,7 +71,9 @@
   color: #1a1a1a;
   text-align: right;
   border: 1px solid #bce0ff;
+  margin-left: auto; /* 오른쪽 정렬을 위한 속성 */
 }
+
 
 .other-message {
   align-self: flex-start;

@@ -83,7 +83,7 @@ export default {
       banners: [
       { 
           src: require('../image/EventBanner.png'), 
-          link: 'https://map.naver.com/p/entry/place/1705439631?c=15.00,0,0,0,dh' // 첫 번째 배너 링크
+          link: 'https://drrobbin.com/' // 첫 번째 배너 링크
         },
         { 
           src: require('../image/banner2.png'), 

@@ -75,28 +75,32 @@
       </div>
 
       <!-- Pagination Controls -->
-      <div v-if="page && page.totalPages > 1" class="pagination">
-        <button
-          @click="changePage(page.number - 1)"
-          :disabled="page.number === 0"
-        >
-          이전
-        </button>
-        <button
-          v-for="pageNum in paginationPages"
-          :key="pageNum"
-          @click="changePage(pageNum)"
-          :class="{ active: pageNum === page.number }"
-        >
-          {{ pageNum + 1 }}
-        </button>
-        <button
-          @click="changePage(page.number + 1)"
-          :disabled="page.number === page.totalPages - 1"
-        >
-          다음
-        </button>
-      </div>
+<div v-if="page && page.totalPages > 1" class="pagination">
+  <a
+    href="#"
+    @click.prevent="changePage(page.number - 1)"
+    :class="{ disabled: page.number === 0 }"
+  >
+  &lt;
+  </a>
+  <a
+    v-for="pageNum in paginationPages"
+    :key="pageNum"
+    href="#"
+    @click.prevent="changePage(pageNum)"
+    :class="{ active: pageNum === page.number }"
+  >
+    {{ pageNum + 1 }}
+  </a>
+  <a
+    href="#"
+    @click.prevent="changePage(page.number + 1)"
+    :class="{ disabled: page.number === page.totalPages - 1 }"
+  >
+  &gt;
+  </a>
+</div>
+
     </div>
   </div>
 </template>

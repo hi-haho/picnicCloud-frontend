@@ -150,20 +150,15 @@ select {
   margin-top: 20px;
 }
 
-.pagination button {
+.pagination a {
   padding: 0.5rem 1rem;
   cursor: pointer;
-  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
 }
 
-.pagination button.active {
-  background-color: #0056b3;
-}
-
-.pagination button[disabled] {
+.pagination a[disabled] {
   background-color: #ccc;
   cursor: not-allowed;
 }
