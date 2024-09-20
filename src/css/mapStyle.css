@@ -170,3 +170,7 @@ footer {
   .category button:hover, .facility button:hover {
     background-color: #2980b9;
   }
+
+  .category button:active, .facility button:active {
+    background-color: #2980b9;
+  }

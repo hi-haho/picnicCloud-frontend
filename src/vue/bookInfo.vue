@@ -21,7 +21,8 @@
       책 설명
     </div>
       <div class="details-content">
-      <p>{{ book.description ? book.description : "정보가 없습니다." }}</p>
+      <p>Celebrate St. Patrick’s Day in this installment of Natasha Wing’s best-selling series, a fun read-aloud sure to keep kids engaged and laughing out loud!
+        It's the night before St. Patrick's Day, and Tim and Maureen are wide awake setting traps to catch a leprechaun! When they wake the next morning to the sound of their dad playing the bagpipes and the smell of their mom cooking green eggs, they're shocked to find that they've actually caught a leprechaun. But will they be able to find his pot of gold? Natasha Wing's sweet story is once again told in verse to the same meter of Clement Moore's classic.</p>
     </div>
   </div>
 </div>
@@ -64,7 +65,7 @@ export default {
       return require(`@/image/${bookNo}.jpg`); // 책 번호에 맞는 이미지 경로 반환
     },
     goBack() {
-      this.$router.push("/book-list"); // 목록으로 돌아가기
+      this.$router.push("/bookMain"); // 목록으로 돌아가기
     },
   },
 };
