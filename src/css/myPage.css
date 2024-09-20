@@ -1,14 +1,13 @@
 #myPageMain {
   width: 80%;
   max-width: 800px;
-  margin: 0 auto;
+  margin: 30px auto;
   background-color: white;
   border-radius: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 40px 20px 20px;
   border-left: 6px solid #87ceeb; /* 파일철 느낌의 왼쪽 테두리 */
   position: relative;
-  margin-bottom: 20px;
 }
 
 #buttonArea {
@@ -63,6 +62,7 @@
   border: 2px solid #87ceeb;
   color: #87ceeb;
   font-weight: bold;
+  margin-right: 10px;
 }
 
 #tabs button {
@@ -104,7 +104,7 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  margin-right: 10px;
+  margin-right: 20px;
 }
 
 button:hover {
