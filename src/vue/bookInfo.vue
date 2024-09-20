@@ -64,7 +64,7 @@ export default {
       return require(`@/image/${bookNo}.jpg`); // 책 번호에 맞는 이미지 경로 반환
     },
     goBack() {
-      this.$router.push("/book-list"); // 목록으로 돌아가기
+      this.$router.push("/bookMain"); // 목록으로 돌아가기
     },
   },
 };
