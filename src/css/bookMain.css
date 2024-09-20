@@ -1,151 +1,170 @@
 #bookMain {
-    max-width: 1200px;
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
-    padding: 0;
-    box-sizing: border-box;
-  }
+  max-width: 1200px;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.bookCategory {
+  margin-bottom: 50px;
+}
+
+.bookCategory h3 {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.slider-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  width: 100%;
+}
+
+.slider-container .image-item img {
+  width: 150px; /* 원하는 너비로 설정 */
+  height: 200px; /* 원하는 높이로 설정 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 요소 크기에 맞춤 */
+}
+
+.image-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  flex-wrap: nowrap;
+  overflow-x: hidden; /* 스크롤바를 숨김 */
+  width: calc(100% - 80px); /* 양쪽 버튼의 크기만큼 빼서 이미지 리스트 너비 설정 */
+}
+
+.image-item {
+  flex: 0 0 20%; /* 한 번에 5개의 이미지가 보이도록 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.image-item img {
+  width: 100%;
+  height: auto;
+}
+
+.image-item p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.author {
+  font-size: 14px;
+  color: gray;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.image-list-static {
+  flex: 0 0 70%; /* 이미지 리스트는 70%의 너비 */
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  width: 2;
   
-  .bookCategory {
-    margin-bottom: 50px;
-  }
-  
-  .bookCategory h3 {
-    text-align: left;
-    margin-bottom: 20px;
-  }
-  
-  .slider-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    width: 100%;
+}
+
+.image-item {
+  flex: 0 0 18%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1%;
+}
+
+.image-item img {
+  width: 80%;
+  height: auto;
+}
+
+.image-item p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.author {
+  font-size: 14px;
+  color: gray;
+}
+
+.small-slider {
+  flex: 0 0 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 1;
+}
+
+.small-slider h3 {
+  text-align: center;
+}
+
+.small-image-list {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  width: 100%; /* 너비를 설정하여 전체 크기 지정 */
+  overflow-x: hidden; /* 스크롤바를 숨김 */
+}
+
+.image-item-small {
+  flex: 0 0 100%; /* 각 이미지가 부모 컨테이너의 100% 너비를 차지하도록 설정 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0px;
+}
+
+.image-item-small img {
+  width: 60%; /* 이미지 크기는 필요에 맞게 조정 */
+  height: auto;
+}
+
+.slider-button {
+  background-color: #87ceeb;
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  z-index: 1;
+  flex: 0 0 40px; /* 버튼의 너비 설정 */
+  height: 100%; /* 슬라이더 높이에 맞춤 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-button.left {
+  order: -1; /* Flexbox를 사용하여 버튼의 순서를 조정 */
+}
+
+.slider-button.right {
+  order: 1;
+}
+
+/* 반응형 설정: 화면 너비가 970px 이하일 때 슬라이더 및 고정 배치 아이템 수 조정 */
+@media (max-width: 970px) {
+  .image-item {
+    flex: 0 0 25%; /* 한 번에 4개의 이미지가 보이도록 설정 */
+    margin: 0.3%;
   }
 
-  .slider-container .image-item img {
-    width: 150px; /* 원하는 너비로 설정 */
-    height: 200px; /* 원하는 높이로 설정 */
-    object-fit: cover; /* 이미지 비율을 유지하면서 요소 크기에 맞춤 */
+  .image-list-static .image-item {
+    flex: 0 0 40%; 
   }
-  
-  .image-list {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    flex-wrap: nowrap;
-    overflow-x: hidden; /* 스크롤바를 숨김 */
-  }
-  
-  .image-item {
-    flex: 0 0 20%; /* 한 번에 5개의 이미지가 보이도록 설정 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px;
-  }
-  
-  .image-item img {
-    width: 100%;
-    height: auto;
-  }
-  
-  .image-item p {
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .author {
-    font-size: 14px;
-    color: gray;
-  }
-  .flex-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  .image-list-static {
-    flex: 0 0 70%; /* 이미지 리스트는 70%의 너비 */
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
-  }
-  
-  .image-item {
-    flex: 0 0 18%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px;
-  }
-  
-  .image-item img {
-    width: 80%;
-    height: auto;
-  }
-  
-  .image-item p {
-    text-align: center;
-    margin-top: 10px;
-  }
-  
-  .author {
-    font-size: 14px;
-    color: gray;
-  }
-  
-  .small-slider {
-    flex: 0 0 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-  }
-
-  .small-slider h3 {
-    text-align: center;
-  }
-  
-  .small-image-list {
-    display: flex;
-    overflow-x: auto;
-    scroll-behavior: smooth;
-    width: 100%; /* 너비를 설정하여 전체 크기 지정 */
-    overflow-x: hidden; /* 스크롤바를 숨김 */
-  }
-  
-  .image-item-small {
-    flex: 0 0 100%; /* 각 이미지가 부모 컨테이너의 100% 너비를 차지하도록 설정 */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 5px 0px;
-  }
-  
-  .image-item-small img {
-    width: 60%; /* 이미지 크기는 필요에 맞게 조정 */
-    height: auto;
-  }
-  
-  .slider-button {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #87CEEB;
-    color: white;
-    font-weight: bold;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 1;
-  }
-  
-  .slider-button.left {
-    left: -10px;
-  }
-  
-  .slider-button.right {
-    right: -10px;
-  }
+}
