@@ -171,6 +171,6 @@ footer {
     background-color: #2980b9;
   }
 
-  .category button:active, .facility button:active {
+  .category button:active, .facility button:active, .category button:focus, .facility button:focus {
     background-color: #2980b9;
   }
