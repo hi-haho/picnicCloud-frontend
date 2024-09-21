@@ -35,7 +35,7 @@
 
 .search-bar button {
     padding: 6px 15px; /* 버튼 내부에 6px 위아래, 15px 좌우의 여백 추가 */
-    background-color: #87CEEB; /* 버튼의 배경색을 파란색으로 설정 */
+    background-color: #87ceeb; /* 버튼의 배경색을 파란색으로 설정 */
     color: white; /* 버튼 텍스트 색상을 흰색으로 설정 */
     border-radius: 4px; /* 버튼의 모서리를 둥글게 처리 */
     cursor: pointer; /* 버튼에 마우스를 올릴 때 커서를 포인터로 변경 */
@@ -46,11 +46,11 @@
 }
 
 .search-bar button:hover {
-    background-color: #0056b3; /* 마우스를 올렸을 때 배경색을 진한 파란색으로 변경 */
+    background-color: #2980b9; /* 마우스를 올렸을 때 배경색을 진한 파란색으로 변경 */
 }
 
 .search-bar button:active {
-    background-color: #004494; /* 버튼을 클릭할 때 배경색을 더 진한 파란색으로 변경 */
+    background-color: #2980b9; /* 버튼을 클릭할 때 배경색을 더 진한 파란색으로 변경 */
 }
 
 /* 검색 결과 아이템 스타일 */

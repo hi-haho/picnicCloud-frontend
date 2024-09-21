@@ -19,7 +19,6 @@
 
     <!-- 두 번째: 책 읽기 첫걸음과 작은 슬라이드 -->
     <div class="bookCategory">
-      
       <div class="flex-container">
         <!-- 이미지 리스트 (기존 정적 배열 나열) -->
         <div class="image-list-static">
@@ -77,9 +76,9 @@ export default {
       ],
       books: [
         { src: "17.jpg", alt: "이미지 1", bookName: "The girl with the broken wing", author: "Heather dyer", no: 17 },
-        {src: "10.jpg", alt: "이미지 2", bookName: "Face facts, sky. 3", author: "Kate Andrews", no: 10},
-        {src: "11.jpg", alt: "이미지 3", bookName: "Madison finn : Boy, oh Boy!. 2", author: "Laura Dower",  no: 11},
-        {src: "12.jpg", alt: "이미지 4", bookName: "Golden & grey : The nightmares that  ghosts have", author: "Louise Arnold", no: 12},
+        { src: "10.jpg", alt: "이미지 2", bookName: "Face facts, sky. 3", author: "Kate Andrews", no: 10 },
+        { src: "11.jpg", alt: "이미지 3", bookName: "Madison finn : Boy, oh Boy!. 2", author: "Laura Dower", no: 11 },
+        { src: "12.jpg", alt: "이미지 4", bookName: "Golden & grey : The nightmares that ghosts have", author: "Louise Arnold", no: 12 },
       ],
       smallImages: [
         { src: "13.jpg", alt: "작은 이미지 1", bookName: "Madison finn : On the case. 17", no: 13 },
@@ -107,6 +106,13 @@ export default {
     this.stopAutoSlide();
   },
   methods: {
+    // 왼쪽으로 스크롤
+    scrollLeft(sliderIndex) {
+      const imageListRef = this.$refs[`imageList${sliderIndex + 1}`];
+      if (imageListRef) {
+        imageListRef.scrollLeft -= 100; // 왼쪽으로 100px 스크롤
+      }
+    },
     // 오른쪽으로 스크롤
     scrollRight(sliderIndex) {
       this.$nextTick(() => {

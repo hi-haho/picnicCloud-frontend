@@ -144,18 +144,20 @@ footer {
   /* 버튼 스타일을 조금 더 개선 */
   .category button, .facility button {
     width: 42%;
-    padding: 0.5em 1em; /* em 단위를 사용하여 글자 크기에 비례하게 패딩 설정 */
-  border: none;
-  border-radius: 999px; /* 높은 값으로 설정하여 타원형 모양으로 만들기 */
-  background-color: #87ceeb; /* 버튼 배경색 */
-  color: white; /* 버튼 텍스트 색상 */
-  cursor: pointer;
-  font-size: 1em; /* 버튼 텍스트 크기 */
-  text-align: center;
-  display: inline-flex;
-  font-weight: bold;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 999px;
+    background-color: #87ceeb;
+    color: white;
     cursor: pointer;
+    font-size: 1em; /* 기본 글씨 크기 */
+    text-align: center;
+    display: inline-flex;
+    font-weight: bold;
     transition: background-color 0.3s ease;
+    white-space: normal; /* 줄바꿈 허용 */
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .category button img, .facility button img{
@@ -171,6 +173,16 @@ footer {
     background-color: #2980b9;
   }
 
-  .category button:active, .facility button:active, .category button:focus, .facility button:focus {
+  .category button:active, .facility button:active,.category button:focus, .facility button:focus {
     background-color: #2980b9;
   }
+
+  
+
+  @media (max-width: 970px) {
+    .category button, .facility button {
+        padding: 0.7em 1.2em; /* 두께 증가 */
+        font-size: 0.7em; /* 글씨 크기 약간 줄이기 */
+    }
+}
+

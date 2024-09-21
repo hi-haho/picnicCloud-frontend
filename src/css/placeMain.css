@@ -177,3 +177,19 @@
     font-size: 1rem; /* 설명 텍스트 폰트 크기 조정 */
   }
 }
+@media (max-width: 400px) {
+  .weather-container {
+    display: grid; /* 그리드 레이아웃 사용 */
+    grid-template-columns: repeat(2, 1fr); /* 첫째 줄과 둘째 줄에 2개의 칸 생성 */
+    grid-template-rows: auto auto auto; /* 세 줄로 나누기 */
+    gap: 10px; /* 카드들 사이의 간격 설정 */
+  }
+
+  .weather-card {
+    width: 100%; /* 그리드 레이아웃에 맞게 카드 너비를 100%로 설정 */
+  }
+
+  .weather-card:nth-child(5) {
+    grid-column: span 2; /* 셋째 줄에서 첫 번째 카드가 두 칸 차지하도록 설정 */
+  }
+}
