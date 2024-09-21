@@ -85,6 +85,7 @@
             type="number" 
             v-model="childAge" 
             placeholder="자녀 나이 (선택 사항)" 
+            min="0" 
           />
         </div>
         <!-- 제출 버튼 -->
