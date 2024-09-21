@@ -564,6 +564,7 @@ export default {
           .then(() => {
             toast.success("리뷰가 성공적으로 등록되었습니다.");
             this.fetchReviews(); // 리뷰 목록을 다시 불러옵니다.
+            this.showInfo();
             this.newReview.contents = ""; // 리뷰 작성 후 입력 폼을 초기화합니다.
             this.newReview.point = null;
             this.currentRating = 0; // 별점도 초기화
@@ -624,6 +625,7 @@ export default {
           .then(() => {
             toast.success("리뷰가 성공적으로 삭제되었습니다.");
             this.fetchReviews(); // 삭제 후 리뷰 목록 갱신
+            this.showInfo();
           })
           .catch((error) => {
             console.error("리뷰 삭제 중 오류 발생:", error); // 오류 로그 출력
