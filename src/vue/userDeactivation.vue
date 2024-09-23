@@ -49,4 +49,8 @@ export default {
   width: 100%;
   box-sizing: border-box;
 }
+
+.deactivation-container button{
+  margin-right: 7px;
+}
 </style>
