@@ -27,7 +27,7 @@
     </section>
 
     <!-- 글쓰기 버튼 -->
-    <div v-if="isLoggedIn" class="button">
+    <div v-if="isLoggedIn" class="writeButton">
       <button @click="create">글쓰기</button>
     </div>
 

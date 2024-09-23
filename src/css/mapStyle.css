@@ -36,6 +36,7 @@ nav a {
 
 .sidebar input {
     width: 70%;
+    min-width: 70px;
     height: 40px;
     padding: 10px;
     margin-right: 10px;
@@ -109,6 +110,7 @@ nav a {
 /* 기본 버튼 스타일 */
 .sidebar button {
     width: 20%;
+    min-width: 40px;
     height: 40px;
     padding: 10px;
     margin-bottom: 30px;
@@ -144,6 +146,7 @@ footer {
   /* 버튼 스타일을 조금 더 개선 */
   .category button, .facility button {
     width: 42%;
+    min-width: 50px;
     padding: 0.5em 1em;
     border: none;
     border-radius: 999px;
@@ -161,7 +164,7 @@ footer {
   }
 
   .category button img, .facility button img{
-    padding-right: 8px;
+    padding-right: 10px;
   }
 
   .lastButton{
@@ -183,6 +186,18 @@ footer {
     .category button, .facility button {
         padding: 0.7em 1.2em; /* 두께 증가 */
         font-size: 0.7em; /* 글씨 크기 약간 줄이기 */
+    }
+    .category button img, .facility button img{
+        padding-right: 15px;
+      }
+      .sidebar input {
+        width: 70%;
+        min-width: 80px;
+        height: 40px;
+        padding: 10px;
+        margin-right: 0px;
+        margin-bottom: 30px;
+        margin-left: -20px;
     }
 }
 

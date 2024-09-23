@@ -79,7 +79,7 @@ select {
   margin-top: 10px;
 }
 
-.button button {
+.writeButton button {
   background-color: var(--primary-color);
   color: white;
   padding: 0.5rem 1rem;
