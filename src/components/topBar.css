@@ -331,7 +331,7 @@ a {
  
 }
 
-/* 모바일 화면 (max-width 500px) */
+
 @media (max-width: 970px) {
   .bottom-nav {
     justify-content: space-around;
@@ -364,7 +364,7 @@ a {
    /* 마이페이지는 위에 단독 배치 */
    .nav-item > .router-link {
     margin-bottom: 10px;
-    font-size: 14px; /* 작은 화면에서 글씨 크기 조절 */
+    font-size: 10px; /* 작은 화면에서 글씨 크기 조절 */
   }
 
   /* 로그아웃과 알림 이모티콘은 같은 줄에 배치 */
@@ -373,9 +373,14 @@ a {
     align-items: center;
   }
 
+  .nav-item{
+    font-size: 10px;
+    margin-top: 20px;
+  }
+
   .logout-and-notification > * {
     margin-right: 10px; /* 각 항목 간격 */
-    font-size: 15px; /* 작은 화면에서 글씨 크기 조절 */
+    font-size: 10px; /* 작은 화면에서 글씨 크기 조절 */
   }
   .notification-icon {
     font-size: 20px; /* 알림 아이콘 크기 조정 */
