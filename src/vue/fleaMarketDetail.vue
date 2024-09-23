@@ -41,9 +41,9 @@
           <!-- 좋아요 버튼 및 좋아요 수 -->
           <div class="like-section">
             <button @click="toggleFavorite" class="like-button">
-              <span>{{
+              {{
                 items.favorite ? "❤️ 좋아요 취소" : "🩶 좋아요"
-              }}</span></button
+              }}</button
             >({{ items.favoriteCnt }})
           </div>
         </div>

@@ -136,7 +136,6 @@
                   v-model="newReview.contents"
                   maxlength="300"
                   required
-                  style="white-space: pre-wrap;"
                 ></textarea>
                 <p>{{ newReview.contents.length }} / 300</p>
               </div>
@@ -195,7 +194,7 @@
                   </div>
                 </div>
                 <div class="reviewText">
-                  <p v-if="review.contents" style="white-space: pre-wrap;">{{ review.contents }}</p>
+                  <p v-if="review.contents">{{ review.contents }}</p>
                   <p v-if="review.blocked">이 리뷰는 차단되었습니다.</p>
 
                   <!-- 좋아요 버튼 및 좋아요 수 -->
