@@ -6,7 +6,7 @@
     --primary-color-darker: #0C3546;
     --secondary-color: #000;
     --point-color: #FFD700;
-    --button-hover-color: #08AAEB;
+    --button-hover-color: #2980b9;
 }
 
 
@@ -70,14 +70,14 @@ h1 {
   }
 
 .upperInfo button{
-    background-color: #6ac6eb;
+    background-color: #87ceeb;
     margin-left: auto; 
     margin-top: -20px;
 }
 
 .info-container button {
     border-radius: 5px;
-    background-color: #6ac6eb;
+    background-color: #87ceeb;
     margin-left: 10px;
 }
 
@@ -88,7 +88,7 @@ h1 {
 
   
 button:hover {
-    background-color: #08AAEB;
+    background-color: #2980b9;
 }
 
 .actionButton{

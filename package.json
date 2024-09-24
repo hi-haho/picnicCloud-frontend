@@ -19,7 +19,8 @@
     "primevue": "^4.0.7",
     "sockjs-client": "^1.6.1",
     "vue": "^3.2.13",
-    "vue-router": "^4.4.4",
+    "vue-router": "^4.4.5",
+    "vue3-portal": "^2.0.2",
     "vue3-toastify": "^0.2.3",
     "vuex": "^4.1.0"
   },
@@ -27,7 +28,7 @@
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
     "@types/eslint": "^9.6.1",
-    "@types/node": "^22.5.4",
+    "@types/node": "^22.5.5",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-eslint": "~5.0.0",
     "@vue/cli-service": "~5.0.0",

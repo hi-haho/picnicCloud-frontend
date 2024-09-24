@@ -1,6 +1,7 @@
 <template>
   <div id="login-page">
     <div class="login-container">
+    <br>
       <h1 class="login-title">로그인</h1>
       <form @submit.prevent="handleSubmit">
         <div class="input-group">
@@ -21,6 +22,7 @@
       </form>
       <div class="links">
         <router-link to="/signUp">회원가입</router-link>
+        <br>
       </div>
     </div>
   </div>

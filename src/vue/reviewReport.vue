@@ -33,7 +33,7 @@
   import jwtDecode from "jwt-decode"; // JWT 디코딩을 위해 추가
   
   export default {
-    props: ["reviewNo"], // 라우팅에서 전달된 reviewNo를 props로 받음
+    props: ["reviewNo", "placeNo"], // 라우팅에서 전달된 reviewNo를 props로 받음
     data() {
       return {
         selectedReportCode: "", // 선택된 신고 코드 (radio 버튼 선택값)
@@ -89,7 +89,7 @@
           })
           .then(() => {
             alert("신고가 성공적으로 접수되었습니다."); //
-            this.$router.push("/"); // 신고 후 메인 페이지로 이동
+          this.$router.push(`/placeInfo?placeNo=${this.placeNo}`);
           })
           .catch((error) => {
             if (error.response && error.response.status === 409) {
