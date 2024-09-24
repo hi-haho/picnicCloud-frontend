@@ -34,3 +34,6 @@ src > vue 파일에 저장해주세요. 분리 완료하신 분들은 js와 html
 
 ### CSS파일 저장 위치
 src > css폴더에 저장해주세요
+
+관련 노션 링크
+https://www.notion.so/3d72cb14e369454aacb0c1f4e0bd49ab?v=c8265854604d46ab86834687b63bdd90
